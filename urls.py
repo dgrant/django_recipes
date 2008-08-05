@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     (r'^contact/$', 'contact' ),
     (r'^contact/thanks/$', direct_to_template, {'template': 'contact_thanks.html'}),
 
-    (r'^recipes/', include('cookbook.recipes.urls')),
+    (r'^recipes/', include('recipes.urls')),
 )
 
 if settings.SERVE_MEDIA:

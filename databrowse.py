@@ -1,5 +1,5 @@
 from django.contrib import databrowse
-from cookbook.recipes.models import *
+from recipes.models import *
 
 databrowse.site.register(Recipe)
 databrowse.site.register(Ingredient)

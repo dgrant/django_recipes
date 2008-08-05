@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'cookbook.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -80,7 +80,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
 #    'django.contrib.sites',
     'django.contrib.admin',
-    'cookbook.recipes',
+    'recipes',
     'tagging',
     'django.contrib.databrowse',
     'django_evolution',
