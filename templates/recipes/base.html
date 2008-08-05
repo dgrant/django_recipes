@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<script type="text/javascript"></script>
+	<title>{% block title %}{% endblock %}</title>
+	<style type="text/css" media="all">
+		@import "/media/css/recipes.css";
+	</style>
+
+</head>
+
+<body id="css-daves-cookbook">
+
+	<div id="maincontainer">
+
+		<div id="topsection">
+			<h1>Grant Family Recipes</h1>
+		</div>
+
+		<div id="nav">
+			<ul>
+				<li>Option 1</li>
+				<li>Option 2</li>
+				<li>Option 3</li>
+			</ul>
+		</div>	
+
+		<div id="contentwrapper">
+
+                    <div id="contentcolumn">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+
+		</div>
+			
+		<div id="leftcolumn">
+			<ul>
+				<li>Option A</li>
+				<li>Option B</li>
+				<li>Option C</li>
+				<li>Option A</li>
+				<li>Option B</li>
+				<li>Option C</li>
+				<li>Option A</li>
+				<li>Option B</li>
+				<li>Option C</li>
+				<li>Option A</li>
+				<li>Option B</li>
+				<li>Option C</li>
+				<li>Option A</li>
+				<li>Option B</li>
+				<li>Option C</li>
+			</ul>
+		</div>
+
+		<div id="footer">
+			{% block footer %}
+			<hr>
+			<p>Thanks for visiting my site.</p>
+			<p>Copyright 2007 David Grant and Cathy Grant</p>
+			{% endblock %}
+		</div>
+		
+
+	</div>
+</body>
+
+
+
+</body>-->
+</html>

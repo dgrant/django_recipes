@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <title>Contact us</title>
+    <style type="text/css">
+    ul.errorlist {
+        margin: 0;
+        padding: 0;
+    }
+    .errorlist li {
+        background-color: red;
+        color: white;
+        display: block;
+        font-size: 10px;
+        margin: 0 0 3px;
+        padding: 4px 5px;
+    }
+</style>
+</head>
+<body>
+    <h1>Contact us</h1>
+    <form action="." method="POST">
+        <table>
+            {{ form.as_table }}
+        </table>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+<!--    <form action="." method="POST">
+        <div class="fieldWrapper">
+            {{ form.topic.errors }}
+            <label for="id_topic">Kind of feedback:</label>
+            {{ form.topic }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.message.errors }}
+            <label for="id_message">Your message:</label>
+            {{ form.message }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.sender.errors }}
+            <label for="id_sender">Your email (optional):</label>
+            {{ form.sender }}
+        </div>
+        <p><input type="submit" value="Submit"></p>
+    </form>-->
+</body>
+</html>

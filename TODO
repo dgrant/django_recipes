@@ -1,0 +1,9 @@
+For 0.1 release:
+	-Set up some categories for Foods just like aisles in a store
+	-A cooking instructions section? or is this just another direction but with no associated ingredients?
+	-An optional information section?
+	-Get a rough display of ingredients/directions going - DONE
+	-Prep time and a cook time? (symantic?)
+	-Ordering for directions (and for ingredients?)
+Later:
+	-Restrict things from going into the root categories? later, using limit_choices_to once it is in newforms-admin

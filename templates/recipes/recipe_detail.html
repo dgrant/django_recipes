@@ -1,0 +1,77 @@
+{% extends "recipes/base.html" %}
+{% load humanize %}
+
+{% block content %}
+		<div id="recipe-preamble">
+			<h2>{{ recipe.title }}</h2>
+			<p class="recipe-summary">{{ recipe.summary }}</p>
+		</div>
+
+		{% if recipe.direction_set %}
+        	{% for direction in recipe.direction_set.all %}
+				<div class="step">
+ 					{% if direction.ingredient_set %}
+						<div class="ingredients-left">
+							<ul class="ingredients">
+								{% for ingredient in direction.ingredient_set.all %}
+									<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food}}</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div class="directions">
+							{{direction.text}}
+						</div>
+					{% endif %}
+				</div>		
+			{% endfor %}
+		{% endif %}
+
+	<p>
+	Ingredients:
+		{% if recipe.direction_set %}
+			<ul>
+			{% for direction in recipe.direction_set.all %}
+				{% for ingredient in direction.ingredient_set.all %}
+					<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}}{% endif %} {{ingredient.food}}</li>
+				{% endfor %}
+			{% endfor %}
+			</ul>
+		Directions:
+		{% for direction in recipe.direction_set.all %}
+			{{ direction.text }}
+		{% endfor %}
+		{% endif %}
+	</p>
+
+    <p><i>Extra Instructions:</i><br />
+    {{ recipe.instructions }}
+    </p>
+
+	<p><i>Prep time: {{ recipe.prep_time }}</i></p>
+    {% if recipe.sources %}
+        <p><i>Sources:
+            <ul>
+            {% for source in recipe.sources.all %}
+                <li>{{ source }}</li>
+            {% endfor %}
+            </ul>
+    {% endif %}
+
+    {% if recipe.categories %}
+        <p><i>Category:
+            <ul>
+            {% for category in recipe.categories.all %}
+                <li>{{ category }}</li>
+            {% endfor %}
+            </ul>
+    {% endif %}
+
+    {% if recipe.photo_set %}
+        <h3>Photos:</h3>
+            <ul>
+            {% for photo in recipe.photo_set.all %}
+                <li><a href="/media/{{ photo.image }}"><img width="300" src="/media/{{ photo.image }}"></img></a></li>
+            {% endfor %}
+            </ul>
+    {% endif %}
+{% endblock %}
