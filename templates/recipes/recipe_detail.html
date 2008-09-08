@@ -1,5 +1,6 @@
 {% extends "recipes/base.html" %}
 {% load humanize %}
+{% load tagging_tags %}
 
 {% block content %}
 	<div id="recipe-preamble">
@@ -46,14 +47,21 @@
 		{% endif %}
 	</p>
 	-->
+	<p><i>Tags: </i>
+	  {% tags_for_object recipe as tag_list %}
+	  {% for tag in tag_list %}
+	  <a href="/recipes/tag/{{tag}}">{{tag}}</a>
+	  {% endfor %}
+        </p>
 
     <p><i>Extra Instructions:</i><br />
-    {{ recipe.instructions }}
+ 	   {{ recipe.instructions }}
     </p>
 
 	<p><i>Prep time: {{ recipe.prep_time }}</i></p>
     {% if recipe.sources %}
-        <p><i>Sources:
+
+    <p><i>Sources:</i>
             <ul>
             {% for source in recipe.sources.all %}
                 <li>{{ source }}</li>
@@ -61,13 +69,8 @@
             </ul>
     {% endif %}
 
-    {% if recipe.categories %}
-        <p><i>Category:
-            <ul>
-            {% for category in recipe.categories.all %}
-                <li>{{ category }}</li>
-            {% endfor %}
-            </ul>
+    {% if recipe.category %}
+    <p><i>Category:</i> <a href="/recipes/category/{{recipe.category.id}}">{{ recipe.category }}</a></p>
     {% endif %}
 
     {% if recipe.photo_set %}

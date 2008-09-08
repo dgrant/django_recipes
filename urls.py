@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     (r'^contact/thanks/$', direct_to_template, {'template': 'contact_thanks.html'}),
 
     (r'^recipes/', include('recipes.urls')),
+    (r'^$', include('recipes.urls')),
 )
 
 if settings.SERVE_MEDIA:

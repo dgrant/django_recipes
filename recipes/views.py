@@ -3,28 +3,18 @@ from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.core.mail import send_mail
 from models import Recipe
-from forms import ContactForm, RecipeForm, UnitForm
-
-#def object_list(request, model):
-#    obj_list = model.objects.all()
-#    template_name = 'recipes/%s_list.html' % model.__name__.lower()
-#    return render_to_response(template_name, {'object_list': obj_list})
+from forms import ContactForm, RecipeForm
 
 def recipe_add(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/recipes/recipe/add/thanks/')
+#            return HttpResponseRedirect('/recipes/add/thanks/')
+            return render_to_response('recipes/recipe_add_thanks.html')
     else:
         form = RecipeForm()
     return render_to_response('recipes/recipe_add.html', {'form': form})
-
-#def recipe_list(request, page="1"):
-#    pass
-
-def recipe_view(request, id):
-    r = Recipe.objects.get(id=id)
 
 def search(request):
     query = request.GET.get('q', '')

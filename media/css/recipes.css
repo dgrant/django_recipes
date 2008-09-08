@@ -36,6 +36,7 @@ html, body {
 	/*background:#854151;*/
 	background: url(banner.jpg);
 	height:214px; /* Height of top section */
+	line-height:214px;
 	}
 #topsection h1 {
 	margin: 0;

@@ -1,15 +1,15 @@
 from django import forms
-from django.forms import form_for_model
-from recipes.models import Recipe, Unit
-
-RecipeForm = form_for_model(Recipe)
-UnitForm = form_for_model(Unit)
+from recipes.models import Recipe
 
 TOPIC_CHOICES = (
     ('general', 'General enquiry'),
     ('bug', 'Bug report'),
     ('suggestion', 'Suggestion'),
 )
+
+class RecipeForm(forms.ModelForm):
+    class Meta:
+        model = Recipe
 
 class ContactForm(forms.Form):
     topic = forms.ChoiceField(choices=TOPIC_CHOICES)

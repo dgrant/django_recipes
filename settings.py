@@ -85,6 +85,7 @@ INSTALLED_APPS = (
     'django.contrib.databrowse',
     'django_evolution',
     'django.contrib.humanize',
+    'tagging.templatetags.tagging_tags',
 )
 
 SERVE_MEDIA=True
