@@ -89,6 +89,7 @@ INSTALLED_APPS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS=(
+        "django.core.context_processors.auth",
         "recipes.context_processors.categories",
         )
 
