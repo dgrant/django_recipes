@@ -88,4 +88,8 @@ INSTALLED_APPS = (
     'tagging.templatetags.tagging_tags',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS=(
+        "recipes.context_processors.categories",
+        )
+
 SERVE_MEDIA=True

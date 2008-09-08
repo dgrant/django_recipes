@@ -39,21 +39,9 @@
 			
 		<div id="leftcolumn">
 			<ul>
-				<li>Option A</li>
-				<li>Option B</li>
-				<li>Option C</li>
-				<li>Option A</li>
-				<li>Option B</li>
-				<li>Option C</li>
-				<li>Option A</li>
-				<li>Option B</li>
-				<li>Option C</li>
-				<li>Option A</li>
-				<li>Option B</li>
-				<li>Option C</li>
-				<li>Option A</li>
-				<li>Option B</li>
-				<li>Option C</li>
+				{% for category in categories_list %}
+				<li><a href="/recipes/category/{{category.id}}">{{category.name}}</a></li>
+				{% endfor %}
 			</ul>
 		</div>
 
