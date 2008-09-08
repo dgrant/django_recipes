@@ -4,7 +4,7 @@
     <h2>Recipes ({{ paginator.count }} in total)</h2>
     <ul>
         {% for recipe in recipe_list %}
-            <li><a href="/recipes/recipe/{{ recipe.id }}">{{ recipe.title }}</a>: {{ recipe.summary }}</li>
+            <li><a href="/recipes/{{ recipe.id }}">{{ recipe.title }}</a>: {{ recipe.summary }}</li>
         {% endfor %}
     </ul>
     {% if is_paginated %}

@@ -10,7 +10,6 @@
 	<!-- Ingredient/direction style #1 -->
 	{% if recipe.direction_set %}
        	{% for direction in recipe.direction_set.all %}
-		<hr/>
 		<div class="step">
  			{% if direction.ingredient_set %}
 				<div class="ingredients-left">
@@ -25,7 +24,6 @@
 				</div>
 			{% endif %}
 		</div>	<!-- step -->
-		<hr/>
 	{% endfor %}
 	{% endif %}
 

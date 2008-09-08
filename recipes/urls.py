@@ -27,10 +27,10 @@ urlpatterns = patterns('recipes.views',
     (r'^$', list_detail.object_list, recipe_list_info),
 
     # detail
-    (r'^recipe/(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info),
+    (r'^(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info),
 
     # add
-    (r'^recipe/add/$', 'recipe_add'),
-    (r'^recipe/add/thanks/$', direct_to_template, {'template': 'recipes/recipe_add_thanks.html'} ),
+    (r'^add/$', 'recipe_add'),
+    (r'^add/thanks/$', direct_to_template, {'template': 'recipes/recipe_add_thanks.html'} ),
 
 )

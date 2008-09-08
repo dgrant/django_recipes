@@ -141,10 +141,18 @@ html, body {
 	}
 
 .step {
-/* 	border: 1px solid #000000; */
+/* 	border-bottom: 1px solid #888;
+ 	border-top: 2px solid #888;*/
 	overflow: auto;
 	width: 100%;
 	}
+
+.ingredients {
+	border-top: 1px solid #888;
+}
+.directions {
+	border-top: 1px solid #888;
+}
 
 #footer {
 	clear: left;
