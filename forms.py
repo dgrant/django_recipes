@@ -1,5 +1,5 @@
-from django import newforms as forms
-from django.newforms import form_for_model
+from django import forms
+from django.forms import form_for_model
 from recipes.models import Recipe, Unit
 
 RecipeForm = form_for_model(Recipe)

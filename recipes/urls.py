@@ -20,11 +20,11 @@ recipe_detail_info = {
     "template_object_name" : "recipe",
 }
 
-urlpatterns = patterns('cookbook.recipes.views',
+urlpatterns = patterns('recipes.views',
     (r'^search/$', 'search'),
 
     # list
-    (r'^recipes/$', list_detail.object_list, recipe_list_info),
+    (r'^$', list_detail.object_list, recipe_list_info),
 
     # detail
     (r'^recipe/(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info),

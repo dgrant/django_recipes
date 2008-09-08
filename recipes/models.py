@@ -109,10 +109,10 @@ class PrepMethod(models.Model):
 
 class Photo(models.Model):
     caption = models.CharField(max_length=200)
-    recipe = models.ForeignKey('Recipe', edit_inline=models.STACKED, num_in_admin=2, num_extra_on_change=1)
+    recipe = models.ForeignKey('Recipe')
     image = models.ImageField(upload_to='images')
     #This field used because can't make ImageField core right now (see http://code.djangoproject.com/ticket/2534)
-    keep = models.BooleanField(default=True, editable=False, core=True)
+    keep = models.BooleanField(default=True, editable=False)
 
     def __unicode__(self):
         return str(self.recipe) + ' (%s)' % self.image
@@ -152,7 +152,7 @@ class Direction(models.Model):
     multiple directions but obviously, each direction only applies to one
     recipe.
     """
-    text = models.TextField(blank=True, core=True)
+    text = models.TextField(blank=True)
     recipe = models.ForeignKey(Recipe)
     order = models.IntegerField(blank=True, null=True)
 
@@ -182,7 +182,7 @@ class Ingredient(models.Model):
     """
     TODO: move this lower later to get rid of quotes in ForeignKey references
     """
-    amount = models.FloatField(core=True)
+    amount = models.FloatField()
     amountMax = models.FloatField(null=True, blank=True)
     unit = models.ForeignKey(Unit,null=True, blank=True)
     recipe = models.ForeignKey(Recipe)

@@ -2,30 +2,35 @@
 {% load humanize %}
 
 {% block content %}
-		<div id="recipe-preamble">
-			<h2>{{ recipe.title }}</h2>
-			<p class="recipe-summary">{{ recipe.summary }}</p>
-		</div>
+	<div id="recipe-preamble">
+		<h2>{{ recipe.title }}</h2>
+		<p class="recipe-summary">{{ recipe.summary }}</p>
+	</div>
 
-		{% if recipe.direction_set %}
-        	{% for direction in recipe.direction_set.all %}
-				<div class="step">
- 					{% if direction.ingredient_set %}
-						<div class="ingredients-left">
-							<ul class="ingredients">
-								{% for ingredient in direction.ingredient_set.all %}
-									<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food}}</li>
-								{% endfor %}
-							</ul>
-						</div>
-						<div class="directions">
-							{{direction.text}}
-						</div>
-					{% endif %}
-				</div>		
-			{% endfor %}
-		{% endif %}
+	<!-- Ingredient/direction style #1 -->
+	{% if recipe.direction_set %}
+       	{% for direction in recipe.direction_set.all %}
+		<hr/>
+		<div class="step">
+ 			{% if direction.ingredient_set %}
+				<div class="ingredients-left">
+					<ul class="ingredients">
+						{% for ingredient in direction.ingredient_set.all %}
+							<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food}}</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="directions">
+					{{direction.text}}
+				</div>
+			{% endif %}
+		</div>	<!-- step -->
+		<hr/>
+	{% endfor %}
+	{% endif %}
 
+	<!-- Ingredient/direction style #2 -->
+	<!--
 	<p>
 	Ingredients:
 		{% if recipe.direction_set %}
@@ -42,6 +47,7 @@
 		{% endfor %}
 		{% endif %}
 	</p>
+	-->
 
     <p><i>Extra Instructions:</i><br />
     {{ recipe.instructions }}

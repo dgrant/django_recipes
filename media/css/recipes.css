@@ -1,29 +1,53 @@
+/*
+vibrant
+	#775511
+	#775522
+	#bb4400
+	#ffaa00
+	#ddcc55
+
+dull
+	#665533
+	#555544
+	#996644
+	#ccaa55
+	#bbaa77
+*/
+
 html, body {
 	margin: 0;
 	padding: 0;
-	background:#eee;
+/*	background:#bbaa77;*/
+	background:#ffffff;
 	color:#000;
+	font-family: helvetica, sans-serif;
+	font-family: "Lucida Sans Unicode","Lucida Grande",sans-serif;
 /* 	min-width:800px; */
 	}
 
 #maincontainer {
-	background:#eee;
-    width:840px; /* Width of main container */
+	background:#ccaa55;
+    width:1024px; /* Width of main container */
     margin:0 auto; /* Center the container on page */
 	background: url(leftcolumn-bg.png) top left repeat-y;
 	}
 
 #topsection {
-	background:#854151;
-	height:90px; /* Height of top section */
+	/*background:#854151;*/
+	background: url(banner.jpg);
+	height:214px; /* Height of top section */
 	}
 #topsection h1 {
 	margin: 0;
 	padding-top: 15px;
+	color: #FFFFF;
+	font-size: 60px;
+	font-family: verdana;
 	}
 #nav {
-    background:#891;
-	padding: 5px;
+    background:#665533;
+    padding: 5px;
+    color: #fff;
     }
 #nav ul {
 	margin: 0;
@@ -41,13 +65,13 @@ html, body {
 	padding: 0;
 	margin-bottom: 0px;
 /* 	margin-left: 200px; */
-/* 	background: #eee; */
+	background: #bbaa77;
 	}
 #contentcolumn{
-	background: #ddd;
+/*	background: #ccaa55;*/
+	background: #ffffff;
 	margin-left: 200px;
-	padding-bottom: 10px;
-	padding-top: 10px;
+	padding: 10px 10px 10px 10px;
 /*	margin-bottom: 10px;*/
 /* 	margin-top: -20px; */
 	}
@@ -56,8 +80,8 @@ html, body {
 	width: 200px;
 	margin-top: 0px;
 	padding: 0;
-	margin-left: -840px;
-	background: #ccc;
+	margin-left: -1024px;
+	background: #bbaa77;
 	}
 #leftcolumn ul {
 /*	padding: 0;
@@ -75,8 +99,8 @@ html, body {
 	float: left;
 	width: 300px;
 	text-align: right;
-	margin: 0px;
-	padding: 	0px;
+	margin: 0px 0px 0px 100px;
+	padding: 0px;
 	font-style: italic;
 /* 	border: thin dotted black; */
 /* 	overflow:auto; */
@@ -92,8 +116,8 @@ html, body {
 .directions {
 /*     background:#eee; */
 	float: right;
-	width: 290px;
-	margin: 2;
+	width: 300px;
+	margin: 0px 100px 0px 0px;
 	padding: 0px 2px;
 /* 	overflow:auto; */
     }
@@ -125,7 +149,7 @@ html, body {
 #footer {
 	clear: left;
 	width: 100%;
-	background: black;
+	background: #555544;
 	color: #FFF;
 	text-align: center;
 	padding: 4px 0;
