@@ -6,12 +6,17 @@ import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    #admin site
     ('^admin/(.*)', admin.site.root),
 
-    (r'^contact/$', 'contact' ),
-    (r'^contact/thanks/$', direct_to_template, {'template': 'contact_thanks.html'}),
+    #contact page
+    (r'^contact/$', 'recipes.views.contact' ),
+    (r'^contact/thanks/$', direct_to_template, {'template': 'recipes/contactthanks.html'}),
 
+    #recipes part of the site
     (r'^recipes/', include('recipes.urls')),
+
+    #redirect the root to go to the recipes site
     (r'^$', include('recipes.urls')),
 )
 

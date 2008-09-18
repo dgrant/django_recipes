@@ -25,7 +25,8 @@ urlpatterns = patterns('recipes.views',
     (r'^search/$', 'search'),
 
     # list
-    (r'^$', list_detail.object_list, recipe_list_info),
+    #(r'^$', list_detail.object_list, recipe_list_info),
+    url(r'^$', list_detail.object_list, recipe_list_info, name="recipe_list"),
     url(r'^tag/(?P<tag>[^/]+)/$',
            tagged_object_list,
            dict(queryset_or_model=Recipe, paginate_by=RECIPES_PAGINATE_BY,

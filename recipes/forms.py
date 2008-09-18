@@ -7,6 +7,7 @@ TOPIC_CHOICES = (
     ('suggestion', 'Suggestion'),
 )
 
+# A form for adding/editing a recipe
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe

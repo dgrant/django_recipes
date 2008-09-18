@@ -1,5 +1,6 @@
 # Django settings for cookbook project.
 import os
+
 PROJECT_PATH = os.path.abspath(os.path.split(__file__)[0])
 
 DEBUG = True
@@ -43,10 +44,14 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = 'file://'+os.path.join(PROJECT_PATH, 'media')
 
+BATCHADMIN_MEDIA_PREFIX="media/batchadmin/"
+BATCHADMIN_JQUERY_JS=BATCHADMIN_MEDIA_PREFIX + "js/jquery.js"
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/adminmedia/'
+#ADMIN_MEDIA_PREFIX = 'file://'+os.path.join(PROJECT_PATH, 'media')
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '%7sf2^vxgb@69lt9=8i94xviboccc07k20@m$c$wf$^svc%es!'
@@ -86,6 +91,7 @@ INSTALLED_APPS = (
     'django_evolution',
     'django.contrib.humanize',
     'tagging.templatetags.tagging_tags',
+    'batchadmin',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS=(

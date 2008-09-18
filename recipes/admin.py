@@ -1,5 +1,6 @@
 from django.contrib import admin
 from models import *
+from batchadmin.admin import BatchModelAdmin
 
 class SourceAdmin(admin.ModelAdmin):
     list_display = ('name', 'url',)
@@ -9,7 +10,7 @@ class CategoryInline(admin.TabularInline):
     extra = 2
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order_index', 'parent')
+    list_display = ('name', 'order_index')
     inlines = [CategoryInline]
 
 class FoodAdmin(admin.ModelAdmin):
@@ -59,7 +60,8 @@ class IngredientInline(admin.TabularInline):
             extra=self.extra, max_num=self.max_num)
 
 
-class RecipeAdmin(admin.ModelAdmin):
+#class RecipeAdmin(admin.ModelAdmin):
+class RecipeAdmin(BatchModelAdmin):
     list_display = ( 'title', 'summary', 'prep_time', )
     fields = ( 'title', 'category', 'summary', 'sources', 'prep_time', 'tags')
     list_filter = ( 'title', 'sources', )
