@@ -60,13 +60,13 @@ class IngredientInline(admin.TabularInline):
             extra=self.extra, max_num=self.max_num)
 
 
-#class RecipeAdmin(admin.ModelAdmin):
 class RecipeAdmin(BatchModelAdmin):
-    list_display = ( 'title', 'summary', 'prep_time', )
-    fields = ( 'title', 'category', 'summary', 'description', 'sources',
+    list_display = ( 'title', 'summary', 'slug', 'prep_time', )
+    fields = ( 'title', 'slug', 'category', 'summary', 'description', 'sources',
             'prep_time', 'tags', )
     list_filter = ( 'title', 'sources', )
     search_fields = ( 'title', 'description', 'summary', 'tags')
+    prepopulated_fields = {'slug': ('title',)}
     save_on_top = True
     model = Recipe
     inlines = [DirectionInline, IngredientInline, PhotoInline]

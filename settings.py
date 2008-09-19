@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'tagging.templatetags.tagging_tags',
     'batchadmin',
+#    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS=(

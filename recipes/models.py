@@ -124,9 +124,10 @@ class Photo(models.Model):
         super(Photo, self).save()
  
 class Recipe(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=50)
     summary = models.CharField(max_length=500, blank=True)
     description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True, max_length=50, null=False, blank=False)
 #    yield_amount = models.FloatField(null=True, blank=True)
 #    yield_amount_offset = models.FloatField(null=True, blank=True)
 #    yield_type_id = models.IntegerField(blank=True)
