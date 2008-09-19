@@ -126,6 +126,7 @@ class Photo(models.Model):
 class Recipe(models.Model):
     title = models.CharField(max_length=200)
     summary = models.CharField(max_length=500, blank=True)
+    description = models.TextField(blank=True)
 #    yield_amount = models.FloatField(null=True, blank=True)
 #    yield_amount_offset = models.FloatField(null=True, blank=True)
 #    yield_type_id = models.IntegerField(blank=True)
