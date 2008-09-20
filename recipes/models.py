@@ -15,10 +15,10 @@ class Source(models.Model):
         ordering = ["name"]
 
 class Category(models.Model):
-    name = models.CharField(max_length=120, unique=True)
+    name = models.CharField(max_length=120, unique=True, help_text="Maximum 120 characters")
 #    parent = models.ForeignKey('self', null=True, blank=True, related_name='child_set')
     order_index = models.PositiveIntegerField(null=True, blank=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, help_text="Automatically generated from the title")
 
     def __unicode__(self):
         return self.name
@@ -26,6 +26,9 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
         ordering = ["order_index"]
+
+    def get_absolute_url(self):
+        return "/categories/%s/" % self.slug
 
 class FoodGroup(models.Model):
     name = models.CharField(max_length=150)
