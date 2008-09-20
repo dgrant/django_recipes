@@ -53,7 +53,7 @@ html, body {
 #nav ul {
 	margin: 0;
 	padding: 0;
-	list-style: none;
+/*	list-style: none;*/
 	}
 #nav li {
 	display: inline;
@@ -87,7 +87,7 @@ html, body {
 #leftcolumn ul {
 /*	padding: 0;
 	margin: 0;*/
-	list-style: none;
+/*	list-style: none;*/
 }
 #recipe-preamble {
 	text-align: center;

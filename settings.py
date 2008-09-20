@@ -98,6 +98,8 @@ INSTALLED_APPS = (
 TEMPLATE_CONTEXT_PROCESSORS=(
         "django.core.context_processors.auth",
         "recipes.context_processors.categories",
+        "recipes.context_processors.new_recipes",
+        "recipes.context_processors.changed_recipes",
         )
 
 SERVE_MEDIA=True

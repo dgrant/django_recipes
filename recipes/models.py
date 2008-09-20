@@ -3,6 +3,7 @@ from tagging.fields import TagField
 from django.contrib import admin
 import django.forms as forms
 from django.forms.models import inlineformset_factory
+import datetime
 
 class Source(models.Model):
     name = models.CharField(max_length=150)
@@ -137,9 +138,8 @@ class Recipe(models.Model):
 #    yield_type_id = models.IntegerField(blank=True)
 #    photo = models.TextField(blank=True)
     prep_time = models.CharField(max_length=100, blank=True) # This field type is a guess.
-#    ctime = models.DateTimeField()
-#    mtime = models.DateTimeField()
-#    atime = models.DateTimeField()
+    ctime = models.DateTimeField(default=datetime.datetime.now)
+    mtime = models.DateTimeField()
 
     sources = models.ManyToManyField(Source, blank=True)
     category = models.ForeignKey(Category)
@@ -151,6 +151,10 @@ class Recipe(models.Model):
 
     class Meta:
         ordering = ['title']
+
+    def save(self):
+        self.mtime = datetime.datetime.now()
+        super(Recipe, self).save()
 
 class Direction(models.Model):
     """
