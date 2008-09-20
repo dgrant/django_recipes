@@ -156,6 +156,9 @@ class Recipe(models.Model):
         self.mtime = datetime.datetime.now()
         super(Recipe, self).save()
 
+    def get_absolute_url(self):
+        return "/%s/" % self.slug
+
 class Direction(models.Model):
     """
     A direction is a step in a recipe's preparation and each recipe can have

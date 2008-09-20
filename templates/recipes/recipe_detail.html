@@ -50,7 +50,7 @@
 	<p><i>Tags: </i>
 	  {% tags_for_object recipe as tag_list %}
 	  {% for tag in tag_list %}
-	  <a href="{% url recipe_tag_detail tag %}">{{tag}}</a>
+	  <a href="{% url recipe_list_by_tag tag %}">{{tag}}</a>
 	  {% endfor %}
         </p>
 

@@ -24,17 +24,23 @@ recipe_detail_info = {
 urlpatterns = patterns('recipes.views',
     (r'^search/$', 'search'),
 
+    # home page
+    url(r'^$', list_detail.object_list, recipe_list_info, name="recipes_home"),
+
     # list
-    #(r'^$', list_detail.object_list, recipe_list_info),
-    url(r'^$', list_detail.object_list, recipe_list_info, name="recipe_list"),
+    url(r'^list/$', list_detail.object_list, recipe_list_info, name="recipes_list"),
+
+    # tag pages
     url(r'^tag/(?P<tag>[^/]+)/$',
            tagged_object_list,
            dict(queryset_or_model=Recipe, paginate_by=RECIPES_PAGINATE_BY,
                allow_empty=True, template_object_name='recipe'),
-           name='recipe_tag_detail'),
+           name='recipe_list_by_tag'),
 
-    # detail
-    (r'^(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info),
+    # detail by id
+    url(r'^recipes/(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info, name="recipe_detail_by_id"),
+    # detail by slug
+    url(r'^recipes/(?P<slug>[-\w]+)/$', list_detail.object_detail, recipe_detail_info, name="recipe_detail_by_slug"),
 
     # add
     (r'^add/$', 'recipe_add'),
