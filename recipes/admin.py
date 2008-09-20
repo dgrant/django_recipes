@@ -5,13 +5,9 @@ from batchadmin.admin import BatchModelAdmin
 class SourceAdmin(admin.ModelAdmin):
     list_display = ('name', 'url',)
 
-class CategoryInline(admin.TabularInline):
-    model = Category
-    extra = 2
-
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_index')
-    inlines = [CategoryInline]
+    prepopulated_fields = {'slug': ('name',)}
 
 class FoodAdmin(admin.ModelAdmin):
     list_display = ('name', 'group')

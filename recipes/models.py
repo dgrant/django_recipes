@@ -18,6 +18,7 @@ class Category(models.Model):
     name = models.CharField(max_length=120, unique=True)
 #    parent = models.ForeignKey('self', null=True, blank=True, related_name='child_set')
     order_index = models.PositiveIntegerField(null=True, blank=True)
+    slug = models.SlugField(unique=True)
 
     def __unicode__(self):
         return self.name

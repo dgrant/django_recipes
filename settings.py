@@ -88,7 +88,7 @@ INSTALLED_APPS = (
     'recipes',
     'tagging',
     'django.contrib.databrowse',
-    'django_evolution',
+#    'django_evolution',
     'django.contrib.humanize',
     'tagging.templatetags.tagging_tags',
     'batchadmin',
