@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-import sys
-sys.path.append('/home/david/svn/django-batchadmin-read-only')
-
 from django.core.management import execute_manager
 try:
     import settings # Assumed to be in the same directory.
