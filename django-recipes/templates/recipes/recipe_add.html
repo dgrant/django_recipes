@@ -1,0 +1,10 @@
+{% extends "recipes/base.html" %}
+
+{% block content %}
+    <form action="." method="POST">
+        <table>
+            {{ form.as_table }}
+        </table>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+{% endblock %}
