@@ -1,8 +1,5 @@
 from django.db import models
 from tagging.fields import TagField
-from django.contrib import admin
-import django.forms as forms
-from django.forms.models import inlineformset_factory
 import datetime
 
 class Source(models.Model):
