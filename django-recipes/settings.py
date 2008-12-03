@@ -12,10 +12,12 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+#DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+#DATABASE_NAME = 'recipes_django'             # Or path to database file if using sqlite3.
 DATABASE_NAME = 'recipes_django'             # Or path to database file if using sqlite3.
-DATABASE_USER = 'recipes_django'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'recipes_django'         # Not used with sqlite3.
+#DATABASE_USER = 'recipes_django'             # Not used with sqlite3.
+#DATABASE_PASSWORD = 'recipes_django'         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
@@ -44,8 +46,8 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = 'file://'+os.path.join(PROJECT_PATH, 'media')
 
-BATCHADMIN_MEDIA_PREFIX="media/batchadmin/"
-BATCHADMIN_JQUERY_JS=BATCHADMIN_MEDIA_PREFIX + "js/jquery.js"
+#BATCHADMIN_MEDIA_PREFIX="media/batchadmin/"
+#BATCHADMIN_JQUERY_JS=BATCHADMIN_MEDIA_PREFIX + "js/jquery.js"
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -92,7 +94,7 @@ INSTALLED_APPS = (
 #    'django.contrib.humanize',
     'fractions',
     'tagging.templatetags.tagging_tags',
-    'batchadmin',
+#    'batchadmin',
 #    'south',
 )
 
