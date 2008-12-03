@@ -209,10 +209,20 @@ class Ingredient(models.Model):
         return Direction.objects.filter(recipe=self.recipe_id)
 
     def __unicode__(self):
-        amount = str(int(self.amount) if self.amount == int(self.amount) else self.amount)
-        unit = str((self.unit.name if self.unit != None else '') if self.amount
-                == 1 and self.amountMax is None else (self.unit.plural if
-                    self.unit != None else ''))
+        if self.amount == int(self.amount):
+            amount = str(int(self.amount)
+        else:
+            amount = self.amount
+        if self.amount == 1 and self.amountMax is None:
+            if self.unit != None:
+                unit = str(self.unit.name)
+            else:
+                unit = ''
+        else:
+            if self.unit != None:
+                unit = self.unit.plural
+            else:
+                unit = ''
         food = str(self.food).lower()
         return "%s %s %s" % (amount, unit, food)
 
