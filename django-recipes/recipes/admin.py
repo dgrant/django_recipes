@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.forms.models import inlineformset_factory
 from models import *
 
 class SourceAdmin(admin.ModelAdmin):
