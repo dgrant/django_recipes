@@ -210,7 +210,7 @@ class Ingredient(models.Model):
 
     def __unicode__(self):
         if self.amount == int(self.amount):
-            amount = str(int(self.amount)
+            amount = str(int(self.amount))
         else:
             amount = self.amount
         if self.amount == 1 and self.amountMax is None:
