@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 import sys
-sys.path.append('../externals/django')
-sys.path.append('../externals/django-tagging')
 
 from django.core.management import execute_manager
 try:
