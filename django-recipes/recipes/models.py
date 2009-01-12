@@ -165,8 +165,7 @@ class Direction(models.Model):
     """
     text = models.TextField(blank=True)
     recipe = models.ForeignKey(Recipe)
-    order = models.IntegerField(blank=True, null=True)
-#    order = PositionField(blank=True, null=True, unique_for_field='recipe')
+    order = PositionField(blank=True, null=True, unique_for_field='recipe')
 
     def __unicode__(self):
         ret = self.text[:40]
