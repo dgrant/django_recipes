@@ -90,8 +90,9 @@ INSTALLED_APPS = (
     'recipes',
     'tagging',
     'django.contrib.databrowse',
-    'django_evolution',
+#    'django_evolution',
 #    'django.contrib.humanize',
+    'dmigrations',
     'fractions',
     'tagging.templatetags.tagging_tags',
 #    'batchadmin',
@@ -106,3 +107,4 @@ TEMPLATE_CONTEXT_PROCESSORS=(
         )
 
 SERVE_MEDIA=True
+DMIGRATIONS_DIR = os.path.join(os.path.dirname(__file__), 'migrations')
