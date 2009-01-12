@@ -1,6 +1,7 @@
 from django.db import models
 from tagging.fields import TagField
 import datetime
+from positions.fields import PositionField
 
 class Source(models.Model):
     name = models.CharField(max_length=150)
@@ -165,6 +166,7 @@ class Direction(models.Model):
     text = models.TextField(blank=True)
     recipe = models.ForeignKey(Recipe)
     order = models.IntegerField(blank=True, null=True)
+#    order = PositionField(blank=True, null=True, unique_for_field='recipe')
 
     def __unicode__(self):
         ret = self.text[:40]
@@ -198,7 +200,7 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     food = models.ForeignKey(Food)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
-    order_index = models.PositiveIntegerField(blank=True, null=True)
+    order_index = PositionField(blank=True, null=True, unique_for_field="direction")
     direction = models.ForeignKey(Direction, blank=True, null=True)
 #    substitute_for = models.IntegerField(null=True, blank=True)
 
