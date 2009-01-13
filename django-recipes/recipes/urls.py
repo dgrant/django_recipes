@@ -27,7 +27,7 @@ urlpatterns = patterns('recipes.views',
     # home page
     url(r'^$', list_detail.object_list, recipe_list_info, name="recipes_home"),
 
-    # list
+    # list of all recipes
     url(r'^list/$', list_detail.object_list, recipe_list_info, name="recipes_list"),
 
     # tag pages
@@ -37,13 +37,13 @@ urlpatterns = patterns('recipes.views',
                allow_empty=True, template_object_name='recipe'),
            name='recipe_list_by_tag'),
 
-    # detail by id
+    # recipe detail by id
     url(r'^recipes/(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info, name="recipe_detail_by_id"),
-    # detail by slug
+    # recipe detail by slug
     url(r'^recipes/(?P<slug>[-\w]+)/$', list_detail.object_detail, recipe_detail_info, name="recipe_detail_by_slug"),
 
     # add
-    (r'^add/$', 'recipe_add'),
+    url(r'^add/$', 'recipe_add', name="recipe_add"),
     (r'^add/thanks/$', direct_to_template, {'template': 'recipes/recipe_add_thanks.html'} ),
 
 )

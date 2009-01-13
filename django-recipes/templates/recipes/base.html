@@ -22,9 +22,14 @@
 
 		<div id="nav">
 			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/recipes">Recipes</a></li>
+				<li><a href="{% url recipes_home %}">Home</a></li>
+				<li><a href="{% url recipes_list %}">Recipes</a></li>
 				<li><a href="/tags">Tags</a></li>
+				{% if user.is_authenticated %}
+				  <li><a href="/admin/logout">Logout</a></li>
+				{% else %}
+				  <li><a href="/admin">Login</a></li>
+				{% endif %}
 			</ul>
 		</div>	
 

@@ -1,6 +1,8 @@
 {% extends "recipes/base.html" %}
 
 {% block content %}
+    <a href="/admin/recipes/recipe/add">New recipe</a>
+    <br />
     <h2>Recipes ({{ paginator.count }} in total)</h2>
     <ul>
         {% for recipe in recipe_list %}
