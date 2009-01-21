@@ -12,8 +12,8 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-#DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+#DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 if DATABASE_ENGINE == 'mysql':
     DATABASE_NAME = 'recipes_django'             # Or path to database file if using sqlite3.
     DATABASE_USER = 'recipes_django'             # Not used with sqlite3.
@@ -46,7 +46,8 @@ MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'file://'+os.path.join(PROJECT_PATH, 'media')
+#MEDIA_URL = 'file://'+os.path.join(PROJECT_PATH, 'media')
+MEDIA_URL = 'http://recipes.davidgrant.ca/recipes_media/'
 
 #BATCHADMIN_MEDIA_PREFIX="media/batchadmin/"
 #BATCHADMIN_JQUERY_JS=BATCHADMIN_MEDIA_PREFIX + "js/jquery.js"
@@ -54,7 +55,7 @@ MEDIA_URL = 'file://'+os.path.join(PROJECT_PATH, 'media')
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/adminmedia/'
+ADMIN_MEDIA_PREFIX = '/media/'
 #ADMIN_MEDIA_PREFIX = 'file://'+os.path.join(PROJECT_PATH, 'media')
 
 # Make this unique, and don't share it with anybody.
@@ -84,23 +85,24 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+# apps that require tables in db
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-#    'django.contrib.sites',
     'django.contrib.admin',
+    'registration',
     'recipes',
     'tagging',
-    'django.contrib.databrowse',
+#    'django.contrib.sites',
+#    'django.contrib.databrowse',
 #    'django_evolution',
 #    'django.contrib.humanize',
     'dmigrations',
     'fractions',
     'tagging.templatetags.tagging_tags',
+    'django_extensions',
 #    'batchadmin',
 #    'south',
-    'django_extensions',
-    'registration',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS=(
