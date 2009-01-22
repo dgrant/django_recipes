@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 import os,sys
+import setpath
 
-curr_dir = os.path.abspath(os.path.dirname(__file__))
+#curr_dir = os.path.abspath(os.path.dirname(__file__))
 
 #Add all external dependencies
-for path in [path for path in os.listdir(os.path.join(curr_dir, 'externals')) if path != '.svn']:
-    sys.path.insert(0,os.path.join(curr_dir, 'externals', path))
+#for path in [path for path in os.listdir(os.path.join(curr_dir, 'externals')) if path != '.svn']:
+#    sys.path.insert(0,os.path.join(curr_dir, 'externals', path))
 #Add the django-recipes project
-sys.path.insert(0,os.path.join(curr_dir, 'django-recipes'))
+#sys.path.insert(0,os.path.join(curr_dir, 'django-recipes'))
+
+#import recipes_dumpscript
+#recipes_dumpscript.run()
+#import tagging_dumpscript
+#tagging_dumpscript.run()
+#sys.exit(1)
 
 from django.core.management import execute_manager
 try:
