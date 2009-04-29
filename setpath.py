@@ -6,4 +6,4 @@ for path in [path for path in os.listdir(os.path.join(curr_dir, 'externals'))
     if path != '.svn']:
         sys.path.insert(0,os.path.join(curr_dir, 'externals', path))
 #Add the django-recipes project
-sys.path.insert(0,os.path.join(curr_dir, 'django-recipes'))
+sys.path.insert(0, os.path.join(curr_dir, 'django-recipes'))
