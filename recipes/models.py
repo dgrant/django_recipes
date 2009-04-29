@@ -15,7 +15,6 @@ class Source(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=120, unique=True, help_text="Maximum 120 characters")
-#    parent = models.ForeignKey('self', null=True, blank=True, related_name='child_set')
     order_index = models.PositiveIntegerField(null=True, blank=True)
     slug = models.SlugField(unique=True, help_text="Automatically generated from the title")
 
@@ -38,36 +37,6 @@ class FoodGroup(models.Model):
     class Meta:
         ordering = ["name"]
 
-#Things like 5 cal/g for certain ingredients
-#class IngredientInfo(models.Model):
-#    ingredient_id = models.ManyToManyField(Ingredient)
-#    property_id = models.ManyToManyField(IngredientProperty)
-#    amount = models.FloatField(null=True, blank=True)
-#    per_units = models.ManyToManyField(Unit)
-#    class Meta:
-#        db_table = u'ingredient_info'
-
-
-
-#Properties like cal/g or grams of fat/g
-#class IngredientProperty(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    name = models.CharField(max_length=60, blank=True)
-#    units = models.CharField(max_length=60, blank=True)
-#    class Meta:
-#        db_table = u'ingredient_properties'
-
-#class IngredientWeights(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    ingredient_id = models.IntegerField()
-#    amount = models.FloatField(null=True, blank=True)
-#    unit_id = models.IntegerField(null=True, blank=True)
-#    weight = models.FloatField(null=True, blank=True)
-#    weight_unit_id = models.IntegerField(null=True, blank=True)
-#    prep_method_id = models.IntegerField(null=True, blank=True)
-#    class Meta:
-#        db_table = u'ingredient_weights'
-
 class Food(models.Model):
     name = models.CharField(max_length=150)
     group = models.ForeignKey(FoodGroup)
@@ -88,28 +57,6 @@ class PrepMethod(models.Model):
         self.name = self.name.lower()
         super(PrepMethod, self).save()
 
-#class RatingCriteria(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    name = models.TextField(blank=True)
-#    class Meta:
-#        db_table = u'rating_criteria'
-
-#class RatingCriterionList(models.Model):
-#    rating_id = models.IntegerField()
-#    rating_criterion_id = models.IntegerField(null=True, blank=True)
-#    stars = models.FloatField(null=True, blank=True)
-#    class Meta:
-#        db_table = u'rating_criterion_list'
-
-#class Ratings(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    recipe_id = models.IntegerField()
-#    comment = models.TextField(blank=True)
-#    rater = models.TextField(blank=True)
-#    created = models.DateTimeField()
-#    class Meta:
-#        db_table = u'ratings'
-
 class Photo(models.Model):
     caption = models.CharField(max_length=200)
     recipe = models.ForeignKey('Recipe')
@@ -125,16 +72,12 @@ class Photo(models.Model):
         if not self.id and not self.image:
             return
         super(Photo, self).save()
- 
+
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
     summary = models.CharField(max_length=500, blank=True)
     description = models.TextField(blank=True)
     slug = models.SlugField(unique=True, max_length=50, null=False, blank=False)
-#    yield_amount = models.FloatField(null=True, blank=True)
-#    yield_amount_offset = models.FloatField(null=True, blank=True)
-#    yield_type_id = models.IntegerField(blank=True)
-#    photo = models.TextField(blank=True)
     prep_time = models.CharField(max_length=100, blank=True) # This field type is a guess.
     ctime = models.DateTimeField(default=datetime.datetime.now)
     mtime = models.DateTimeField()
@@ -201,13 +144,9 @@ class Ingredient(models.Model):
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
     direction = models.ForeignKey(Direction, blank=True, null=True)
-#    substitute_for = models.IntegerField(null=True, blank=True)
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
-
-    def choices_for__direction(self):
-        return Direction.objects.filter(recipe=self.recipe_id)
 
     def __unicode__(self):
         if self.amount == int(self.amount):
@@ -229,3 +168,56 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ["direction", "order_index", "id"]
+
+#class RatingCriteria(models.Model):
+#    id = models.IntegerField(primary_key=True)
+#    name = models.TextField(blank=True)
+#    class Meta:
+#        db_table = u'rating_criteria'
+
+#class RatingCriterionList(models.Model):
+#    rating_id = models.IntegerField()
+#    rating_criterion_id = models.IntegerField(null=True, blank=True)
+#    stars = models.FloatField(null=True, blank=True)
+#    class Meta:
+#        db_table = u'rating_criterion_list'
+
+#class Ratings(models.Model):
+#    id = models.IntegerField(primary_key=True)
+#    recipe_id = models.IntegerField()
+#    comment = models.TextField(blank=True)
+#    rater = models.TextField(blank=True)
+#    created = models.DateTimeField()
+#    class Meta:
+#        db_table = u'ratings'
+
+#Things like 5 cal/g for certain ingredients
+#class IngredientInfo(models.Model):
+#    ingredient_id = models.ManyToManyField(Ingredient)
+#    property_id = models.ManyToManyField(IngredientProperty)
+#    amount = models.FloatField(null=True, blank=True)
+#    per_units = models.ManyToManyField(Unit)
+#    class Meta:
+#        db_table = u'ingredient_info'
+
+
+
+#Properties like cal/g or grams of fat/g
+#class IngredientProperty(models.Model):
+#    id = models.IntegerField(primary_key=True)
+#    name = models.CharField(max_length=60, blank=True)
+#    units = models.CharField(max_length=60, blank=True)
+#    class Meta:
+#        db_table = u'ingredient_properties'
+
+#class IngredientWeights(models.Model):
+#    id = models.IntegerField(primary_key=True)
+#    ingredient_id = models.IntegerField()
+#    amount = models.FloatField(null=True, blank=True)
+#    unit_id = models.IntegerField(null=True, blank=True)
+#    weight = models.FloatField(null=True, blank=True)
+#    weight_unit_id = models.IntegerField(null=True, blank=True)
+#    prep_method_id = models.IntegerField(null=True, blank=True)
+#    class Meta:
+#        db_table = u'ingredient_weights'
+
