@@ -48,12 +48,12 @@ def contact(request):
             topic = form.cleaned_data['topic']
             message = form.cleaned_data['message']
             sender = form.cleaned_data.get('sender', 'noreply@example.com')
-            send_mail(
-                'Feeback from your site, topic: %s' % topic,
-                message,
-                sender,
-                ['davidgrant@gmail.com']
-            )
+            #send_mail(
+            #    'Feeback from your site, topic: %s' % topic,
+            #    message,
+            #    sender,
+            #    ['davidgrant@gmail.com']
+            #)
             return HttpResponseRedirect('/contact/thanks/')
 
     # Else if user just loaded page

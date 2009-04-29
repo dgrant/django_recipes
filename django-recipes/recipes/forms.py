@@ -1,17 +1,17 @@
 from django import forms
 from recipes.models import Recipe
 
-TOPIC_CHOICES = (
-    ('general', 'General enquiry'),
-    ('bug', 'Bug report'),
-    ('suggestion', 'Suggestion'),
-)
 
 # A form for adding/editing a recipe
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
 
+TOPIC_CHOICES = (
+    ('general', 'General enquiry'),
+    ('bug', 'Bug report'),
+    ('suggestion', 'Suggestion'),
+)
 class ContactForm(forms.Form):
     topic = forms.ChoiceField(choices=TOPIC_CHOICES)
     message = forms.CharField(widget=forms.Textarea(), initial="Replace with your feedback")
