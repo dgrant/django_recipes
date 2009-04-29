@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-import setpath
-
-import os,sys
+import sys
 
 from django.core.management import execute_manager
 try:
