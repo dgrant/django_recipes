@@ -2,8 +2,10 @@ from django.contrib import admin
 from django.forms.models import inlineformset_factory
 from models import *
 
+from string import split as L
+
 class SourceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'url',)
+    list_display = L('name url')
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_index')
