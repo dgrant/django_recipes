@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+	<script type="text/javascript"></script>
+	<title>{% block title %}{% endblock %}</title>
+	<style type="text/css" media="all">
+		@import "/recipes_media/css/recipes.css";
+	</style>
+
+</head>
+
+<body id="css-daves-cookbook">
+
+	<div id="maincontainer">
+
+		<div id="topsection">
+			<h1>My Recipes</h1>
+		</div>
+
+		<div id="nav">
+			<ul>
+				<li><a href="{% url recipes_home %}">Home</a></li>
+				<li><a href="{% url recipes_list %}">Recipes</a></li>
+				<li><a href="/tags">Tags</a></li>
+				{% if user.is_authenticated %}
+				  <li><a href="/admin/logout">Logout</a></li>
+				{% else %}
+				  <li><a href="/admin">Login</a></li>
+				{% endif %}
+			</ul>
+		</div>	
+
+		<div id="contentwrapper">
+
+                    <div id="contentcolumn">
+                        {% block content %}
+                        {% endblock %}
+                    </div>
+
+		</div>
+			
+		<div id="leftcolumn">
+			<h2>Categories</h2>
+			<ul>
+				{% for category in categories_list %}
+				<li><a href="/recipes{{category.get_absolute_url}}">{{category.name}}</a></li>
+				{% endfor %}
+			</ul>
+
+			<h2>Newest Recipes</h2>
+			<ul>
+				{% for recipe in recipes_new_list %}
+				<li><a href="/recipes{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
+				{% endfor %}
+			</ul>
+
+			<h2>Recently Modified</h2>
+			<ul>
+				{% for recipe in recipes_changed_list %}
+				<li><a href="/recipes{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
+				{% endfor %}
+			</ul>
+
+
+		</div>
+
+		<div id="footer">
+			{% block footer %}
+			<hr>
+			<p>Thanks for visiting my site.</p>
+			<p>Copyright 2007 David Grant and Cathy Grant</p>
+			{% endblock %}
+		</div>
+		
+
+	</div>
+</body>
+
+
+
+</body>
+</html>
