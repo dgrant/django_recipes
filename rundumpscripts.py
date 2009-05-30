@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import setpath
 
 import tagging_dumpscript
