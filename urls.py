@@ -14,7 +14,8 @@ urlpatterns = patterns('',
     (r'^contact/thanks/$', direct_to_template, {'template': 'recipes/contactthanks.html'}),
 
     #recipes part of the site
-    (r'^cookbook/', include('recipes.urls')),
+    #(r'^cookbook/', include('recipes.urls')),
+    (r'^$', include('recipes.urls')),
 
     #redirect the root to go to the recipes site
 #    (r'^$', include('recipes.urls')),
