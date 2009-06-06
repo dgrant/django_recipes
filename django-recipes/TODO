@@ -1,0 +1,18 @@
+Later:
+    -Add to Grocery List
+    -Add to cookbook (favourites)
+
+For 0.2 release:
+    -Add Recipes Views Count to every recipe
+    -Add Comments to recipes
+    -Add rating (5 star?)
+
+For 0.1 release:
+	-Set up some categories for Foods just like aisles in a store
+	-A cooking instructions section? or is this just another direction but with no associated ingredients?
+	-An optional information section?
+	-Prep time and a cook time? (symantic?)
+	-Ordering for directions (and for ingredients?)
+    -Links on ingredients to recipes with that ingredient
+	-Get a rough display of ingredients/directions going - DONE
+    -Serves/makes field?

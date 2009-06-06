@@ -1,0 +1,19 @@
+{% extends "recipes/base.html" %}
+
+{% block content %}
+    <h1>Contact us</h1>
+    <form action="." method="POST">
+        <table>
+        {% for field in form %}
+          <div class="fieldWrapper">
+              {{ field.errors }}
+              {{ field.label_tag }}: {{ field }}
+          </div>
+        {% endfor %}
+        <p><input type="submit" value="Send message" /></p>
+
+            {{ form.as_table }}
+        </table>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+{% endblock %}
