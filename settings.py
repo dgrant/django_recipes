@@ -94,12 +94,12 @@ INSTALLED_APPS = (
 #    'django.contrib.databrowse',
 #    'django_evolution',
 #    'django.contrib.humanize',
-    'dmigrations',
+#    'dmigrations',
     'fractions',
     'tagging.templatetags.tagging_tags',
     'django_extensions',
 #    'batchadmin',
-#    'south',
+    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS=(
