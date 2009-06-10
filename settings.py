@@ -91,7 +91,7 @@ INSTALLED_APPS = (
     'recipes',
     'tagging',
     'django.contrib.sites',
-#    'django.contrib.databrowse',
+    'django.contrib.databrowse',
 #    'django_evolution',
 #    'django.contrib.humanize',
 #    'dmigrations',
