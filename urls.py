@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     (r'^cookbook/', include('recipes.urls')),
 
     #redirect the root to go to the recipes site
-    #(r'^$', include('recipes.urls')),
+    (r'^$', 'recipes.views.root'),
 )
 
 if settings.SERVE_MEDIA:

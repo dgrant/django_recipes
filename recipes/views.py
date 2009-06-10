@@ -6,6 +6,9 @@ from django.core.mail import send_mail
 from models import Recipe
 from forms import ContactForm, RecipeForm
 
+def root(request):
+    return HttpResponseRedirect("/cookbook")
+
 def recipe_add(request):
     """
     View for adding a recipe. Could be used to modify recipe too
