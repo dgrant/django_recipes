@@ -6,8 +6,18 @@ from django.core.mail import send_mail
 from models import Recipe
 from forms import ContactForm, RecipeForm
 
+from django.views.generic import list_detail
+
+RECIPES_PAGINATE_BY = 10
+
 def root(request):
     return HttpResponseRedirect("/cookbook")
+
+def recipes_list(request):
+    return list_detail.object_list(request,
+                                   Recipe.objects.all(),
+                                   template_object_name="recipe",
+                                   paginate_by=RECIPES_PAGINATE_BY)
 
 def recipe_add(request):
     """
@@ -24,6 +34,16 @@ def recipe_add(request):
     return render_to_response('recipes/recipe_add.html',
                               {'form': form},
                               context_instance=RequestContext(request))
+
+def recipes_in_category(request, category_slug):
+    """
+    """
+    return list_detail.object_list(request,
+                                   Recipe.objects.filter(category__slug=category_slug),
+                                   template_object_name="recipe",
+                                   paginate_by=RECIPES_PAGINATE_BY)
+
+
 
 def search(request):
     query = request.GET.get('q', '')

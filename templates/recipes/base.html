@@ -46,21 +46,21 @@
 			<h2>Categories</h2>
 			<ul>
 				{% for category in categories_list %}
-				<li><a href="/recipes{{category.get_absolute_url}}">{{category.name}}</a></li>
+				<li><a href="{{category.get_absolute_url}}">{{category.name}}</a></li>
 				{% endfor %}
 			</ul>
 
 			<h2>Newest Recipes</h2>
 			<ul>
 				{% for recipe in recipes_new_list %}
-				<li><a href="/recipes{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
+				<li><a href="{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
 				{% endfor %}
 			</ul>
 
 			<h2>Recently Modified</h2>
 			<ul>
 				{% for recipe in recipes_changed_list %}
-				<li><a href="/recipes{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
+				<li><a href="{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
 				{% endfor %}
 			</ul>
 

@@ -141,6 +141,10 @@ html, body {
 	font-style: italic;
 	}
 
+.recipe-links {
+	text-align: right;
+}
+
 .step {
 /* 	border-bottom: 1px solid #888;
  	border-top: 2px solid #888;*/

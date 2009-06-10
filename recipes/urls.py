@@ -27,8 +27,8 @@ urlpatterns = patterns('recipes.views',
     # home page
     url(r'^$', list_detail.object_list, recipe_list_info, name="recipes_home"),
 
-    # list of all recipes
-    url(r'^list/$', list_detail.object_list, recipe_list_info, name="recipes_list"),
+    #    url(r'^list$', list_detail.object_list, recipe_list_info, name="recipes_list"),
+    url(r'^list$', "recipes_list", name="recipes_list"),
 
     # tag pages
     url(r'^tag/(?P<tag>[^/]+)/$',
@@ -41,6 +41,8 @@ urlpatterns = patterns('recipes.views',
     url(r'^recipes/(?P<object_id>\d+)/$', list_detail.object_detail, recipe_detail_info, name="recipe_detail_by_id"),
     # recipe detail by slug
     url(r'^recipes/(?P<slug>[-\w]+)/$', list_detail.object_detail, recipe_detail_info, name="recipe_detail_by_slug"),
+
+    url(r'^categories/(?P<category_slug>[-\w]+)/$', 'recipes_in_category'),
 
     # add
     url(r'^add/$', 'recipe_add', name="recipe_add"),

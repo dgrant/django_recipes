@@ -24,7 +24,7 @@ if settings.SERVE_MEDIA:
     urlpatterns += patterns('',
     (r'^recipes_media/(.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes': True}),)
 
-
+#DATABROWSE
 from django.contrib import databrowse
 from recipes.models import *
 

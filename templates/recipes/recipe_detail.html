@@ -3,6 +3,10 @@
 {% load tagging_tags %}
 
 {% block content %}
+        <div id="recipe-links">
+          <a href="/admin/recipes/recipe/{{recipe.id}}">edit</a>
+        </div>
+
 	<div id="recipe-preamble">
 		<h2>{{ recipe.title }}</h2>
 		<p class="recipe-summary">{{ recipe.summary }}</p>
