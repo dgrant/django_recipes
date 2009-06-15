@@ -20,7 +20,7 @@
 				<div class="ingredients-left">
 					<ul class="ingredients">
 						{% for ingredient in direction.ingredient_set.all %}
-							<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food}}</li>
+						<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food}}{% if ingredient.instruction %}, {{ingredient.instruction}}{% endif %}</li>
 						{% endfor %}
 					</ul>
 				</div>

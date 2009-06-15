@@ -144,6 +144,7 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     food = models.ForeignKey(Food)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
+    instruction = models.CharField(max_length=50, blank=True)
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
     direction = models.ForeignKey(Direction, blank=True, null=True)
 
