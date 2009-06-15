@@ -39,13 +39,14 @@ class FoodGroup(models.Model):
 
 class Food(models.Model):
     name = models.CharField(max_length=150)
+    name_sorted = models.CharField(max_length=150)
     group = models.ForeignKey(FoodGroup)
 
     def __unicode__(self):
         return self.name
 
     class Meta:
-        ordering = ["name", "group"]
+        ordering = ["name_sorted",]
 
 class PrepMethod(models.Model):
     name = models.CharField(max_length=60, blank=True)
