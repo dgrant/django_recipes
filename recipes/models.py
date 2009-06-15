@@ -79,8 +79,8 @@ class Recipe(models.Model):
     description = models.TextField(blank=True)
     slug = models.SlugField(unique=True, max_length=50, null=False, blank=False)
     prep_time = models.CharField(max_length=100, blank=True) # This field type is a guess.
-    ctime = models.DateTimeField(default=datetime.datetime.now)
-    mtime = models.DateTimeField()
+    ctime = models.DateTimeField(auto_now_add=True)
+    mtime = models.DateTimeField(auto_now=True)
 
     sources = models.ManyToManyField(Source, blank=True)
     category = models.ForeignKey(Category)

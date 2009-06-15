@@ -111,3 +111,10 @@ TEMPLATE_CONTEXT_PROCESSORS=(
 
 SERVE_MEDIA=True
 DMIGRATIONS_DIR = os.path.join(os.path.dirname(__file__), 'migrations')
+ACCOUNT_ACTIVATION_DAYS=2
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
+

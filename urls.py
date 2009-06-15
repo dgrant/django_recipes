@@ -18,6 +18,9 @@ urlpatterns = patterns('',
 
     #redirect the root to go to the recipes site
     (r'^$', 'recipes.views.root'),
+
+    (r'^accounts/', include('registration.urls')),
+
 )
 
 if settings.SERVE_MEDIA:
