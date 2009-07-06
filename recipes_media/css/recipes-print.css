@@ -27,7 +27,7 @@ html, body {
 
 #maincontainer {
 	background:#ccaa55;
-    width:1024px; /* Width of main container */
+    width:824px; /* Width of main container */
     margin:0 auto; /* Center the container on page */
 	background: url(leftcolumn-bg.png) top left repeat-y;
 	}
@@ -35,17 +35,8 @@ html, body {
 #topsection {
 	display: none;
 	}
-#topsection h1 {
-	margin: 0;
-	padding-top: 15px;
-	color: #FFFFF;
-	font-size: 60px;
-	font-family: verdana;
-	}
 #nav {
-    background:#665533;
-    padding: 5px;
-    color: #fff;
+    display: none;
     }
 #nav ul {
 	margin: 0;
@@ -68,14 +59,15 @@ html, body {
 #contentcolumn{
 /*	background: #ccaa55;*/
 	background: #ffffff;
-	margin-left: 200px;
+	margin-left: 0px;
 	padding: 10px 10px 10px 10px;
 /*	margin-bottom: 10px;*/
 /* 	margin-top: -20px; */
 	}
 #leftcolumn{
+	display: none;
 	float: left;
-	width: 200px;
+	width: 0px;
 	margin-top: 0px;
 	padding: 0;
 	margin-left: -1024px;
@@ -138,7 +130,9 @@ html, body {
 	font-style: italic;
 	}
 
-.recipe-links {
+#recipe-links {
+        background: #000;
+        display: none;
 	text-align: right;
 }
 
@@ -157,6 +151,7 @@ html, body {
 }
 
 #footer {
+        display: none;
 	clear: left;
 	width: 100%;
 	background: #555544;
@@ -176,3 +171,4 @@ ul.ingredients {
 div.directions {
 	float: right;
 	}
+
