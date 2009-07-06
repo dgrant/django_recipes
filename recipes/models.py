@@ -43,7 +43,7 @@ class Food(models.Model):
     group = models.ForeignKey(FoodGroup)
 
     def __unicode__(self):
-        return self.name
+        return self.name_sorted
 
     class Meta:
         ordering = ["name_sorted",]
@@ -57,6 +57,9 @@ class PrepMethod(models.Model):
     def save(self):
         self.name = self.name.lower()
         super(PrepMethod, self).save()
+
+    class Meta:
+        ordering = ["-name"]
 
 class Photo(models.Model):
     caption = models.CharField(max_length=200)
