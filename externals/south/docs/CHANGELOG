@@ -1,0 +1,38 @@
+0.3
+===
+
+The yay-dependencies release.
+
+New features:
+
+ - Dependency support for migrations
+ - Fields are now used for declaring columns and tables
+
+
+0.2
+===
+
+The oh-i'm-sorry-mysql-users release.
+
+New features:
+
+ - MySQL support up to the same level as PostgreSQL
+ - New --all option to ./manage.py startmigration, which creates a migration
+   for every model in the given app. For project starts.
+ - Project status upgraded to 'beta'. Next up, a colour-coded
+   release level system.
+
+Fixed bugs:
+
+ - A few typos in various column methods
+ - ManyToMany tables weren't created by startmigration migrations.
+
+Known bugs:
+
+ - None
+
+
+0.1
+===
+
+Initial release.
