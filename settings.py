@@ -93,13 +93,9 @@ INSTALLED_APPS = (
     'tagging',
     'django.contrib.sites',
     'django.contrib.databrowse',
-#    'django_evolution',
-#    'django.contrib.humanize',
-#    'dmigrations',
     'fractions',
-    'tagging.templatetags.tagging_tags',
-    'django_extensions',
-#    'batchadmin',
+#    'tagging.templatetags.tagging_tags',
+#    'django_extensions',
     'south',
 )
 

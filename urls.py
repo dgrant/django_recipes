@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     #admin site
-    ('^admin/(.*)', admin.site.root),
+    ('^admin/', include(admin.site.urls)),
 
     #contact page
     (r'^contact/$', 'recipes.views.contact' ),
