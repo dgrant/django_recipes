@@ -39,7 +39,7 @@ class FoodGroup(models.Model):
 
 class Food(models.Model):
     name = models.CharField(max_length=150)
-    name_sorted = models.CharField(max_length=150)
+    name_sorted = models.CharField(max_length=150, default='')
     group = models.ForeignKey(FoodGroup)
 
     def __unicode__(self):
@@ -148,7 +148,7 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     food = models.ForeignKey(Food)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
-    instruction = models.CharField(max_length=50, blank=True)
+    instruction = models.CharField(max_length=50, blank=True, default='')
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
     direction = models.ForeignKey(Direction, blank=True, null=True)
 

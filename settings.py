@@ -21,7 +21,8 @@ if DATABASE_ENGINE == 'mysql':
     DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
     DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 elif DATABASE_ENGINE == 'sqlite3':
-    DATABASE_NAME = os.path.join(os.path.join(os.path.split(PROJECT_PATH)[0]), 'recipes.sqlite')             # Or path to database file if using sqlite3.
+    DATABASE_NAME = os.path.join(PROJECT_PATH, 'recipes.sqlite')             # Or path to database file if using sqlite3.
+    print DATABASE_NAME
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

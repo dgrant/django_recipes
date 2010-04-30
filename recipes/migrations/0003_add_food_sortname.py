@@ -8,7 +8,7 @@ class Migration:
     def forwards(self, orm):
         
         # Adding field 'Food.name_sorted'
-        db.add_column('recipes_food', 'name_sorted', models.CharField(max_length=150))
+        db.add_column('recipes_food', 'name_sorted', models.CharField(max_length=150, default=''))
         
     
     

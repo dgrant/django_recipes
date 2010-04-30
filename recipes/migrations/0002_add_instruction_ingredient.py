@@ -8,7 +8,7 @@ class Migration:
     def forwards(self, orm):
         
         # Adding field 'Ingredient.instruction'
-        db.add_column('recipes_ingredient', 'instruction', models.CharField(max_length=50, blank=True))
+        db.add_column('recipes_ingredient', 'instruction', models.CharField(max_length=50, blank=True, default=''))
         
         # Changing field 'Recipe.mtime'
         db.alter_column('recipes_recipe', 'mtime', models.DateTimeField(auto_now=True))
