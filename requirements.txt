@@ -1,0 +1,4 @@
+Django==1.1.2
+distribute==0.6.10
+wsgiref==0.1.2
+yolk==0.4.1
