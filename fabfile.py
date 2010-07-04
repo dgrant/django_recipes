@@ -1,5 +1,6 @@
 from fabric.api import *
 from fabric.context_managers import cd
+import os
 
 svn_url = 'http://django-recipes.googlecode.com/svn/branches/pip'
 PIP_PATH ='/usr/bin/pip'
