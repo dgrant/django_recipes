@@ -1,11 +1,13 @@
 from fabric.api import *
 from fabric.context_managers import cd
 
-svn_url = 'http://django-recipes.googlecode.com/svn/trunk'
+svn_url = 'http://django-recipes.googlecode.com/svn/branches/pip'
+PIP_PATH='/usr/bin/pip'
 
 def local():
     env.hosts = ['david@localhost']
-    env.root_dir = '~/svn/django-recipes-pip-deploy'
+    env.root_dir = 'test-pip'
+    env.show = ['debug']
 
 def prod():
     env.hosts = ['david@slice:55555']
@@ -19,7 +21,7 @@ def __prereqcheck():
     require('root_dir', provided_by=[local,slice])
 
 def clean():
-    sudo('rm -rf %(root_dir)s' % env)
+    run('rm -rf %(root_dir)s' % env)
 
 def setup():
     __prereqcheck()
@@ -34,10 +36,11 @@ def virtualenv():
     with cd('%(root_dir)s' % env):
         run('rm -rf env')
         run('mkdir --parents ~/.pipcache')
-        run('virtualenv --no-site-packages env')
+        run('virtualenv --distribute --no-site-packages env')
 
 def deploy():
     __prereqcheck()
     with cd('%(root_dir)s' % env):
+        run('rm -rf src')
         run('svn export ' + (svn_url) + ' src' % env)
-        run('pip -E env install -r src/requirements.txt --download-cache=~/.pipcache')
+        run('%(pip_path)s -E env install --upgrade -r src/requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
