@@ -1,3 +1,4 @@
 Django==1.2.1
 yolk==0.4.1
 django-tagging==0.3.1
+django-extensions==0.5
