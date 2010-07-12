@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include
+from django.conf.urls.defaults import patterns, include, handler500, handler404
 from django.views.generic.simple import direct_to_template
 from django.contrib import admin
 import settings

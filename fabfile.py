@@ -38,7 +38,7 @@ def clean():
 def setup():
     __prereqcheck()
     sudo('apt-get update')
-    sudo('apt-get install python-setuptools subversion')
+    sudo('apt-get install python-setuptools subversion libmysqlclient-dev')
     sudo('easy_install -U virtualenv')
     sudo('easy_install -U pip')
 

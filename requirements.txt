@@ -9,3 +9,5 @@ django-registration==0.7
 django-threadedcomments==0.5.2
 South==0.7.1
 -e git+http://github.com/jpwatts/django-positions.git/#egg=django-positions
+mysql-python==1.2.3c1
+PIL==1.1.7
