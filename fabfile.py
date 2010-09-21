@@ -9,7 +9,7 @@ CURR_DIR = os.path.abspath(os.path.split(__file__)[0])
 def dev():
     env.config = 'dev'
     env.hosts = ['david@localhost']
-    env.root_dir = os.path.join(CURR_DIR, '..')
+    env.root_dir = CURR_DIR
     env.show = ['debug']
 
 def local():
@@ -53,7 +53,10 @@ def virtualenv():
 def deploy():
     __prereqcheck()
     with cd('%(root_dir)s' % env):
-        if env.config != 'dev':
+        if env.config == 'dev':
+            run('%(pip_path)s -E env install --upgrade -r requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
+        else:
             run('rm -rf src')
             run('%(svn)s' % env)
-        run('%(pip_path)s -E env install --upgrade -r src/requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
+            run('%(pip_path)s -E env install --upgrade -r src/requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
+
