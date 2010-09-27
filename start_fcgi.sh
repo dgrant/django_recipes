@@ -14,4 +14,5 @@ fi
 
 #exec /usr/bin/env - \
 #  PYTHONPATH="../python:.." \
-./manage.py runfcgi pidfile=$PIDFILE daemonize=true host=127.0.0.1 port=8080
+./manage.py runfcgi pidfile=$PIDFILE daemonize=true method=threaded host=127.0.0.1 port=8080
+#./manage.py runfcgi pidfile=$PIDFILE socket=/home/david/recipes.sock daemonize=true method=threaded
