@@ -3,18 +3,17 @@ from fabric.context_managers import cd
 import os
 
 svn_url = 'http://django-recipes.googlecode.com/svn/branches/pip'
-PIP_PATH ='/usr/bin/pip'
 CURR_DIR = os.path.abspath(os.path.split(__file__)[0])
 
 def dev():
     env.config = 'dev'
-    env.hosts = ['david@localhost']
+    env.hosts = ['david@localhost:55555']
     env.root_dir = CURR_DIR
     env.show = ['debug']
 
 def local():
     env.config = 'local'
-    env.hosts = ['david@localhost']
+    env.hosts = ['david@localhost:55555']
     env.root_dir = 'test-pip'
     env.show = ['debug']
     env.svn = 'svn export ' + (svn_url) + ' src'
@@ -52,6 +51,7 @@ def virtualenv():
 
 def deploy():
     __prereqcheck()
+    PIP_PATH = os.path.join('%(root_dir)s' % env, 'env', 'bin', 'pip')
     with cd('%(root_dir)s' % env):
         if env.config == 'dev':
             run('%(pip_path)s -E env install --upgrade -r requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
