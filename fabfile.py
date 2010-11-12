@@ -10,6 +10,7 @@ def dev():
     env.hosts = ['david@localhost:55555']
     env.root_dir = CURR_DIR
     env.show = ['debug']
+    env.mysqlpackage = 'libmysqlclient-dev'
 
 def local():
     env.config = 'local'
@@ -17,15 +18,17 @@ def local():
     env.root_dir = 'test-pip'
     env.show = ['debug']
     env.svn = 'svn export ' + (svn_url) + ' src'
+    env.mysqlpackage = 'libmysqlclient-dev'
 
 def prod():
     env.config = 'prod'
     env.hosts = ['david@slice:55555']
-    env.root_dir = 'django-recipes-deploy'
+    env.root_dir = '/home/david/public_html/recipes.davidgrant.ca/public'
     env.user = "david"
     env.key_filename = ["/home/david/.ssh/id_dsa"]
     env.show = ['debug']
     env.svn = 'svn export ' + (svn_url) + ' src'
+    env.mysqlpackage = 'libmysqlclient15-dev'
 
 def __prereqcheck():
     require('hosts', provided_by=[local,slice])
@@ -37,7 +40,7 @@ def clean():
 def setup():
     __prereqcheck()
     sudo('apt-get update')
-    sudo('apt-get install python-setuptools subversion libmysqlclient-dev')
+    sudo('apt-get install python-setuptools python2.6-dev subversion %(mysqlpackage)s' % env)
     sudo('easy_install -U virtualenv')
     sudo('easy_install -U pip')
 
