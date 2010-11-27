@@ -63,3 +63,13 @@ def deploy():
             run('%(svn)s' % env)
             run('%(pip_path)s -E env install --upgrade -r src/requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
 
+def start():
+    __prereqcheck()
+    ROOT = '%(root_dir)s' % env
+    PIDFILE = os.path.join(ROOT, 'django-recipes.pid')
+    run(os.path.join(ROOT, 'env/bin/python') + ' ' + os.path.join('%(root_dir)s' % env, 'src', 'manage.py') + ' runfcgi pidfile=' + PIDFILE + ' daemonize=true host=127.0.0.1 port=8080')
+
+def stop():
+    __prereqcheck()
+    run(os.path.join('%(root_dir)s' % env, 'src', 'stop_fcgi.sh'))
+
