@@ -2,7 +2,7 @@ from fabric.api import *
 from fabric.context_managers import cd
 import os
 
-svn_url = 'http://django-recipes.googlecode.com/svn/branches/pip'
+svn_url = 'http://django-recipes.googlecode.com/svn/trunk'
 CURR_DIR = os.path.abspath(os.path.split(__file__)[0])
 
 def dev():
@@ -35,7 +35,8 @@ def __prereqcheck():
     require('root_dir', provided_by=[local,slice])
 
 def clean():
-    run('rm -rf %(root_dir)s' % env)
+    dir_to_delete = os.path.join('%(root_dir)s' % env, 'env')
+    run('rm -rf ' + dir_to_delete)
 
 def setup():
     __prereqcheck()
@@ -71,5 +72,6 @@ def start():
 
 def stop():
     __prereqcheck()
-    run(os.path.join('%(root_dir)s' % env, 'src', 'stop_fcgi.sh'))
-
+    ROOT = '%(root_dir)s' % env
+    PIDFILE = os.path.join(ROOT, 'django-recipes.pid')
+    run('kill `cat %s` && rm %s' % (PIDFILE, PIDFILE))
