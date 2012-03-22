@@ -12,4 +12,4 @@ South==0.7.2
 mysql-python==1.2.3c1
 PIL==1.1.7
 ipython==0.10
-flup==1.0.3.dev-20100525
+flup==1.0.3.dev-20110405
