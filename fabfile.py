@@ -7,17 +7,17 @@ CURR_DIR = os.path.abspath(os.path.split(__file__)[0])
 
 def dev():
     env.config = 'dev'
-    env.hosts = ['david@localhost:55555']
+    env.hosts = ['david@localhost']
     env.root_dir = CURR_DIR
     env.show = ['debug']
     env.mysqlpackage = 'libmysqlclient-dev'
 
 def local():
     env.config = 'local'
-    env.hosts = ['david@localhost:55555']
+    env.hosts = ['david@localhost']
     env.root_dir = 'test-pip'
     env.show = ['debug']
-    env.svn = 'svn export ' + (svn_url) + ' src'
+    env.svn = 'svn export ' + svn_url + ' src'
     env.mysqlpackage = 'libmysqlclient-dev'
 
 def prod():
@@ -27,7 +27,7 @@ def prod():
     env.user = "david"
     env.key_filename = ["/home/david/.ssh/id_dsa"]
     env.show = ['debug']
-    env.svn = 'svn export ' + (svn_url) + ' src'
+    env.svn = 'svn export ' + svn_url + ' src'
     env.mysqlpackage = 'libmysqlclient15-dev'
 
 def __prereqcheck():
