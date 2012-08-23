@@ -28,7 +28,7 @@ def prod():
     env.key_filename = ["/home/david/.ssh/id_dsa"]
     env.show = ['debug']
     env.svn = 'svn export ' + svn_url + ' src'
-    env.mysqlpackage = 'libmysqlclient15-dev'
+    env.mysqlpackage = 'libmysqlclient-dev'
 
 def __prereqcheck():
     require('hosts', provided_by=[local,slice])
@@ -51,18 +51,18 @@ def virtualenv():
     with cd('%(root_dir)s' % env):
         run('rm -rf env')
         run('mkdir --parents ~/.pipcache')
-        run('virtualenv --distribute --no-site-packages env')
+        run('virtualenv --distribute env')
 
 def deploy():
     __prereqcheck()
     PIP_PATH = os.path.join('%(root_dir)s' % env, 'env', 'bin', 'pip')
     with cd('%(root_dir)s' % env):
         if env.config == 'dev':
-            run('%(pip_path)s -E env install --upgrade -r requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
+            run('%(pip_path)s install --upgrade -r requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
         else:
             run('rm -rf src')
             run('%(svn)s' % env)
-            run('%(pip_path)s -E env install --upgrade -r src/requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
+            run('%(pip_path)s install --upgrade -r src/requirements.txt --download-cache=~/.pipcache' % {'pip_path': PIP_PATH})
 
 def start():
     __prereqcheck()
