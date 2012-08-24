@@ -1,15 +1,15 @@
-Django==1.2.1
-yolk==0.4.1
+Django==1.3.3
+yolk==0.4.3
 django-tagging==0.3.1
-django-extensions==0.5
+django-extensions==0.9
 django-mptt-2==0.3.0
-django-reversion==1.3.1
+django-reversion==1.6.2
 django-pagination==1.0.7
-django-registration==0.7
-django-threadedcomments==0.5.2
-South==0.7.2
--e git://github.com/jpwatts/django-positions.git#egg=django-positions
-mysql-python==1.2.3c1
+django-registration==0.8
+django-threadedcomments==0.5.3
+South==0.7.6
+django-positions==0.4.3
+mysql-python==1.2.3
 PIL==1.1.7
-ipython==0.10
+ipython==0.13
 flup==1.0.3.dev-20110405
