@@ -1,2 +1,2 @@
 #!/bin/sh
-python ./manage.py runserver
+env/bin/python ./manage.py runserver
