@@ -13,3 +13,4 @@ mysql-python==1.2.3
 PIL==1.1.7
 ipython==0.13
 flup==1.0.3.dev-20110405
+uwsgi==1.9.11

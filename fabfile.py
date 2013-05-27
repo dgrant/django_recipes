@@ -42,10 +42,7 @@ def setup():
     __prereqcheck()
     sudo('apt-get update')
     sudo('apt-get install python-setuptools subversion %(mysqlpackage)s' % env)
-    if env.config == 'prod':
-        sudo('apt-get install python2.6-dev')
-    else:
-        sudo('apt-get install python2.7-dev')
+    sudo('apt-get install python2.7-dev')
     sudo('easy_install -U virtualenv')
     sudo('easy_install -U pip')
 
