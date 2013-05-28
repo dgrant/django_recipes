@@ -1,1 +1,1 @@
-mysqldump -urecipes_django -precipes_django --add-drop-table --no-data recipes_django | grep ^DROP | mysql -urecipes_django -precipes_django recipes_django
+mysqldump -u$1 -p$1 --add-drop-table --no-data $1 | grep ^DROP | mysql -u$1 -p$1 $1
