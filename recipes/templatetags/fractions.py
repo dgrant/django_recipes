@@ -39,7 +39,7 @@ def _to_frac(x, maxdenom=10):
         return intpart, bestfrac[0], bestfrac[1]
 
 @register.filter
-def html_fraction (number, maxdenom=10):
+def html_fraction(number, maxdenom=10):
     """
     Convert a float to a common fraction (or an integer if it is closer).
 
@@ -65,7 +65,7 @@ def html_fraction (number, maxdenom=10):
         return string
 
 @register.filter
-def text_fraction (number, maxdenom=10):
+def text_fraction(number, maxdenom=10):
     """Convert a float to a common fraction (or integer if it is closer)."""
 
     number = float(number)

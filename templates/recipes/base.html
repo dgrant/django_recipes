@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
@@ -6,8 +7,8 @@
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 	<script type="text/javascript"></script>
 	<title>{% block title %}{% endblock %}</title>
-	<link rel="stylesheet" type="text/css" href="/recipes_media/css/recipes-screen.css" media="screen" /> 
-	<link rel="stylesheet" type="text/css" href="/recipes_media/css/recipes-print.css" media="print" /> 
+	<link rel="stylesheet" type="text/css" href="{% static "css/recipes-screen.css" %}" media="screen" /> 
+	<link rel="stylesheet" type="text/css" href="{% static "css/recipes-print.css" %}" media="print" /> 
 
 </head>
 
@@ -21,8 +22,8 @@
 
 		<div id="nav">
 			<ul>
-				<li><a href="{% url recipes_home %}">Home</a></li>
-				<li><a href="{% url recipes_list %}">Recipes</a></li>
+				<li><a href="{% url 'recipe-home' %}">Home</a></li>
+				<li><a href="{% url 'recipe-list' %}">Recipes</a></li>
 				<li><a href="/tags">Tags</a></li>
 				{% if user.is_authenticated %}
 				  <li><a href="/admin/logout">Logout</a></li>
@@ -45,21 +46,21 @@
 			<h2>Categories</h2>
 			<ul>
 				{% for category in categories_list %}
-				<li><a href="{{category.get_absolute_url}}">{{category.name}}</a></li>
+				<li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
 				{% endfor %}
 			</ul>
 
 			<h2>Newest Recipes</h2>
 			<ul>
 				{% for recipe in recipes_new_list %}
-				<li><a href="{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
+				<li><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></li>
 				{% endfor %}
 			</ul>
 
 			<h2>Recently Modified</h2>
 			<ul>
 				{% for recipe in recipes_changed_list %}
-				<li><a href="{{recipe.get_absolute_url}}">{{recipe.title}}</a></li>
+				<li><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></li>
 				{% endfor %}
 			</ul>
 

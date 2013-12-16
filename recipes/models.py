@@ -1,5 +1,4 @@
 from django.db import models
-from tagging.fields import TagField
 import datetime
 from positions.fields import PositionField
 
@@ -88,8 +87,6 @@ class Recipe(models.Model):
 
     sources = models.ManyToManyField(Source, blank=True)
     category = models.ForeignKey(Category)
-
-    tags = TagField()
 
     def __unicode__(self):
         return self.title

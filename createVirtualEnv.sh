@@ -1,6 +1,5 @@
 #!/bin/sh
-rm -rf env.bak
-mv env env.bak
+rm -rf env
 sudo easy_install pip
 sudo pip install --upgrade pip
 sudo pip install --upgrade virtualenv
