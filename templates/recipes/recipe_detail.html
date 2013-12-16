@@ -12,13 +12,11 @@
 	</div>
 
 	<!-- Ingredient/direction style #1 -->
-	{% if object.direction_set %}
-       	{% for direction in object.direction_set.all %}
+       	{% for direction in object.directions.all %}
 		<div class="step">
- 			{% if direction.ingredient_set %}
 				<div class="ingredients-left">
 					<ul class="ingredients">
-						{% for ingredient in direction.ingredient_set.all %}
+						{% for ingredient in direction.ingredients.all %}
 						<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food.name}}{% if ingredient.instruction %}, {{ingredient.instruction}}{% endif %}</li>
 						{% endfor %}
 					</ul>
@@ -26,30 +24,8 @@
 				<div class="directions">
 					{{direction.text}}
 				</div>
-			{% endif %}
 		</div>	<!-- step -->
 	{% endfor %}
-	{% endif %}
-
-	<!-- Ingredient/direction style #2 -->
-	<!--
-	<p>
-	Ingredients:
-		{% if object.direction_set %}
-			<ul>
-			{% for direction in object.direction_set.all %}
-				{% for ingredient in direction.ingredient_set.all %}
-					<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}}{% endif %} {{ingredient.food}}</li>
-				{% endfor %}
-			{% endfor %}
-			</ul>
-		Directions:
-		{% for direction in object.direction_set.all %}
-			{{ direction.text }}
-		{% endfor %}
-		{% endif %}
-	</p>
-	-->
 
     <p><i>Extra Instructions:</i><br />
  	   {{ object.instructions }}

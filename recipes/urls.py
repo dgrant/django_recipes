@@ -2,22 +2,6 @@ from django.conf.urls import url, patterns
 from models import Recipe
 from .views import RecipeListView, RecipeDetailView
 
-# Need this function so that len(Recipes.objects.all()) can get re-evaluated repeatedly
-def getNumRecipes():
-    return len(Recipe.objects.all())
-
-RECIPES_PAGINATE_BY = 10
-
-recipe_list_info = {
-    "queryset": Recipe.objects.all(),
-    "template_object_name" : "recipe",
-    "paginate_by": RECIPES_PAGINATE_BY,
-}
-
-recipe_detail_info = {
-    "queryset": Recipe.objects.all(),
-    "template_object_name" : "recipe",
-}
 
 urlpatterns = patterns('recipes.views',
     (r'^search/$', 'search'),

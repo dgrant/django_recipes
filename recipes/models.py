@@ -76,6 +76,10 @@ class Photo(models.Model):
             return
         super(Photo, self).save()
 
+class RecipeManager(models.Manager):
+    def all(self):
+        return self.select_related().prefetch_related('directions')
+
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
     summary = models.CharField(max_length=500, blank=True)
@@ -84,9 +88,10 @@ class Recipe(models.Model):
     prep_time = models.CharField(max_length=100, blank=True) # This field type is a guess.
     ctime = models.DateTimeField(auto_now_add=True)
     mtime = models.DateTimeField(auto_now=True)
-
     sources = models.ManyToManyField(Source, blank=True)
     category = models.ForeignKey(Category)
+
+    objects = RecipeManager()
 
     def __unicode__(self):
         return self.title
@@ -103,6 +108,10 @@ class Recipe(models.Model):
         '''This is just used from the admin interface'''
         return ('recipe_detail_by_slug', [self.slug])
 
+class DirectionManager(models.Manager):
+    def all(self):
+        return self.select_related().prefetch_related('ingredients')
+
 class Direction(models.Model):
     """
     A direction is a step in a recipe's preparation and each recipe can have
@@ -110,8 +119,10 @@ class Direction(models.Model):
     recipe.
     """
     text = models.TextField(blank=True)
-    recipe = models.ForeignKey(Recipe)
+    recipe = models.ForeignKey(Recipe, related_name='directions')
     order = PositionField(blank=True, null=True, unique_for_field='recipe')
+
+    objects = DirectionManager()
 
     def __unicode__(self):
         ret = self.text[:40]
@@ -135,19 +146,22 @@ class Unit(models.Model):
     class Meta:
         ordering = ["name"]
 
+class IngredientManager(models.Manager):
+    def all(self):
+        return self.select_related('food', 'unit', 'prep_method').all()
+
 class Ingredient(models.Model):
-    """
-    TODO: move this lower later to get rid of quotes in ForeignKey references
-    """
     amount = models.FloatField()
     amountMax = models.FloatField(null=True, blank=True)
-    unit = models.ForeignKey(Unit,null=True, blank=True)
+    unit = models.ForeignKey(Unit, null=True, blank=True)
     recipe = models.ForeignKey(Recipe)
     food = models.ForeignKey(Food)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
     instruction = models.CharField(max_length=50, blank=True, default='')
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
-    direction = models.ForeignKey(Direction, blank=True, null=True)
+    direction = models.ForeignKey(Direction, blank=True, null=True, related_name='ingredients')
+
+    objects = IngredientManager()
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
