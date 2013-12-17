@@ -78,7 +78,7 @@ class Photo(models.Model):
 
 class RecipeManager(models.Manager):
     def all(self):
-        return self.select_related().prefetch_related('directions')
+        return self
 
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
@@ -110,7 +110,7 @@ class Recipe(models.Model):
 
 class DirectionManager(models.Manager):
     def all(self):
-        return self.select_related().prefetch_related('ingredients')
+        return self.prefetch_related('ingredient_set')
 
 class Direction(models.Model):
     """
@@ -119,7 +119,7 @@ class Direction(models.Model):
     recipe.
     """
     text = models.TextField(blank=True)
-    recipe = models.ForeignKey(Recipe, related_name='directions')
+    recipe = models.ForeignKey(Recipe)
     order = PositionField(blank=True, null=True, unique_for_field='recipe')
 
     objects = DirectionManager()
@@ -148,7 +148,7 @@ class Unit(models.Model):
 
 class IngredientManager(models.Manager):
     def all(self):
-        return self.select_related('food', 'unit', 'prep_method').all()
+        return self.select_related('unit', 'prep_method', 'food').all()
 
 class Ingredient(models.Model):
     amount = models.FloatField()
@@ -159,7 +159,7 @@ class Ingredient(models.Model):
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
     instruction = models.CharField(max_length=50, blank=True, default='')
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
-    direction = models.ForeignKey(Direction, blank=True, null=True, related_name='ingredients')
+    direction = models.ForeignKey(Direction, blank=True, null=True)
 
     objects = IngredientManager()
 
