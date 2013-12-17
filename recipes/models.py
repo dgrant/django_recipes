@@ -76,10 +76,6 @@ class Photo(models.Model):
             return
         super(Photo, self).save()
 
-class RecipeManager(models.Manager):
-    def all(self):
-        return self
-
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
     summary = models.CharField(max_length=500, blank=True)
@@ -90,8 +86,6 @@ class Recipe(models.Model):
     mtime = models.DateTimeField(auto_now=True)
     sources = models.ManyToManyField(Source, blank=True)
     category = models.ForeignKey(Category)
-
-    objects = RecipeManager()
 
     def __unicode__(self):
         return self.title
@@ -109,8 +103,9 @@ class Recipe(models.Model):
         return ('recipe_detail_by_slug', [self.slug])
 
 class DirectionManager(models.Manager):
+
     def all(self):
-        return self.prefetch_related('ingredient_set')
+        return self.prefetch_related('ingredients', 'ingredients__unit', 'ingredients__food', 'ingredients__prep_method')
 
 class Direction(models.Model):
     """
@@ -119,7 +114,7 @@ class Direction(models.Model):
     recipe.
     """
     text = models.TextField(blank=True)
-    recipe = models.ForeignKey(Recipe)
+    recipe = models.ForeignKey(Recipe, related_name='directions')
     order = PositionField(blank=True, null=True, unique_for_field='recipe')
 
     objects = DirectionManager()
@@ -146,10 +141,6 @@ class Unit(models.Model):
     class Meta:
         ordering = ["name"]
 
-class IngredientManager(models.Manager):
-    def all(self):
-        return self.select_related('unit', 'prep_method', 'food').all()
-
 class Ingredient(models.Model):
     amount = models.FloatField()
     amountMax = models.FloatField(null=True, blank=True)
@@ -159,9 +150,7 @@ class Ingredient(models.Model):
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
     instruction = models.CharField(max_length=50, blank=True, default='')
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
-    direction = models.ForeignKey(Direction, blank=True, null=True)
-
-    objects = IngredientManager()
+    direction = models.ForeignKey(Direction, blank=True, null=True, related_name='ingredients')
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)

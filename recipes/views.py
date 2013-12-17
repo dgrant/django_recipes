@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.mail import send_mail
-from models import Recipe, Direction
+from models import Recipe, Direction, Ingredient
 from forms import ContactForm, RecipeForm
 
 from django.views.generic import ListView, CreateView, DetailView
@@ -20,14 +20,8 @@ class RecipeListView(ListView):
         qs = Recipe.objects.all()
         return qs
 
-
 class RecipeDetailView(DetailView):
     model = Recipe
-
-    def get_context_data(self, **kwargs):
-        context = super(RecipeDetailView, self).get_context_data(**kwargs)
-#        context['directions'] = Direction.objects.all_for_recipe(self.get_object().id)
-        return context
 
 def recipes_in_category(request, category_slug):
     """
