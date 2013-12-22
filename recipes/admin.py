@@ -23,7 +23,7 @@ class DirectionInlineAdmin(admin.TabularInline):
     extra = 3
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('name', 'plural', 'name_abbrev', 'plural_abbrev')
+    list_display = ('name', 'plural', 'name_abbrev', 'plural_abbrev', 'system',)
 
 class UnitConversionAdmin(admin.ModelAdmin):
     list_display = ('from_unit', 'to_unit', 'multiplier')

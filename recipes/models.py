@@ -136,6 +136,8 @@ class Unit(models.Model):
     plural_abbrev = models.CharField(max_length=60, blank=True)
     TYPE = Choices((0, 'Other'), (1, 'Mass'), (2, 'Volume'))
     type = models.IntegerField(choices=TYPE)
+    SYSTEM = Choices((0, 'SI'), (1, 'Imperial'))
+    system = models.IntegerField(choices=SYSTEM, null=True)
 
     def __unicode__(self):
         return self.plural
