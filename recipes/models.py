@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from positions.fields import PositionField
+from model_utils import Choices
 
 class Source(models.Model):
     name = models.CharField(max_length=150)
@@ -133,13 +134,28 @@ class Unit(models.Model):
     name_abbrev = models.CharField(max_length=60, blank=True)
     plural = models.CharField(max_length=60, blank=True)
     plural_abbrev = models.CharField(max_length=60, blank=True)
-    type = models.IntegerField(choices=((0, 'Other'),(1, 'Mass'),(2, 'Volume')))
+    TYPE = Choices((0, 'Other'), (1, 'Mass'), (2, 'Volume'))
+    type = models.IntegerField(choices=TYPE)
 
     def __unicode__(self):
         return self.plural
 
     class Meta:
         ordering = ["name"]
+
+class UnitConversion(models.Model):
+    from_unit = models.ForeignKey(Unit, related_name='conversions_from')
+    to_unit = models.ForeignKey(Unit, related_name='conversions_to')
+    multiplier = models.FloatField()
+
+    def save(self):
+        if self.from_unit.type == self.to_unit.type:
+            super(UnitConversion, self).save()
+        else:
+            print "types don't match"
+
+    class Meta:
+        unique_together = (('from_unit', 'to_unit'))
 
 class Ingredient(models.Model):
     amount = models.FloatField()

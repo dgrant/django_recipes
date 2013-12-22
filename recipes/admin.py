@@ -23,7 +23,10 @@ class DirectionInlineAdmin(admin.TabularInline):
     extra = 3
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ( 'name', 'plural', 'name_abbrev', 'plural_abbrev' )
+    list_display = ('name', 'plural', 'name_abbrev', 'plural_abbrev')
+
+class UnitConversionAdmin(admin.ModelAdmin):
+    list_display = ('from_unit', 'to_unit', 'multiplier')
 
 class IngredientInlineAdmin(admin.TabularInline):
     model = Ingredient
@@ -61,3 +64,4 @@ admin.site.register(PrepMethod)
 admin.site.register(Photo)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Unit, UnitAdmin)
+admin.site.register(UnitConversion, UnitConversionAdmin)
