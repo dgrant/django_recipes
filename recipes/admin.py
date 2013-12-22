@@ -10,7 +10,7 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 class FoodAdmin(admin.ModelAdmin):
-    list_display = ('name_sorted', 'name', 'group')
+    list_display = ('name_sorted', 'name', 'group', 'conversion_src_unit', 'conversion_factor', 'conversion_dest_unit',)
     list_filter = ('group',)
     search_fields = ('name',)
 

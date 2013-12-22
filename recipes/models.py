@@ -37,16 +37,6 @@ class FoodGroup(models.Model):
     class Meta:
         ordering = ["name"]
 
-class Food(models.Model):
-    name = models.CharField(max_length=150)
-    name_sorted = models.CharField(max_length=150, default='')
-    group = models.ForeignKey(FoodGroup)
-
-    def __unicode__(self):
-        return self.name_sorted
-
-    class Meta:
-        ordering = ["name_sorted",]
 
 class PrepMethod(models.Model):
     name = models.CharField(max_length=60, blank=True)
@@ -145,6 +135,20 @@ class Unit(models.Model):
     class Meta:
         ordering = ["name"]
 
+class Food(models.Model):
+    name = models.CharField(max_length=150)
+    name_sorted = models.CharField(max_length=150, default='')
+    group = models.ForeignKey(FoodGroup)
+    conversion_src_unit = models.ForeignKey(Unit, related_name='+', null=True)
+    conversion_dest_unit = models.ForeignKey(Unit, related_name='+', null=True)
+    conversion_factor = models.FloatField(null=True)
+
+    def __unicode__(self):
+        return self.name_sorted
+
+    class Meta:
+        ordering = ["name_sorted",]
+
 class UnitConversion(models.Model):
     from_unit = models.ForeignKey(Unit, related_name='conversions_from')
     to_unit = models.ForeignKey(Unit, related_name='conversions_to')
@@ -193,56 +197,4 @@ class Ingredient(models.Model):
 
     class Meta:
         ordering = ["direction", "order_index", "id"]
-
-#class RatingCriteria(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    name = models.TextField(blank=True)
-#    class Meta:
-#        db_table = u'rating_criteria'
-
-#class RatingCriterionList(models.Model):
-#    rating_id = models.IntegerField()
-#    rating_criterion_id = models.IntegerField(null=True, blank=True)
-#    stars = models.FloatField(null=True, blank=True)
-#    class Meta:
-#        db_table = u'rating_criterion_list'
-
-#class Ratings(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    recipe_id = models.IntegerField()
-#    comment = models.TextField(blank=True)
-#    rater = models.TextField(blank=True)
-#    created = models.DateTimeField()
-#    class Meta:
-#        db_table = u'ratings'
-
-#Things like 5 cal/g for certain ingredients
-#class IngredientInfo(models.Model):
-#    ingredient_id = models.ManyToManyField(Ingredient)
-#    property_id = models.ManyToManyField(IngredientProperty)
-#    amount = models.FloatField(null=True, blank=True)
-#    per_units = models.ManyToManyField(Unit)
-#    class Meta:
-#        db_table = u'ingredient_info'
-
-
-
-#Properties like cal/g or grams of fat/g
-#class IngredientProperty(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    name = models.CharField(max_length=60, blank=True)
-#    units = models.CharField(max_length=60, blank=True)
-#    class Meta:
-#        db_table = u'ingredient_properties'
-
-#class IngredientWeights(models.Model):
-#    id = models.IntegerField(primary_key=True)
-#    ingredient_id = models.IntegerField()
-#    amount = models.FloatField(null=True, blank=True)
-#    unit_id = models.IntegerField(null=True, blank=True)
-#    weight = models.FloatField(null=True, blank=True)
-#    weight_unit_id = models.IntegerField(null=True, blank=True)
-#    prep_method_id = models.IntegerField(null=True, blank=True)
-#    class Meta:
-#        db_table = u'ingredient_weights'
 
