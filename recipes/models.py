@@ -2,6 +2,18 @@ from django.db import models
 import datetime
 from positions.fields import PositionField
 from model_utils import Choices
+from .templatetags.fractions import text_fraction
+import math
+
+def nice_float(x):
+    sig_figs = 3
+#    ret = round(x, -int(math.floor(math.log10(x))) + (sig_figs - 1))
+    ret = round(x)
+    ret = "{0}".format(ret)
+    while (ret.find('.') != -1 and ret[-1] == '0') or ret[-1] == '.':
+        ret = ret[:-1]
+    return ret
+
 
 class Source(models.Model):
     name = models.CharField(max_length=150)
@@ -124,9 +136,9 @@ class Unit(models.Model):
     name_abbrev = models.CharField(max_length=60, blank=True)
     plural = models.CharField(max_length=60, blank=True)
     plural_abbrev = models.CharField(max_length=60, blank=True)
-    TYPE = Choices((0, 'Other'), (1, 'Mass'), (2, 'Volume'))
+    TYPE = Choices((0, 'other', 'Other'), (1, 'mass', 'Mass'), (2, 'volume', 'Volume'))
     type = models.IntegerField(choices=TYPE)
-    SYSTEM = Choices((0, 'SI'), (1, 'Imperial'))
+    SYSTEM = Choices((0, 'si', 'SI'), (1, 'imperial', 'Imperial'))
     system = models.IntegerField(choices=SYSTEM, null=True)
 
     def __unicode__(self):
@@ -139,9 +151,9 @@ class Food(models.Model):
     name = models.CharField(max_length=150)
     name_sorted = models.CharField(max_length=150, default='')
     group = models.ForeignKey(FoodGroup)
-    conversion_src_unit = models.ForeignKey(Unit, related_name='+', null=True)
-    conversion_dest_unit = models.ForeignKey(Unit, related_name='+', null=True)
-    conversion_factor = models.FloatField(null=True)
+    conversion_src_unit = models.ForeignKey(Unit, related_name='+', null=True, blank=True)
+    conversion_factor = models.FloatField(null=True, blank=True)
+    name_plural = models.CharField(max_length=150, null=True, blank=True)
 
     def __unicode__(self):
         return self.name_sorted
@@ -176,6 +188,57 @@ class Ingredient(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
+
+    def combined_amount(self):
+        print "***" + self.food.name
+
+        if self.unit is None:
+            if self.amountMax is None:
+                ret = "{0}".format(nice_float(self.amount))
+            else:
+                ret = "{0}-{1}".format(nice_float(self.amount), nice_float(self.amountMax))
+
+        elif self.unit.system is None or self.unit.type == Unit.TYPE.other or self.food.conversion_src_unit is None:
+            if self.amountMax is None:
+                ret = "{0} {1}".format(text_fraction(self.amount), self.unit.plural_abbrev)
+            else:
+                ret = "{0}-{1} {2}".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev)
+
+        # Case 1: ingredient is in imperial volume (ie. cups, Tbsp.)
+        # Original is "1 cup"
+        elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.volume:
+            converted_amount = self.amount
+            # First, get it into the src unit for the Food conversion
+            if self.unit.pk != self.food.conversion_src_unit.pk:
+                unit_converter = UnitConversion.objects.get(from_unit=self.unit, to_unit=self.food.conversion_src_unit)
+                converted_amount = converted_amount * unit_converter.multiplier
+            # Then convert to grams
+            converted_amount = converted_amount * self.food.conversion_factor
+
+            if self.amountMax is None:
+                ret = "{0} {1} ({2} {3})".format(text_fraction(self.amount), self.unit.plural_abbrev, nice_float(converted_amount), 'g')
+            else:
+                converted_maxAmount = self.amountMax * self.food.conversion_factor * unit_converter.multiplier
+                ret = "{0}-{1} {2} ({3}-{4} {5})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_float(converted_amount), nice_float(converted_maxAmount), 'g')
+
+        # Case 2: ingredient is in imperial weight (ie. lbs)
+        # Original is "1 lb"
+
+        # Case 3: ingredient is in metric volume (ie. mL)
+        # Original is "50 mL" -> "50 mL (61 g)"
+
+        # Case 4: ingredient is in metric weight (ie. kg) or ingredient has "other" type or "null" system
+
+        if self.prep_method != None:
+            ret += " " + self.prep_method.name
+        if self.food.name_plural != None and self.food.name_plural != '' and self.amount != 1:
+            ret += " " + self.food.name_plural
+        else:
+            ret += " " + self.food.name
+        if self.instruction != None and self.instruction != '':
+            ret += " (" + self.instruction + ")"
+
+        return ret
 
     def __unicode__(self):
         if self.amount == int(self.amount):

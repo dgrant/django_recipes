@@ -17,7 +17,7 @@
 				<div class="ingredients-left">
 					<ul class="ingredients">
 						{% for ingredient in direction.ingredients.all %}
-						<li>{{ingredient.amount|text_fraction}}{% if ingredient.amountMax %}-{{ingredient.amountMax|text_fraction}}{% endif %} {{ingredient.unit.plural_abbrev}} {% if ingredient.prep_method %} {{ingredient.prep_method}} {% endif %}{{ingredient.food.name}}{% if ingredient.instruction %}, {{ingredient.instruction}}{% endif %}</li>
+						<li>{{ingredient.combined_amount}}</li>
 						{% endfor %}
 					</ul>
 				</div>
