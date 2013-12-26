@@ -108,7 +108,7 @@ class Recipe(models.Model):
 class DirectionManager(models.Manager):
 
     def all(self):
-        return self.prefetch_related('ingredients', 'ingredients__unit', 'ingredients__food', 'ingredients__prep_method')
+        return self.prefetch_related('ingredients', 'ingredients__unit', 'ingredients__food', 'ingredients__prep_method', 'ingredients__food__conversion_src_unit')
 
 class Direction(models.Model):
     """
@@ -190,8 +190,6 @@ class Ingredient(models.Model):
         super(Ingredient, self).__init__(*args, **kwargs)
 
     def combined_amount(self):
-        print "***" + self.food.name
-
         if self.unit is None:
             if self.amountMax is None:
                 ret = "{0}".format(nice_float(self.amount))
