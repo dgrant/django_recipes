@@ -1,2 +1,2 @@
 #!/bin/sh
-./manage.py test --settings=django_kids.settings.test
+./manage.py test --settings=django_recipes.settings.test

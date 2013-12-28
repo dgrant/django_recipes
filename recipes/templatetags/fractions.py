@@ -2,7 +2,7 @@ from django import template
 
 register = template.Library()
 
-def _to_frac(x, maxdenom=10):
+def to_frac(x, maxdenom=10):
     """
     Convert x to a common fraction.
 
@@ -19,7 +19,7 @@ def _to_frac(x, maxdenom=10):
     bestfrac = 0,1
     mindiff = x
 
-    for denom in range(1,maxdenom+1):
+    for denom in range(1, maxdenom+1):
         # for each denominator, there are two numerators to consider:
         # the one below x and the one above x
         for num in (int(x*denom), int(x*denom+1)):
@@ -48,7 +48,7 @@ def html_fraction(number, maxdenom=10):
     """
 
     number = float(number)
-    frac = _to_frac(abs(number), maxdenom)
+    frac = to_frac(abs(number), maxdenom)
 
     if type(frac) == int:
         string = str(frac)
@@ -69,7 +69,7 @@ def text_fraction(number, maxdenom=10):
     """Convert a float to a common fraction (or integer if it is closer)."""
 
     number = float(number)
-    frac = _to_frac(abs(number), maxdenom)
+    frac = to_frac(abs(number), maxdenom)
 
     if type(frac) == int:
         string = str(frac)
