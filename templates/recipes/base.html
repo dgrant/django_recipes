@@ -1,49 +1,64 @@
 {% load staticfiles %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
 	<script type="text/javascript"></script>
 	<title>{% block title %}{% endblock %}</title>
+
+	<!--	
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+	-->
+	<link rel="stylesheet" href="http://bootswatch.com/readable/bootstrap.min.css">
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="{% static "css/recipes-screen.css" %}" media="screen" /> 
 	<link rel="stylesheet" type="text/css" href="{% static "css/recipes-print.css" %}" media="print" /> 
 
 </head>
 
-<body id="css-daves-cookbook">
+<body>
 
-	<div id="maincontainer">
+	<div class="container">
 
-		<div id="topsection">
-			<h1>Dave's Recipes</h1>
+		<div class="page-header">
+		  <h1><a href="{% url 'recipe-home' %}">Dave's Recipes</a></h1>
 		</div>
 
-		<div id="nav">
-			<ul>
-				<li><a href="{% url 'recipe-home' %}">Home</a></li>
-				<li><a href="{% url 'recipe-list' %}">Recipes</a></li>
-				<li><a href="/tags">Tags</a></li>
-				{% if user.is_authenticated %}
-				  <li><a href="/admin/logout">Logout</a></li>
-				{% else %}
-				  <li><a href="/admin">Login</a></li>
-				{% endif %}
-			</ul>
-		</div>	
+<nav class="navbar navbar-default" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
 
-		<div id="contentwrapper">
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+	<li><a href="{% url 'recipe-home' %}">Home</a></li>
+	<li><a href="{% url 'recipe-list' %}">Recipes</a></li>
 
-                    <div id="contentcolumn">
-                        {% block content %}
-                        {% endblock %}
-                    </div>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+	{% if user.is_authenticated %}
+	  <li><a href="/admin/logout">Logout</a></li>
+	{% else %}
+	  <li><a href="/admin">Login</a></li>
+	{% endif %}
 
-		</div>
-			
-		<div id="leftcolumn">
-			<h2>Categories</h2>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</nav>
+
+<div class="row">
+  <div class="col-md-3">
+    <h2>Categories</h2>
 			<ul>
 				{% for category in categories_list %}
 				<li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
@@ -63,20 +78,21 @@
 				<li><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></li>
 				{% endfor %}
 			</ul>
+  </div>
+  <div class="col-md-9">
+    {% block content %}{% endblock %}
+  </div>
+</div>
 
-
-		</div>
-
-		<div id="footer">
-			{% block footer %}
-			<hr>
-			<p>Thanks for visiting my site.</p>
-			<p>Source code is licensed under the GPLv2 and available at <a href="http://code.google.com/p/django-recipes">Google Code</a></p>
-			{% endblock %}
-		</div>
+<div class="row">
+  <div class="col-md-12">
+	  <p class="text-center">Thanks for visiting my site.<br />
+         Source code is licensed under the GPLv2 and available at <a href="http://code.google.com/p/django-recipes">Google Code</a></p>
+  </div>
+</div>
 		
 
-	</div>
+</div>
 </body>
 
 

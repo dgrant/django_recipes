@@ -2,30 +2,38 @@
 {% load fractions %}
 
 {% block content %}
+<!--
         <div id="recipe-links">
           <a href="/admin/recipes/recipe/{{ object.id }}">edit</a>
         </div>
+-->
 
-	<div id="recipe-preamble">
+	<div class="row">
+	  <div class="col-md-12 text-center">
 		<h2>{{ object.title }}</h2>
 		<p class="recipe-summary">{{ object.summary }}</p>
+	  </div>
 	</div>
 
 	<!-- Ingredient/direction style #1 -->
        	{% for direction in object.directions.all %}
-		<div class="step">
-				<div class="ingredients-left">
-					<ul class="ingredients">
+  	<div class="row" >
+				<div class="col-md-5 col-md-offset-1" style="border-top: 1px solid #888;">
+					<ul class="list-unstyled text-right">
 						{% for ingredient in direction.ingredients.all %}
-						<li>{{ingredient.combined_amount}}</li>
+						<li style="margin-top: 5px;"><em>{{ingredient.combined_amount}}</em></li>
 						{% endfor %}
 					</ul>
 				</div>
-				<div class="directions">
+				<div class="col-md-5" style="border-top: 1px solid #888;">
+					<p style="margin-top: 5px;">
 					{{direction.text}}
+					</p>
 				</div>
-		</div>	<!-- step -->
+		</div>	<!-- row -->
 	{% endfor %}
+
+	<hr/>
 
     <p><i>Extra Instructions:</i><br />
  	   {{ object.instructions }}

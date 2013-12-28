@@ -88,3 +88,4 @@ STATICFILES_DIRS = (
 )
 
 TEMPLATE_DIRS = [root('templates')]
+CONN_MAX_AGE = None

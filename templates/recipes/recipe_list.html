@@ -1,8 +1,6 @@
 {% extends "recipes/base.html" %}
 
 {% block content %}
-    <a href="/admin/recipes/recipe/add">New recipe</a>
-    <br />
     <h2>Recipes ({{ paginator.count }} in total)</h2>
     <ul>
         {% for recipe in object_list %}
@@ -22,8 +20,6 @@
         {% if page_obj.has_next %}<a href="?page={{ next}}">{% endif %}
                 next
         {% if page_obj.has_next %}</a>{% endif %}
-
-
 
         </p>
     {% endif %}
