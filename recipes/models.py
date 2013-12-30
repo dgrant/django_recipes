@@ -132,7 +132,7 @@ class Direction(models.Model):
         ordering = ['order', 'id']
 
 class Unit(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
     name_abbrev = models.CharField(max_length=60, blank=True)
     plural = models.CharField(max_length=60, blank=True)
     plural_abbrev = models.CharField(max_length=60, blank=True)
