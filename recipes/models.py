@@ -8,6 +8,26 @@ import math
 from pint import UnitRegistry
 ureg = UnitRegistry()
 
+def nice_grams(x):
+    kg = x.to(ureg.kg)
+    if kg.magnitude < 1:
+        return nice_float(x.magnitude) + " g"
+    else:
+        return nice_float(kg.magnitude, sig_figs=4) + " kg"
+
+def nice_grams_range(x, y):
+    x_kg = x.to(ureg.kg)
+    y_kg = y.to(ureg.kg)
+    if x_kg.magnitude < 1 and y_kg.magnitude < 1:
+        return "{0} to {1} g".format(nice_float(x.magnitude), nice_float(y.magnitude))
+    elif x_kg.magnitude < 1 and y_kg.magnitude >= 1:
+        return "{0} g to {1} kg".format(nice_float(x.magnitude), nice_float(y_kg.magnitude, sig_figs=4))
+    elif x_kg.magnitude >= 1 and y_kg.magnitude >= 1:
+        return "{0} to {1} kg".format(nice_float(x_kg.magnitude, sig_figs=4), nice_float(y_kg.magnitude, sig_figs=4))
+    else:
+        raise Exception("Should never get here!")
+
+
 def nice_float(x, sig_figs=None):
     if sig_figs is None:
         ret = round(x)
@@ -204,20 +224,21 @@ class Ingredient(models.Model):
                 amountMax_g = conversion_factor * amountMax_u
 
             if self.amountMax is None:
-                ret = "{0} {1} ({2} {3})".format(text_fraction(self.amount), self.unit.plural_abbrev, nice_float(amount_g.magnitude), 'g')
+                ret = "{0} {1} ({2})".format(text_fraction(self.amount), self.unit.plural_abbrev, nice_grams(amount_g))
             else:
-                ret = "{0}-{1} {2} ({3}-{4} {5})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_float(amount_g.magnitude), nice_float(amountMax_g.magnitude), 'g')
+                ret = "{0} to {1} {2} ({3})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_grams_range(amount_g, amountMax_g))
+
         # Case 4: ingredient is in imperial weight (ie. lbs)
         # Original is "1 lb"
         elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.mass:
             amount_u = self.amount * ureg[self.unit.name]
             amount_g = amount_u.to(ureg.grams)
             if self.amountMax is None:
-                ret = "{0} {1} ({2} {3})".format(nice_float(nice_float(self.amount, sig_figs=3), self.unit.plural_abbrev, nice_float(amount_g.magnitude), 'g'))
+                ret = "{0} {1} ({2})".format(nice_float(nice_float(self.amount, sig_figs=3), self.unit.plural_abbrev, nice_grams(amount_g)))
             else:
                 amountMax_u = self.amountMax * ureg[self.unit.name]
                 amountMax_g = amountMax_u.to(ureg.grams)
-                ret = "{0}-{1} {2} ({3}-{4} {5})".format(nice_float(self.amount, sig_figs=3), nice_float(self.amountMax, sig_figs=3), self.unit.plural_abbrev, nice_float(amount_g.magnitude), nice_float(amountMax_g.magnitude), 'g')
+                ret = "{0} to {1} {2} ({3})".format(nice_float(self.amount, sig_figs=3), nice_float(self.amountMax, sig_figs=3), self.unit.plural_abbrev, nice_grams_range(amount_g, amountMax_g))
 
 
         # Case 2: things with a unit like "clove", "slice", "squirt". eg. "3 clove garlic" or "2 slices watermelon"
