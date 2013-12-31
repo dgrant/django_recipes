@@ -5,10 +5,14 @@ from model_utils import Choices
 from .templatetags.fractions import text_fraction
 import math
 
-def nice_float(x):
-    sig_figs = 3
-#    ret = round(x, -int(math.floor(math.log10(x))) + (sig_figs - 1))
-    ret = round(x)
+from pint import UnitRegistry
+ureg = UnitRegistry()
+
+def nice_float(x, sig_figs=None):
+    if sig_figs is None:
+        ret = round(x)
+    else:
+        ret = round(x, -int(math.floor(math.log10(x))) + (sig_figs - 1))
     ret = "{0}".format(ret)
     while (ret.find('.') != -1 and ret[-1] == '0') or ret[-1] == '.':
         ret = ret[:-1]
@@ -139,7 +143,7 @@ class Unit(models.Model):
     system = models.IntegerField(choices=SYSTEM, null=True)
 
     def __unicode__(self):
-        return self.plural
+        return self.name
 
     class Meta:
         ordering = ["name"]
@@ -194,6 +198,42 @@ class Ingredient(models.Model):
             else:
                 ret = "{0}-{1}".format(nice_float(self.amount), nice_float(self.amountMax))
 
+
+        # Case 3: ingredient is in imperial volume (ie. cups, Tbsp.)
+        # Original is "1 cup"
+        elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit is not None:
+            amount_u = self.amount * ureg[self.unit.name]
+            if self.amountMax is not None:
+                amountMax_u = self.amountMax * ureg[self.unit.name]
+            # First, get it into the src unit for the Food conversion
+            if self.unit.pk != self.food.conversion_src_unit.pk:
+                src_unit = ureg[self.food.conversion_src_unit.name]
+                amount_u = amount_u.to(src_unit)
+                if self.amountMax is not None:
+                    amountMax_u = amountMax_u.to(src_unit)
+            # Then convert to grams
+            conversion_factor = (self.food.conversion_factor * ureg.grams) / (1.0 * ureg[self.food.conversion_src_unit.name])
+            amount_g = conversion_factor * amount_u
+            if self.amountMax is not None:
+                amountMax_g = conversion_factor * amountMax_u
+
+            if self.amountMax is None:
+                ret = "{0} {1} ({2} {3})".format(text_fraction(self.amount), self.unit.plural_abbrev, nice_float(amount_g.magnitude), 'g')
+            else:
+                ret = "{0}-{1} {2} ({3}-{4} {5})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_float(amount_g.magnitude), nice_float(amountMax_g.magnitude), 'g')
+        # Case 4: ingredient is in imperial weight (ie. lbs)
+        # Original is "1 lb"
+        elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.mass:
+            amount_u = self.amount * ureg[self.unit.name]
+            amount_g = amount_u.to(ureg.grams)
+            if self.amountMax is None:
+                ret = "{0} {1} ({2} {3})".format(nice_float(nice_float(self.amount, sig_figs=3), self.unit.plural_abbrev, nice_float(amount_g.magnitude), 'g'))
+            else:
+                amountMax_u = self.amountMax * ureg[self.unit.name]
+                amountMax_g = amountMax_u.to(ureg.grams)
+                ret = "{0}-{1} {2} ({3}-{4} {5})".format(nice_float(self.amount, sig_figs=3), nice_float(self.amountMax, sig_figs=3), self.unit.plural_abbrev, nice_float(amount_g.magnitude), nice_float(amountMax_g.magnitude), 'g')
+
+
         # Case 2: things with a unit like "clove", "slice", "squirt". eg. "3 clove garlic" or "2 slices watermelon"
         #         for now this also includes things with no grams conversion, just print it out. This may fall to other cases below later.
         elif self.unit.system is None or self.unit.type == Unit.TYPE.other or self.food.conversion_src_unit is None:
@@ -202,25 +242,7 @@ class Ingredient(models.Model):
                 ret += "-" + text_fraction(self.amountMax)
             ret += " " + self.unit.plural_abbrev
 
-        # Case 3: ingredient is in imperial volume (ie. cups, Tbsp.)
-        # Original is "1 cup"
-        elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.volume:
-            converted_amount = self.amount
-            # First, get it into the src unit for the Food conversion
-            if self.unit.pk != self.food.conversion_src_unit.pk:
-                unit_converter = UnitConversion.objects.get(from_unit=self.unit, to_unit=self.food.conversion_src_unit)
-                converted_amount = converted_amount * unit_converter.multiplier
-            # Then convert to grams
-            converted_amount = converted_amount * self.food.conversion_factor
 
-            if self.amountMax is None:
-                ret = "{0} {1} ({2} {3})".format(text_fraction(self.amount), self.unit.plural_abbrev, nice_float(converted_amount), 'g')
-            else:
-                converted_maxAmount = self.amountMax * self.food.conversion_factor * unit_converter.multiplier
-                ret = "{0}-{1} {2} ({3}-{4} {5})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_float(converted_amount), nice_float(converted_maxAmount), 'g')
-
-        # Case 4: ingredient is in imperial weight (ie. lbs)
-        # Original is "1 lb"
 
         # Case 5: ingredient is in metric volume (ie. mL)
         # Original is "50 mL" -> "50 mL (61 g)"
@@ -250,7 +272,7 @@ class Ingredient(models.Model):
                 unit = ''
         else:
             if self.unit != None:
-                unit = self.unit.plural
+                unit = self.unit.name
             else:
                 unit = ''
         food = str(self.food).lower()

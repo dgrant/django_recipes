@@ -19,3 +19,5 @@ django-debug-toolbar==0.11.0
 mock==1.0.1
 django-model-utils==1.5.0
 pip-tools==0.3.4
+
+pint==0.4
