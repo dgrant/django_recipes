@@ -162,20 +162,6 @@ class Food(models.Model):
     class Meta:
         ordering = ["name_sorted",]
 
-class UnitConversion(models.Model):
-    from_unit = models.ForeignKey(Unit, related_name='conversions_from')
-    to_unit = models.ForeignKey(Unit, related_name='conversions_to')
-    multiplier = models.FloatField()
-
-    def save(self):
-        if self.from_unit.type == self.to_unit.type:
-            super(UnitConversion, self).save()
-        else:
-            print "types don't match"
-
-    class Meta:
-        unique_together = (('from_unit', 'to_unit'))
-
 class Ingredient(models.Model):
     amount = models.FloatField()
     amountMax = models.FloatField(null=True, blank=True)
@@ -199,9 +185,9 @@ class Ingredient(models.Model):
                 ret = "{0}-{1}".format(nice_float(self.amount), nice_float(self.amountMax))
 
 
-        # Case 3: ingredient is in imperial volume (ie. cups, Tbsp.)
+        # Case 3: ingredient is in imperial volume
         # Original is "1 cup"
-        elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit is not None:
+        elif (self.unit.system == Unit.SYSTEM.imperial or self.unit.system == Unit.SYSTEM.si) and self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit is not None:
             amount_u = self.amount * ureg[self.unit.name]
             if self.amountMax is not None:
                 amountMax_u = self.amountMax * ureg[self.unit.name]
@@ -242,12 +228,8 @@ class Ingredient(models.Model):
                 ret += "-" + text_fraction(self.amountMax)
             ret += " " + self.unit.plural_abbrev
 
-
-
-        # Case 5: ingredient is in metric volume (ie. mL)
-        # Original is "50 mL" -> "50 mL (61 g)"
-
-        # Case 6: ingredient is in metric weight (ie. kg) or ingredient has "other" type or "null" system
+        else:
+            raise Exception("Should not get here!")
 
         if self.prep_method != None:
             ret += " " + self.prep_method.name
