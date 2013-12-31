@@ -14,7 +14,6 @@ def nice_float(x):
         ret = ret[:-1]
     return ret
 
-
 class Source(models.Model):
     name = models.CharField(max_length=150)
     url = models.URLField(max_length=500, blank=True)
@@ -48,7 +47,6 @@ class FoodGroup(models.Model):
 
     class Meta:
         ordering = ["name"]
-
 
 class PrepMethod(models.Model):
     name = models.CharField(max_length=60, blank=True)
@@ -134,7 +132,6 @@ class Direction(models.Model):
 class Unit(models.Model):
     name = models.CharField(max_length=60, unique=True)
     name_abbrev = models.CharField(max_length=60, blank=True)
-    plural = models.CharField(max_length=60, blank=True)
     plural_abbrev = models.CharField(max_length=60, blank=True)
     TYPE = Choices((0, 'other', 'Other'), (1, 'mass', 'Mass'), (2, 'volume', 'Volume'))
     type = models.IntegerField(choices=TYPE)
@@ -189,20 +186,23 @@ class Ingredient(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
 
-    def combined_amount(self):
+    def formatted_amount(self):
+        # Case 1: things like eggs, tart shells, onion. No units. eg. "1 onion" or "1 egg"
         if self.unit is None:
             if self.amountMax is None:
                 ret = "{0}".format(nice_float(self.amount))
             else:
                 ret = "{0}-{1}".format(nice_float(self.amount), nice_float(self.amountMax))
 
+        # Case 2: things with a unit like "clove", "slice", "squirt". eg. "3 clove garlic" or "2 slices watermelon"
+        #         for now this also includes things with no grams conversion, just print it out. This may fall to other cases below later.
         elif self.unit.system is None or self.unit.type == Unit.TYPE.other or self.food.conversion_src_unit is None:
-            if self.amountMax is None:
-                ret = "{0} {1}".format(text_fraction(self.amount), self.unit.plural_abbrev)
-            else:
-                ret = "{0}-{1} {2}".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev)
+            ret = text_fraction(self.amount)
+            if self.amountMax is not None:
+                ret += "-" + text_fraction(self.amountMax)
+            ret += " " + self.unit.plural_abbrev
 
-        # Case 1: ingredient is in imperial volume (ie. cups, Tbsp.)
+        # Case 3: ingredient is in imperial volume (ie. cups, Tbsp.)
         # Original is "1 cup"
         elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.volume:
             converted_amount = self.amount
@@ -219,13 +219,13 @@ class Ingredient(models.Model):
                 converted_maxAmount = self.amountMax * self.food.conversion_factor * unit_converter.multiplier
                 ret = "{0}-{1} {2} ({3}-{4} {5})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_float(converted_amount), nice_float(converted_maxAmount), 'g')
 
-        # Case 2: ingredient is in imperial weight (ie. lbs)
+        # Case 4: ingredient is in imperial weight (ie. lbs)
         # Original is "1 lb"
 
-        # Case 3: ingredient is in metric volume (ie. mL)
+        # Case 5: ingredient is in metric volume (ie. mL)
         # Original is "50 mL" -> "50 mL (61 g)"
 
-        # Case 4: ingredient is in metric weight (ie. kg) or ingredient has "other" type or "null" system
+        # Case 6: ingredient is in metric weight (ie. kg) or ingredient has "other" type or "null" system
 
         if self.prep_method != None:
             ret += " " + self.prep_method.name
