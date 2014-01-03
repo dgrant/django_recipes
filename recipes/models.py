@@ -403,7 +403,15 @@ class Ingredient(models.Model):
         else:
             food_str = self.food.name
 
-        return '{0}{1}{2}{3} {4}'.format(amount_str, amountMax_str, unit_str, grams_str, food_str)
+        prep_method_str = ''
+        if self.prep_method != None:
+            prep_method_str = ' ' + self.prep_method.name
+
+        instruction_str = ''
+        if self.instruction != '':
+            instruction_str = ' (' + self.instruction + ')'
+
+        return '{0}{1}{2}{3}{4} {5}{6}'.format(amount_str, amountMax_str, unit_str, grams_str, prep_method_str, food_str, instruction_str)
 
     def formatted_amount_old(self):
         # Case 1: things like eggs, tart shells, onion. No units. eg. "1 onion" or "1 egg"

@@ -21,6 +21,7 @@ class IngredientTest(TestCase):
         self.ketchup = mommy.make('Food', name='ketchup')
         self.water = mommy.make('Food', name='water', conversion_src_unit=self.l, conversion_factor=1000)
         self.flour = mommy.make('Food', name='flour', conversion_src_unit=self.cup, conversion_factor=125)
+        self.sugar = mommy.make('Food', name='sugar')
 
     def test_formatted_amount_no_unit(self):
         ingredient = mommy.make('Ingredient', amount=1.0, food=self.egg)
@@ -81,6 +82,31 @@ class IngredientTest(TestCase):
         ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
         self.assertEquals(ingredient.formatted_amount(),
                           "1 1/2 cup (188 g) flour")
+
+    def test_formatted_amount_cups_fractions(self):
+        ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 1/2 cup (188 g) flour")
+
+    def test_formatted_amount_prep_method(self):
+        sifted = mommy.make('PrepMethod', name='sifted')
+        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=sifted)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 cup sifted sugar")
+
+    def test_formatted_amount_prep_method(self):
+        sifted = mommy.make('PrepMethod', name='sifted')
+        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=sifted)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 cup sifted sugar")
+
+    def test_formatted_amount_instruction(self):
+        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, instruction='fried')
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 cup sugar (fried)")
+
+
+
 
 
 test_cases_nearest = {4: (
