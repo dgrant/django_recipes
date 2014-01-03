@@ -16,6 +16,7 @@ class IngredientTest(TestCase):
         self.l = mommy.make('Unit', name='l', name_abbrev='l', type=Unit.TYPE.volume, system=Unit.SYSTEM.si)
         self.g = mommy.make('Unit', name='gram', name_abbrev='g', type=Unit.TYPE.mass, system=Unit.SYSTEM.si)
         self.cup = mommy.make('Unit', name='cup', name_abbrev='cup', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
+        self.tsp = mommy.make('Unit', name='tsp', name_abbrev='tsp', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
 
         self.egg = mommy.make('Food', name='egg', name_plural='eggs')
         self.ketchup = mommy.make('Food', name='ketchup')
@@ -83,15 +84,25 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1 1/2 cup (188 g) flour")
 
-#    def test_formatted_amount_cups_fractions_special_case(self):
-#        ingredient = mommy.make('Ingredient', amount=4.5, food=self.flour, unit=self.cup)
-#        self.assertEquals(ingredient.formatted_amount(),
-#                          "1 quart, 1/2 cup (188 g) flour")
+    def test_formatted_amount_cups_fractions_special_case(self):
+        ingredient = mommy.make('Ingredient', amount=4.5, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 quart, 1/2 cup sugar")
 
-#    def test_formatted_amount_cups_fractions_special_case(self):
-#        ingredient = mommy.make('Ingredient', amount=0.3333, food=self.flour, unit=self.cup)
-#        self.assertEquals(ingredient.formatted_amount(),
-#                          "1/3 cup (42 g) flour")
+    def test_formatted_amount_cups_fractions_special_case1(self):
+        ingredient = mommy.make('Ingredient', amount=0.3334, food=self.flour, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1/3 cup (42 g) flour")
+
+    def test_formatted_amount_cups_fractions_special_case2(self):
+        ingredient = mommy.make('Ingredient', amount=0.33333333333, food=self.flour, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1/3 cup (42 g) flour")
+
+    def test_formatted_amount_cups_fractions_special_case1(self):
+        ingredient = mommy.make('Ingredient', amount=0.25, food=self.sugar, unit=self.tsp)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1/4 tsp sugar")
 
     def test_formatted_amount_prep_method(self):
         sifted = mommy.make('PrepMethod', name='sifted')

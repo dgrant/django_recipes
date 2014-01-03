@@ -142,7 +142,7 @@ def nice_cups(x):
     for unit, unit_str in units:
         how_many_unit = leftover.to(unit)
         how_many_int = int(how_many_unit.magnitude)
-        if how_many_int != 0 or unit == ureg.teaspoons:
+        if how_many_int != 0 or unit == ureg.teaspoons or unit == ureg.cups:
             if unit == ureg.cups:
                 result = to_frac_round_down(how_many_unit.magnitude, maxdenom=4)
                 if type(result) == tuple:
@@ -152,7 +152,8 @@ def nice_cups(x):
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
                 else:
                     how_many_int = result
-                    ret += '{0} {1}, '.format(how_many_int, unit_str)
+                    if how_many_int != 0:
+                        ret += '{0} {1}, '.format(how_many_int, unit_str)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             elif unit == ureg.teaspoons:
                 result = to_nearest_frac(how_many_unit.magnitude, maxdenom=8)
@@ -165,7 +166,7 @@ def nice_cups(x):
                     how_many_int = result
                     if how_many_int != 0:
                         ret += '{0} {1}, '.format(how_many_int, unit_str)
-                        leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
+                    leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             else:
                 ret += '{0} {1}, '.format(how_many_int, unit_str)
                 leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
