@@ -70,5 +70,5 @@ class IngredientTest(TestCase):
     def test_formatted_amount_cups_tbsp_nice(self):
         ingredient = mommy.make('Ingredient', amount=1.083333333334, food=self.flour, unit=self.cup)
         self.assertEquals(ingredient.formatted_amount(),
-                          "1 cup, 1 Tbsp, 1 tsp (133 g) flour")
+                          "1 cup, 1 Tbsp, 1 tsp (135 g) flour")
 
