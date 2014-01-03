@@ -2,11 +2,55 @@ from django.db import models
 import datetime
 from positions.fields import PositionField
 from model_utils import Choices
-from .templatetags.fractions import text_fraction
 import math
 
 from pint import UnitRegistry
 ureg = UnitRegistry()
+
+def html_fraction(number, maxdenom=10):
+    """
+    Convert a float to a common fraction (or an integer if it is closer).
+
+    If the output is a fraction, the fraction part is wrapped in a span
+    with class "fraction" to enable styling of fractions.
+    """
+
+    number = float(number)
+    frac = to_frac(abs(number), maxdenom)
+
+    if type(frac) == int:
+        string = str(frac)
+    else:
+        intpart, numerator, denominator = frac
+        if intpart == 0:
+            string = '<span class="fraction"><sup>%i</sup>/<sub>%i</sub></span>' % frac[1:]
+        else:
+            string = '%i<span class="fraction"><sup>%i</sup>/<sub>%i</sub></span>' % frac
+
+    if number < 0:
+        return '-'+string
+    else:
+        return string
+
+def text_fraction(number, maxdenom=10):
+    """Convert a float to a common fraction (or integer if it is closer)."""
+
+    number = float(number)
+    frac = to_frac(abs(number), maxdenom)
+
+    if type(frac) == int:
+        string = str(frac)
+    else:
+        intpart, numerator, denominator = frac
+        if intpart == 0:
+            string = '%i/%i' % frac[1:]
+        else:
+            string = '%i %i/%i' % frac
+
+    if number < 0:
+        return '-'+string
+    else:
+        return string
 
 def to_nearest_frac(x, maxdenom):
     """
