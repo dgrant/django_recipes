@@ -197,19 +197,44 @@ class Ingredient(models.Model):
         super(Ingredient, self).__init__(*args, **kwargs)
 
     def formatted_amount(self):
-        if self.unit is None:
-            amount_str = '{0}'.format(nice_float(self.amount))
+        amount_str = '{0}'.format(nice_float(self.amount))
 
         amountMax_str = ''
         if self.amountMax is not None:
             amountMax_str = ' to {0}'.format(nice_float(self.amountMax))
+
+        unit_str = ''
+        if not self.unit is None:
+            unit_str = ' {0}'.format(self.unit.name_abbrev)
+
+        grams_str = ''
+        if not self.food.conversion_src_unit is None and not self.food.conversion_factor is None:
+            amount_u = self.amount * ureg[self.unit.name]
+            if self.amountMax is not None:
+                amountMax_u = self.amountMax * ureg[self.unit.name]
+            # First, get it into the src unit for the Food conversion, if necessary
+            if self.unit.pk != self.food.conversion_src_unit.pk:
+                src_unit = ureg[self.food.conversion_src_unit.name]
+                amount_u = amount_u.to(src_unit)
+                if self.amountMax is not None:
+                    amountMax_u = amountMax_u.to(src_unit)
+            # Then convert to grams
+            conversion_factor = (self.food.conversion_factor * ureg.grams) / (1.0 * ureg[self.food.conversion_src_unit.name])
+            amount_g = conversion_factor * amount_u
+            if self.amountMax is not None:
+                amountMax_g = conversion_factor * amountMax_u
+
+            if self.amountMax is None:
+                grams_str = ' ({0})'.format(nice_grams(amount_g))
+            else:
+                grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
 
         if self.food.name_plural is not None and (self.amount != 1 or self.amountMax is not None):
             food_str = self.food.name_plural
         else:
             food_str = self.food.name
 
-        return '{0}{1} {2}'.format(amount_str, amountMax_str, food_str)
+        return '{0}{1}{2}{3} {4}'.format(amount_str, amountMax_str, unit_str, grams_str, food_str)
 
     def formatted_amount_old(self):
         # Case 1: things like eggs, tart shells, onion. No units. eg. "1 onion" or "1 egg"
