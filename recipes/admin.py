@@ -16,7 +16,7 @@ class FoodAdmin(admin.ModelAdmin):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'conversion_src_unit':
-            kwargs["queryset"] = Unit.objects.filter(type=Unit.TYPE.volume)
+            kwargs["queryset"] = Unit.objects.exclude(type=Unit.TYPE.mass)
         return super(FoodAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 class PhotoInlineAdmin(admin.StackedInline):
