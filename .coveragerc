@@ -1,0 +1,4 @@
+[run]
+source = recipes
+omit = */migrations/*
+branch = True
