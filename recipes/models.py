@@ -157,7 +157,7 @@ def nice_cups(x):
             elif unit == ureg.teaspoons:
                 result = to_nearest_frac(how_many_unit.magnitude, maxdenom=8)
                 if type(result) == tuple:
-                    how_many_int, num, den, rem = result
+                    how_many_int, num, den = result
                     int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
                     ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_str)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
@@ -398,78 +398,20 @@ class Ingredient(models.Model):
             else:
                 grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
 
-        if self.food.name_plural != None and (self.amount != 1 or self.amountMax != None):
+        if self.food.name_plural != None and self.food.name_plural != '' and (self.amount != 1 or self.amountMax != None):
             food_str = self.food.name_plural
         else:
             food_str = self.food.name
 
-        return '{0}{1}{2}{3} {4}'.format(amount_str, amountMax_str, unit_str, grams_str, food_str)
-
-    def formatted_amount_old(self):
-        # Case 1: things like eggs, tart shells, onion. No units. eg. "1 onion" or "1 egg"
-        if self.unit == None:
-            if self.amountMax == None:
-                ret = "{0}".format(nice_float(self.amount))
-            else:
-                ret = "{0}-{1}".format(nice_float(self.amount), nice_float(self.amountMax))
-
-
-        # Case 3: ingredient is in imperial volume
-        # Original is "1 cup"
-        elif (self.unit.system == Unit.SYSTEM.imperial or self.unit.system == Unit.SYSTEM.si) and self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit is not None:
-            amount_u = self.amount * ureg[self.unit.name]
-            if self.amountMax is not None:
-                amountMax_u = self.amountMax * ureg[self.unit.name]
-            # First, get it into the src unit for the Food conversion
-            if self.unit.pk != self.food.conversion_src_unit.pk:
-                src_unit = ureg[self.food.conversion_src_unit.name]
-                amount_u = amount_u.to(src_unit)
-                if self.amountMax is not None:
-                    amountMax_u = amountMax_u.to(src_unit)
-            # Then convert to grams
-            conversion_factor = (self.food.conversion_factor * ureg.grams) / (1.0 * ureg[self.food.conversion_src_unit.name])
-            amount_g = conversion_factor * amount_u
-            if self.amountMax is not None:
-                amountMax_g = conversion_factor * amountMax_u
-
-            if self.amountMax is None:
-                ret = "{0} {1} ({2})".format(text_fraction(self.amount), self.unit.plural_abbrev, nice_grams(amount_g))
-            else:
-                ret = "{0} to {1} {2} ({3})".format(text_fraction(self.amount), text_fraction(self.amountMax), self.unit.plural_abbrev, nice_grams_range(amount_g, amountMax_g))
-
-        # Case 4: ingredient is in imperial weight (ie. lbs)
-        # Original is "1 lb"
-        elif self.unit.system == Unit.SYSTEM.imperial and self.unit.type == Unit.TYPE.mass:
-            amount_u = self.amount * ureg[self.unit.name]
-            amount_g = amount_u.to(ureg.grams)
-            if self.amountMax is None:
-                ret = "{0} {1} ({2})".format(nice_float(nice_float(self.amount, sig_figs=3), self.unit.plural_abbrev, nice_grams(amount_g)))
-            else:
-                amountMax_u = self.amountMax * ureg[self.unit.name]
-                amountMax_g = amountMax_u.to(ureg.grams)
-                ret = "{0} to {1} {2} ({3})".format(nice_float(self.amount, sig_figs=3), nice_float(self.amountMax, sig_figs=3), self.unit.plural_abbrev, nice_grams_range(amount_g, amountMax_g))
-
-
-        # Case 2: things with a unit like "clove", "slice", "squirt". eg. "3 clove garlic" or "2 slices watermelon"
-        #         for now this also includes things with no grams conversion, just print it out. This may fall to other cases below later.
-        elif self.unit.system is None or self.unit.type == Unit.TYPE.other or self.food.conversion_src_unit is None:
-            ret = text_fraction(self.amount)
-            if self.amountMax is not None:
-                ret += "-" + text_fraction(self.amountMax)
-            ret += " " + self.unit.plural_abbrev
-
-        else:
-            raise Exception("Should not get here!")
-
+        prep_method_str = ''
         if self.prep_method != None:
-            ret += " " + self.prep_method.name
-        if self.food.name_plural != None and self.food.name_plural != '' and self.amount != 1:
-            ret += " " + self.food.name_plural
-        else:
-            ret += " " + self.food.name
-        if self.instruction != None and self.instruction != '':
-            ret += " (" + self.instruction + ")"
+            prep_method_str = ' ' + self.prep_method.name
 
+        instruction_str = ''
+        if self.instruction != '':
+            instruction_str = ' (' + self.instruction + ')'
+
+        ret = '{0}{1}{2}{3}{4} {5}{6}'.format(amount_str, amountMax_str, unit_str, grams_str, prep_method_str, food_str, instruction_str)
         return ret
 
     def __unicode__(self):
