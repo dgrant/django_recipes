@@ -398,7 +398,7 @@ class Ingredient(models.Model):
             else:
                 grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
 
-        if self.food.name_plural != None and (self.amount != 1 or self.amountMax != None):
+        if self.food.name_plural != None and self.food.name_plural != '' and (self.amount != 1 or self.amountMax != None):
             food_str = self.food.name_plural
         else:
             food_str = self.food.name
@@ -411,7 +411,8 @@ class Ingredient(models.Model):
         if self.instruction != '':
             instruction_str = ' (' + self.instruction + ')'
 
-        return '{0}{1}{2}{3}{4} {5}{6}'.format(amount_str, amountMax_str, unit_str, grams_str, prep_method_str, food_str, instruction_str)
+        ret = '{0}{1}{2}{3}{4} {5}{6}'.format(amount_str, amountMax_str, unit_str, grams_str, prep_method_str, food_str, instruction_str)
+        return ret
 
     def __unicode__(self):
         if self.amount == int(self.amount):
