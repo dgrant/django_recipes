@@ -8,6 +8,77 @@ import math
 from pint import UnitRegistry
 ureg = UnitRegistry()
 
+def to_nearest_frac(x, maxdenom):
+    """
+    Convert x to a common fraction.
+
+    Chooses the closest fraction to x with denominator <= maxdenom.
+    If x is closest to an integer, return that integer; otherwise,
+    return an (integer, numerator, denominator) tuple.
+    """
+
+    assert x >= 0, "_to_frac only works on positive numbers."
+
+    intpart = int(x)
+    x -= intpart
+
+    bestfrac = 0,1
+    mindiff = x
+
+    for denom in range(1, maxdenom+1):
+        # for each denominator, there are two numerators to consider:
+        # the one below x and the one above x
+        for num in (int(x*denom), int(x*denom+1)):
+            diff = abs(x - float(num)/denom)
+
+            # compare using '<' rather than '<=' to ensure that the
+            # fraction with the smallest denominator is preferred
+            if diff < mindiff:
+                bestfrac = num, denom
+                mindiff = diff
+
+    if bestfrac[0] == 0:
+        return intpart
+    elif mindiff >= 1-x:
+        return intpart+1
+    else:
+        return intpart, bestfrac[0], bestfrac[1]
+
+def to_frac_round_down(x, maxdenom=10):
+    """
+    Convert x to a common fraction.
+
+    Chooses the closest fraction to x with denominator <= maxdenom.
+    If x is closest to an integer, return that integer; otherwise,
+    return an (integer, numerator, denominator) tuple.
+    """
+
+    assert x >= 0, "_to_frac only works on positive numbers."
+
+    intpart = int(x)
+    x -= intpart
+
+    bestfrac = 0,1
+    mindiff = x
+
+    for denom in range(1, maxdenom+1):
+        # for each denominator, there are two numerators to consider:
+        # the one below x and the one above x
+        for num in [int(x*denom)]:
+            num = int(x*denom)
+            diff = x - float(num)/denom
+
+            # compare using '<' rather than '<=' to ensure that the
+            # fraction with the smallest denominator is preferred
+            if diff < mindiff:
+                bestfrac = num, denom
+                mindiff = diff
+
+    if bestfrac[0] == 0:
+        return intpart
+    else:
+        return intpart, bestfrac[0], bestfrac[1]
+
 def nice_grams(x):
     ''' x is a Pint quantity in cups '''
     kg = x.to(ureg.kg)

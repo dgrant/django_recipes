@@ -1,5 +1,5 @@
 from django.test import TestCase
-from recipes.models import Unit
+from recipes.models import Unit, to_nearest_frac, to_frac_round_down
 
 from django.core.urlresolvers import reverse
 
@@ -72,3 +72,54 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1 cup, 1 Tbsp, 1 tsp (135 g) flour")
 
+#    def test_formatted_amount_cups_fractions(self):
+#        ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
+#        self.assertEquals(ingredient.formatted_amount(),
+#                          "1 1/2 cup (188 g) flour")
+
+
+#    def test_formatted_amount_cups_tbsp_nice(self):
+#        ingredient = mommy.make('Ingredient', amount=1.083333333333, food=self.flour, unit=self.cup)
+#        self.assertEquals(ingredient.formatted_amount(),
+#                          "1 cup, 1 Tbsp, 1 tsp (135 g) flour")
+
+
+test_cases_nearest = {4: (
+                ((0.1), 0),
+                ((0.2), (0,1,4)),
+                ((0.3), (0,1,3)),
+                ((0.4), (0,1,3)),
+                ((0.5), (0,1,2)),
+                ((0.6), (0,2,3)),
+                ((0.7), (0,2,3)),
+                ((0.8), (0,3,4)),
+                ((0.9), 1),
+                ((1.0), 1),
+              )}
+
+test_cases_round_down = {4: (
+                ((0.1), 0),
+                ((0.2), 0),
+                ((0.3), (0,1,4)),
+                ((0.4), (0,1,3)),
+                ((0.5), (0,1,2)),
+                ((0.6), (0,1,2)),
+                ((0.7), (0,2,3)),
+                ((0.8), (0,3,4)),
+                ((0.9), (0,3,4)),
+                ((1.0), 1),
+              )}
+
+
+class TestFractions(TestCase):
+    def test_to_nearest_frac(self):
+        for maxdenom, x_and_expected in test_cases_nearest.iteritems():
+            for x, expected in x_and_expected:
+                result = to_nearest_frac(x, maxdenom)
+                self.assertEquals(result, expected)
+
+    def test_to_frac_round_down(self):
+        for maxdenom, x_and_expected in test_cases_round_down.iteritems():
+            for x, expected in x_and_expected:
+                result = to_frac_round_down(x, maxdenom)
+                self.assertEquals(result, expected)
