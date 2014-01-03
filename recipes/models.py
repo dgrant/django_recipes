@@ -88,7 +88,7 @@ def to_nearest_frac(x, maxdenom):
     else:
         return intpart, bestfrac[0], bestfrac[1]
 
-def to_frac_round_down(x, maxdenom=10):
+def to_frac_round_down(x, maxdenom):
     """
     Convert x to a common fraction.
 
@@ -98,7 +98,7 @@ def to_frac_round_down(x, maxdenom=10):
     """
 
     assert x >= 0, "_to_frac only works on positive numbers."
-
+    orig_x = x
     intpart = int(x)
     x -= intpart
 
@@ -121,7 +121,8 @@ def to_frac_round_down(x, maxdenom=10):
     if bestfrac[0] == 0:
         return intpart
     else:
-        return intpart, bestfrac[0], bestfrac[1]
+        remainder = orig_x - (intpart + float(bestfrac[0]) / float(bestfrac[1]))
+        return intpart, bestfrac[0], bestfrac[1], round(remainder, 4)
 
 def nice_grams(x):
     ''' x is a Pint quantity in cups '''
@@ -134,15 +135,42 @@ def nice_grams(x):
 def nice_cups(x):
     ''' x is a Pint quantity in cups '''
     tsp = x.to(ureg.teaspoon)
+    tsp = round(tsp.magnitude, 4) * ureg.teaspoon
     units = ((ureg.quarts, 'quart'), (ureg.cups, 'cup'), (ureg.tablespoons, 'Tbsp'), (ureg.teaspoons, 'tsp'))
     leftover = tsp
     ret = ''
     for unit, unit_str in units:
         how_many_unit = leftover.to(unit)
         how_many_int = int(how_many_unit.magnitude)
-        leftover = (how_many_unit.magnitude - how_many_int) * unit
-        if how_many_int != 0:
-            ret += '{0} {1}, '.format(how_many_int, unit_str)
+        if how_many_int != 0 or unit == ureg.teaspoons:
+            if unit == ureg.cups:
+                result = to_frac_round_down(how_many_unit.magnitude, maxdenom=4)
+                if type(result) == tuple:
+                    how_many_int, num, den, rem = result
+                    int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
+                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_str)
+                    leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
+                else:
+                    how_many_int = result
+                    ret += '{0} {1}, '.format(how_many_int, unit_str)
+                    leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
+            elif unit == ureg.teaspoons:
+                result = to_nearest_frac(how_many_unit.magnitude, maxdenom=8)
+                if type(result) == tuple:
+                    how_many_int, num, den, rem = result
+                    int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
+                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_str)
+                    leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
+                else:
+                    how_many_int = result
+                    if how_many_int != 0:
+                        ret += '{0} {1}, '.format(how_many_int, unit_str)
+                        leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
+            else:
+                ret += '{0} {1}, '.format(how_many_int, unit_str)
+                leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
+        else:
+            leftover = how_many_unit
     while ret[-1] == ',' or ret[-1] == ' ':
         ret = ret[:-1]
     return ret
