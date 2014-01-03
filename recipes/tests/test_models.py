@@ -15,7 +15,7 @@ class IngredientTest(TestCase):
         self.mL = mommy.make('Unit', name='mL', name_abbrev='mL', type=Unit.TYPE.volume, system=Unit.SYSTEM.si)
         self.l = mommy.make('Unit', name='l', name_abbrev='l', type=Unit.TYPE.volume, system=Unit.SYSTEM.si)
         self.g = mommy.make('Unit', name='gram', name_abbrev='g', type=Unit.TYPE.mass, system=Unit.SYSTEM.si)
-        self.cup = mommy.make('Unit', name='cup', name_abbrev='c.', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
+        self.cup = mommy.make('Unit', name='cup', name_abbrev='cup', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
 
         self.egg = mommy.make('Food', name='egg', name_plural='eggs')
         self.ketchup = mommy.make('Food', name='ketchup')
@@ -67,8 +67,8 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "3 kg water")
 
-#    def test_formatted_amount_cups_tbsp_nice(self):
-#        ingredient = mommy.make('Ingredient', amount=1.0625, food=self.flour, unit=self.cup)
-#        self.assertEquals(ingredient.formatted_amount(),
-#                          "1 cup, 1 Tbsp (133 g) flour")
+    def test_formatted_amount_cups_tbsp_nice(self):
+        ingredient = mommy.make('Ingredient', amount=1.083333333334, food=self.flour, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 cup, 1 Tbsp, 1 tsp (133 g) flour")
 

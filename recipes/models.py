@@ -9,11 +9,28 @@ from pint import UnitRegistry
 ureg = UnitRegistry()
 
 def nice_grams(x):
+    ''' x is a Pint quantity in cups '''
     kg = x.to(ureg.kg)
     if kg.magnitude < 1:
         return nice_float(x.magnitude) + " g"
     else:
         return nice_float(kg.magnitude, sig_figs=4) + " kg"
+
+def nice_cups(x):
+    ''' x is a Pint quantity in cups '''
+    tsp = x.to(ureg.teaspoon)
+    units = ((ureg.quarts, 'quart'), (ureg.cups, 'cup'), (ureg.tablespoons, 'Tbsp'), (ureg.teaspoons, 'tsp'))
+    leftover = tsp
+    ret = ''
+    for unit, unit_str in units:
+        how_many_unit = leftover.to(unit)
+        how_many_int = int(how_many_unit.magnitude)
+        leftover = (how_many_unit.magnitude - how_many_int) * unit
+        if how_many_int != 0:
+            ret += '{0} {1}, '.format(how_many_int, unit_str)
+    while ret[-1] == ',' or ret[-1] == ' ':
+        ret = ret[:-1]
+    return ret
 
 def nice_grams_range(x, y):
     x_kg = x.to(ureg.kg)
@@ -203,6 +220,9 @@ class Ingredient(models.Model):
             # grams, kilograms
             amount_g = (self.amount * ureg[self.unit.name]).to(ureg.grams)
             amount_str = '{0}'.format(nice_grams(amount_g))
+        elif self.unit != None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial:
+            amount_cups = (self.amount * ureg[self.unit.name]).to(ureg.cups)
+            amount_str = nice_cups(amount_cups)
         else:
             # everything else
             amount_str = '{0}'.format(nice_float(self.amount, sig_figs=4))
