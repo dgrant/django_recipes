@@ -197,6 +197,21 @@ class Ingredient(models.Model):
         super(Ingredient, self).__init__(*args, **kwargs)
 
     def formatted_amount(self):
+        if self.unit is None:
+            amount_str = '{0}'.format(nice_float(self.amount))
+
+        amountMax_str = ''
+        if self.amountMax is not None:
+            amountMax_str = ' to {0}'.format(nice_float(self.amountMax))
+
+        if self.food.name_plural is not None and (self.amount != 1 or self.amountMax is not None):
+            food_str = self.food.name_plural
+        else:
+            food_str = self.food.name
+
+        return '{0}{1} {2}'.format(amount_str, amountMax_str, food_str)
+
+    def formatted_amount_old(self):
         # Case 1: things like eggs, tart shells, onion. No units. eg. "1 onion" or "1 egg"
         if self.unit is None:
             if self.amountMax is None:
