@@ -197,39 +197,45 @@ class Ingredient(models.Model):
         super(Ingredient, self).__init__(*args, **kwargs)
 
     def formatted_amount(self):
-        amount_str = '{0}'.format(nice_float(self.amount))
-
-        amountMax_str = ''
-        if self.amountMax is not None:
-            amountMax_str = ' to {0}'.format(nice_float(self.amountMax))
-
         unit_str = ''
-        if not self.unit is None:
-            unit_str = ' {0}'.format(self.unit.name_abbrev)
+        amountMax_str = ''
+        if self.unit != None and self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.si:
+            # grams, kilograms
+            amount_g = (self.amount * ureg[self.unit.name]).to(ureg.grams)
+            amount_str = '{0}'.format(nice_grams(amount_g))
+        else:
+            # everything else
+            amount_str = '{0}'.format(nice_float(self.amount, sig_figs=4))
+
+            if self.amountMax != None:
+                amountMax_str = ' to {0}'.format(nice_float(self.amountMax))
+
+            if self.unit != None:
+                unit_str = ' {0}'.format(self.unit.name_abbrev)
 
         grams_str = ''
-        if not self.food.conversion_src_unit is None and not self.food.conversion_factor is None:
+        if self.unit != None and self.unit.type != Unit.TYPE.mass and self.food.conversion_src_unit != None and self.food.conversion_factor != None:
             amount_u = self.amount * ureg[self.unit.name]
-            if self.amountMax is not None:
+            if self.amountMax != None:
                 amountMax_u = self.amountMax * ureg[self.unit.name]
             # First, get it into the src unit for the Food conversion, if necessary
             if self.unit.pk != self.food.conversion_src_unit.pk:
                 src_unit = ureg[self.food.conversion_src_unit.name]
                 amount_u = amount_u.to(src_unit)
-                if self.amountMax is not None:
+                if self.amountMax != None:
                     amountMax_u = amountMax_u.to(src_unit)
             # Then convert to grams
             conversion_factor = (self.food.conversion_factor * ureg.grams) / (1.0 * ureg[self.food.conversion_src_unit.name])
             amount_g = conversion_factor * amount_u
-            if self.amountMax is not None:
+            if self.amountMax != None:
                 amountMax_g = conversion_factor * amountMax_u
 
-            if self.amountMax is None:
+            if self.amountMax == None:
                 grams_str = ' ({0})'.format(nice_grams(amount_g))
             else:
                 grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
 
-        if self.food.name_plural is not None and (self.amount != 1 or self.amountMax is not None):
+        if self.food.name_plural != None and (self.amount != 1 or self.amountMax != None):
             food_str = self.food.name_plural
         else:
             food_str = self.food.name
@@ -238,8 +244,8 @@ class Ingredient(models.Model):
 
     def formatted_amount_old(self):
         # Case 1: things like eggs, tart shells, onion. No units. eg. "1 onion" or "1 egg"
-        if self.unit is None:
-            if self.amountMax is None:
+        if self.unit == None:
+            if self.amountMax == None:
                 ret = "{0}".format(nice_float(self.amount))
             else:
                 ret = "{0}-{1}".format(nice_float(self.amount), nice_float(self.amountMax))
