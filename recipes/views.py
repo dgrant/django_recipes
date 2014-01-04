@@ -4,7 +4,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.mail import send_mail
 from models import Recipe, Direction, Ingredient
-from forms import ContactForm, RecipeForm
 
 from django.views.generic import ListView, CreateView, DetailView
 
