@@ -119,6 +119,11 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1/4 tsp sugar")
 
+    def test_formatted_amount_cups_plural(self):
+        ingredient = mommy.make('Ingredient', amount=2, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "2 cups sugar")
+
     def test_formatted_amount_prep_method(self):
         sifted = mommy.make('PrepMethod', name='sifted')
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=sifted)

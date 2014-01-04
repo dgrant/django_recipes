@@ -136,10 +136,10 @@ def nice_cups(x):
     ''' x is a Pint quantity in cups '''
     tsp = x.to(ureg.teaspoon)
     tsp = round(tsp.magnitude, 4) * ureg.teaspoon
-    units = ((ureg.quarts, 'quart'), (ureg.cups, 'cup'), (ureg.tablespoons, 'Tbsp'), (ureg.teaspoons, 'tsp'))
+    units = ((ureg.quarts, ('quart', 'quarts')), (ureg.cups, ('cup', 'cups')), (ureg.tablespoons, ('Tbsp', 'Tbsp')), (ureg.teaspoons, 'tsp'))
     leftover = tsp
     ret = ''
-    for unit, unit_str in units:
+    for unit, unit_strs in units:
         how_many_unit = leftover.to(unit)
         how_many_int = int(how_many_unit.magnitude)
         if how_many_int != 0 or unit == ureg.teaspoons or unit == ureg.cups:
@@ -148,27 +148,27 @@ def nice_cups(x):
                 if type(result) == tuple:
                     how_many_int, num, den, rem = result
                     int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
-                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_str)
+                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
                 else:
                     how_many_int = result
                     if how_many_int != 0:
-                        ret += '{0} {1}, '.format(how_many_int, unit_str)
+                        ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             elif unit == ureg.teaspoons:
                 result = to_nearest_frac(how_many_unit.magnitude, maxdenom=8)
                 if type(result) == tuple:
                     how_many_int, num, den = result
                     int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
-                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_str)
+                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_strs)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
                 else:
                     how_many_int = result
                     if how_many_int != 0:
-                        ret += '{0} {1}, '.format(how_many_int, unit_str)
+                        ret += '{0} {1}, '.format(how_many_int, unit_strs)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             else:
-                ret += '{0} {1}, '.format(how_many_int, unit_str)
+                ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                 leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
         else:
             leftover = how_many_unit
