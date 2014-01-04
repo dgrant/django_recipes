@@ -6,9 +6,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    #contact page
-    url(r'^contact/$', 'recipes.views.contact' ),
-#    url(r'^contact/thanks/$', direct_to_template, {'template': 'recipes/contactthanks.html'}),
     #recipes part of the site
     url(r'^cookbook/', include('recipes.urls')),
     #redirect the root to go to the recipes site

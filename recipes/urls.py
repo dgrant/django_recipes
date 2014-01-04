@@ -4,8 +4,6 @@ from .views import RecipeListView, RecipeDetailView
 
 
 urlpatterns = patterns('recipes.views',
-    (r'^search/$', 'search'),
-
     url(r'^$', RecipeListView.as_view(), name="recipe-home"),
     url(r'^list$', RecipeListView.as_view(), name="recipe-list"),
 

@@ -378,21 +378,31 @@ class Ingredient(models.Model):
                 unit_str = ' {0}'.format(self.unit.name_abbrev)
 
         grams_str = ''
-        if self.unit != None and self.unit.type != Unit.TYPE.mass and self.food.conversion_src_unit != None and self.food.conversion_factor != None:
+        # This translates the following to grams, 1) any volumes that have conversions defined
+        # 2) any imperial mass
+        if self.unit != None and ( \
+           (self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit != None and self.food.conversion_factor != None) or \
+           (self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.imperial)):
             amount_u = self.amount * ureg[self.unit.name]
             if self.amountMax != None:
                 amountMax_u = self.amountMax * ureg[self.unit.name]
-            # First, get it into the src unit for the Food conversion, if necessary
-            if self.unit.pk != self.food.conversion_src_unit.pk:
-                src_unit = ureg[self.food.conversion_src_unit.name]
-                amount_u = amount_u.to(src_unit)
+
+            if self.food.conversion_src_unit != None and self.food.conversion_factor != None and self.unit.type != Unit.TYPE.mass:
+                # First, get it into the src unit for the Food conversion, if necessary
+                if self.unit.pk != self.food.conversion_src_unit.pk:
+                    src_unit = ureg[self.food.conversion_src_unit.name]
+                    amount_u = amount_u.to(src_unit)
+                    if self.amountMax != None:
+                        amountMax_u = amountMax_u.to(src_unit)
+                # Then convert to grams
+                conversion_factor = (self.food.conversion_factor * ureg.grams) / (1.0 * ureg[self.food.conversion_src_unit.name])
+                amount_g = conversion_factor * amount_u
                 if self.amountMax != None:
-                    amountMax_u = amountMax_u.to(src_unit)
-            # Then convert to grams
-            conversion_factor = (self.food.conversion_factor * ureg.grams) / (1.0 * ureg[self.food.conversion_src_unit.name])
-            amount_g = conversion_factor * amount_u
-            if self.amountMax != None:
-                amountMax_g = conversion_factor * amountMax_u
+                    amountMax_g = conversion_factor * amountMax_u
+            else:
+                amount_g = amount_u.to(ureg.grams)
+                if self.amountMax != None:
+                    amountMax_g = amountMax_u.to(ureg.grams)
 
             if self.amountMax == None:
                 grams_str = ' ({0})'.format(nice_grams(amount_g))
