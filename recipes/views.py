@@ -14,7 +14,7 @@ def root(request):
 
 class RecipeListView(ListView):
     model = Recipe
-    paginate_by = 10
+    paginate_by = 25
 
     def get_queryset(self):
         qs = Recipe.objects.all()
