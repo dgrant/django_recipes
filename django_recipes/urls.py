@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     #redirect the root to go to the recipes site
     url(r'^$', 'recipes.views.root'),
     #registration module
-    url(r'^accounts/', include('registration.urls')),
+#    url(r'^accounts/', include('registration.urls')),
     #admin site
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
