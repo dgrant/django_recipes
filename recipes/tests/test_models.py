@@ -18,12 +18,15 @@ class IngredientTest(TestCase):
         self.lb = mommy.make('Unit', name='pound', name_abbrev='lb', type=Unit.TYPE.mass, system=Unit.SYSTEM.imperial)
         self.cup = mommy.make('Unit', name='cup', name_abbrev='cup', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
         self.tsp = mommy.make('Unit', name='tsp', name_abbrev='tsp', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
+        self.floz = mommy.make('Unit', name='fluid_ounce', name_abbrev='floz', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
 
         self.egg = mommy.make('Food', name='egg', name_plural='eggs')
         self.ketchup = mommy.make('Food', name='ketchup')
         self.water = mommy.make('Food', name='water', conversion_src_unit=self.l, conversion_factor=1000)
         self.flour = mommy.make('Food', name='flour', conversion_src_unit=self.cup, conversion_factor=125)
         self.sugar = mommy.make('Food', name='sugar')
+        self.tomatoes = mommy.make('Food', name='canned tomatoes')
+
 
     def test_formatted_amount_no_unit(self):
         ingredient = mommy.make('Ingredient', amount=1.0, food=self.egg)
@@ -69,6 +72,12 @@ class IngredientTest(TestCase):
         ingredient = mommy.make('Ingredient', amount=3000, food=self.water, unit=self.g)
         self.assertEquals(ingredient.formatted_amount(),
                           "3 kg water")
+
+    def test_formatted_amount_fluid_ounce(self):
+        ingredient = mommy.make('Ingredient', amount=14, food=self.tomatoes, unit=self.floz)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "14 floz canned tomatoes")
+
 
     def test_formatted_amount_lb_to_kg_nice(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.lb)

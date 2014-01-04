@@ -364,7 +364,8 @@ class Ingredient(models.Model):
             # grams, kilograms
             amount_g = (self.amount * ureg[self.unit.name]).to(ureg.grams)
             amount_str = '{0}'.format(nice_grams(amount_g))
-        elif self.unit != None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial:
+        elif self.unit != None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial \
+                        and ureg[self.unit.name] in [ureg.quarts, ureg.cups, ureg.tablespoons, ureg.teaspoons]:
             amount_cups = (self.amount * ureg[self.unit.name]).to(ureg.cups)
             amount_str = nice_cups(amount_cups)
         else:
