@@ -1,14 +1,14 @@
 Django==1.6.1
 yolk==0.4.3
 django-tagging==0.3.1
-django-extensions==0.9
+django-extensions==1.2.5
 django-pagination==1.0.7
 #django-registration==1.0
-South==0.8.3
-django-positions==0.4.3
-mysql-python==1.2.4
-PIL==1.1.7
-ipython==0.13
+South==0.8.4
+django-positions==0.5.0
+mysql-python==1.2.5
+Pillow==2.3.0
+ipython==1.1.0
 
 coverage==3.7.1
 model_mommy==1.2
