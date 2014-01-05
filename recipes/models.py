@@ -7,51 +7,6 @@ import math
 from pint import UnitRegistry
 ureg = UnitRegistry()
 
-def html_fraction(number, maxdenom=10):
-    """
-    Convert a float to a common fraction (or an integer if it is closer).
-
-    If the output is a fraction, the fraction part is wrapped in a span
-    with class "fraction" to enable styling of fractions.
-    """
-
-    number = float(number)
-    frac = to_frac(abs(number), maxdenom)
-
-    if type(frac) == int:
-        string = str(frac)
-    else:
-        intpart, numerator, denominator = frac
-        if intpart == 0:
-            string = '<span class="fraction"><sup>%i</sup>/<sub>%i</sub></span>' % frac[1:]
-        else:
-            string = '%i<span class="fraction"><sup>%i</sup>/<sub>%i</sub></span>' % frac
-
-    if number < 0:
-        return '-'+string
-    else:
-        return string
-
-def text_fraction(number, maxdenom=10):
-    """Convert a float to a common fraction (or integer if it is closer)."""
-
-    number = float(number)
-    frac = to_frac(abs(number), maxdenom)
-
-    if type(frac) == int:
-        string = str(frac)
-    else:
-        intpart, numerator, denominator = frac
-        if intpart == 0:
-            string = '%i/%i' % frac[1:]
-        else:
-            string = '%i %i/%i' % frac
-
-    if number < 0:
-        return '-'+string
-    else:
-        return string
-
 def to_nearest_frac(x, maxdenom):
     """
     Convert x to a common fraction.
@@ -132,6 +87,18 @@ def nice_grams(x):
     else:
         return nice_float(kg.magnitude, sig_figs=4) + " kg"
 
+def nice_grams_range(x, y):
+    x_kg = x.to(ureg.kg)
+    y_kg = y.to(ureg.kg)
+    if x_kg.magnitude < 1 and y_kg.magnitude < 1:
+        return "{0} to {1} g".format(nice_float(x.magnitude), nice_float(y.magnitude))
+    elif x_kg.magnitude < 1 and y_kg.magnitude >= 1:
+        return "{0} g to {1} kg".format(nice_float(x.magnitude), nice_float(y_kg.magnitude, sig_figs=4))
+    elif x_kg.magnitude >= 1 and y_kg.magnitude >= 1:
+        return "{0} to {1} kg".format(nice_float(x_kg.magnitude, sig_figs=4), nice_float(y_kg.magnitude, sig_figs=4))
+    else:
+        raise Exception("Should never get here!")
+
 def nice_cups(x):
     ''' x is a Pint quantity in cups '''
     tsp = x.to(ureg.teaspoon)
@@ -175,19 +142,6 @@ def nice_cups(x):
     while ret[-1] == ',' or ret[-1] == ' ':
         ret = ret[:-1]
     return ret
-
-def nice_grams_range(x, y):
-    x_kg = x.to(ureg.kg)
-    y_kg = y.to(ureg.kg)
-    if x_kg.magnitude < 1 and y_kg.magnitude < 1:
-        return "{0} to {1} g".format(nice_float(x.magnitude), nice_float(y.magnitude))
-    elif x_kg.magnitude < 1 and y_kg.magnitude >= 1:
-        return "{0} g to {1} kg".format(nice_float(x.magnitude), nice_float(y_kg.magnitude, sig_figs=4))
-    elif x_kg.magnitude >= 1 and y_kg.magnitude >= 1:
-        return "{0} to {1} kg".format(nice_float(x_kg.magnitude, sig_figs=4), nice_float(y_kg.magnitude, sig_figs=4))
-    else:
-        raise Exception("Should never get here!")
-
 
 def nice_float(x, sig_figs=None):
     if sig_figs is None:
@@ -363,9 +317,15 @@ class Ingredient(models.Model):
         if self.unit != None and self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.si:
             # grams, kilograms
             amount_g = (self.amount * ureg[self.unit.name]).to(ureg.grams)
-            amount_str = '{0}'.format(nice_grams(amount_g))
+            if self.amountMax == None:
+                amount_str = '{0}'.format(nice_grams(amount_g))
+            else:
+                amountMax_g = (self.amountMax * ureg[self.unit.name]).to(ureg.grams)
+                amount_str = '{0}'.format(nice_grams_range(amount_g, amountMax_g))
+
         elif self.unit != None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial \
                         and ureg[self.unit.name] in [ureg.quarts, ureg.cups, ureg.tablespoons, ureg.teaspoons]:
+            # tsp, tbsp, cups, quarts
             amount_cups = (self.amount * ureg[self.unit.name]).to(ureg.cups)
             amount_str = nice_cups(amount_cups)
         else:
