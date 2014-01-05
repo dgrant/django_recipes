@@ -28,6 +28,9 @@ class IngredientTest(TestCase):
         self.sugar = mommy.make('Food', name='sugar')
         self.tomatoes = mommy.make('Food', name='canned tomatoes')
 
+
+        self.sifted = mommy.make('PrepMethod', name='sifted')
+
     def test_formatted_amount_no_unit(self):
         ingredient = mommy.make('Ingredient', amount=1.0, food=self.egg)
         self.assertEquals(ingredient.formatted_amount(),
@@ -98,6 +101,31 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1 lb (454 g) sugar")
 
+    def test_formatted_amount_lb_to_kg_range_nice1(self):
+        ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.lb)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 to 2 lb (454 to 907 g) sugar")
+
+    def test_formatted_amount_lb_to_kg_range_nice2(self):
+        ingredient = mommy.make('Ingredient', amount=1, amountMax=3, food=self.sugar, unit=self.lb)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 to 3 lb (454 g to 1.361 kg) sugar")
+
+    def test_formatted_amount_lb_to_kg_range_nice3(self):
+        ingredient = mommy.make('Ingredient', amount=3, amountMax=4, food=self.sugar, unit=self.lb)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "3 to 4 lb (1.361 to 1.814 kg) sugar")
+
+    def test_formatted_amount_lb_to_kg_range_nice4(self):
+        ingredient = mommy.make('Ingredient', amount=3.1, food=self.sugar, unit=self.lb)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "3.1 lb (1.406 kg) sugar")
+
+    def test_formatted_amount_lb_to_kg_range_nice5(self):
+        ingredient = mommy.make('Ingredient', amount=3.1, amountMax=3.2, food=self.sugar, unit=self.lb)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "3.1 to 3.2 lb (1.406 to 1.451 kg) sugar")
+
     def test_formatted_amount_cups_tbsp_nice1(self):
         ingredient = mommy.make('Ingredient', amount=1.083333333334, food=self.flour, unit=self.cup)
         self.assertEquals(ingredient.formatted_amount(),
@@ -128,7 +156,7 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1/3 cup (42 g) flour")
 
-    def test_formatted_amount_cups_fractions_special_case1(self):
+    def test_formatted_amount_cups_fractions_special_case3(self):
         ingredient = mommy.make('Ingredient', amount=0.25, food=self.sugar, unit=self.tsp)
         self.assertEquals(ingredient.formatted_amount(),
                           "1/4 tsp sugar")
@@ -139,14 +167,7 @@ class IngredientTest(TestCase):
                           "2 cups sugar")
 
     def test_formatted_amount_prep_method(self):
-        sifted = mommy.make('PrepMethod', name='sifted')
-        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=sifted)
-        self.assertEquals(ingredient.formatted_amount(),
-                          "1 cup sifted sugar")
-
-    def test_formatted_amount_prep_method(self):
-        sifted = mommy.make('PrepMethod', name='sifted')
-        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=sifted)
+        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
         self.assertEquals(ingredient.formatted_amount(),
                           "1 cup sifted sugar")
 
@@ -161,6 +182,9 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           '12 3" tart shells')
 
+    def test_unicode(self):
+        i = mommy.make('Ingredient', amount=1.1, amountMax=2.1, food=self.sugar, unit=self.cup, prep_method=self.sifted, instruction='fried')
+        self.assertEquals(unicode(i), i.formatted_amount())
 
 test_cases_nearest = {4: (
                 ((0.1), 0),
@@ -201,3 +225,51 @@ class TestFractions(TestCase):
             for x, expected in x_and_expected:
                 result = to_frac_round_down(x, maxdenom)
                 self.assertEquals(result, expected)
+
+class SourceTest(TestCase):
+    def test_unicode(self):
+        s = mommy.make('Source')
+        self.assertEquals(unicode(s), s.name)
+
+class CategoryTest(TestCase):
+    def test_unicode(self):
+        c = mommy.make('Category')
+        self.assertEquals(unicode(c), c.name)
+
+class FoodGroupTest(TestCase):
+    def test_unicode(self):
+        f = mommy.make('FoodGroup')
+        self.assertEquals(unicode(f), f.name)
+
+class PrepMethodTest(TestCase):
+    def test_unicode(self):
+        p = mommy.make('PrepMethod')
+        self.assertEquals(unicode(p), p.name)
+
+class RecipeTest(TestCase):
+    def test_unicode(self):
+        r = mommy.make('Recipe')
+        self.assertEquals(unicode(r), r.title)
+
+class UnitTest(TestCase):
+    def test_unicode(self):
+        u = mommy.make('Unit')
+        self.assertEquals(unicode(u), u.name)
+
+class FoodTest(TestCase):
+    def test_unicode(self):
+        f = mommy.make('Food')
+        self.assertEquals(unicode(f), f.name_sorted)
+
+class DirectionTest(TestCase):
+    def test_unicode_title_too_long(self):
+        d = mommy.make('Direction', text='abcdefghijklmnopqrstuvwxyzabcdefghijklmno')
+        self.assertEquals(unicode(d), 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn...')
+
+    def test_unicode_just_right(self):
+        d = mommy.make('Direction', text='abcdefghijklmnopqrstuvwxyzabcdefghijklmn')
+        self.assertEquals(unicode(d), 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn')
+
+    def test_unicode_short(self):
+        d = mommy.make('Direction', text='a')
+        self.assertEquals(unicode(d), 'a')

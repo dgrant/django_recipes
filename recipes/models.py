@@ -207,9 +207,6 @@ class Photo(models.Model):
     #This field used because can't make ImageField core right now (see http://code.djangoproject.com/ticket/2534)
     keep = models.BooleanField(default=True, editable=False)
 
-    def __unicode__(self):
-        return str(self.recipe) + ' (%s)' % self.image
-
     def save(self):
         # Don't save if there is no image (since core field is always set).
         if not self.id and not self.image:
@@ -333,7 +330,7 @@ class Ingredient(models.Model):
             amount_str = '{0}'.format(nice_float(self.amount, sig_figs=4))
 
             if self.amountMax != None:
-                amountMax_str = ' to {0}'.format(nice_float(self.amountMax))
+                amountMax_str = ' to {0}'.format(nice_float(self.amountMax, sig_figs=4))
 
             if self.unit != None:
                 unit_str = ' {0}'.format(self.unit.name_abbrev)
@@ -387,22 +384,7 @@ class Ingredient(models.Model):
         return ret
 
     def __unicode__(self):
-        if self.amount == int(self.amount):
-            amount = str(int(self.amount))
-        else:
-            amount = self.amount
-        if self.amount == 1 and self.amountMax is None:
-            if self.unit != None:
-                unit = str(self.unit.name)
-            else:
-                unit = ''
-        else:
-            if self.unit != None:
-                unit = self.unit.name
-            else:
-                unit = ''
-        food = str(self.food).lower()
-        return "%s %s %s" % (amount, unit, food)
+        return self.formatted_amount()
 
     class Meta:
         ordering = ["direction", "order_index", "id"]
