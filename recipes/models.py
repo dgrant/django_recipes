@@ -316,6 +316,20 @@ class Food(models.Model):
     class Meta:
         ordering = ["name_sorted",]
 
+    def get_grams(self, unit_str):
+        conversion_factor_u = self.conversion_factor * (ureg.grams / ureg[self.conversion_src_unit.name])
+        conversion_factor_u = conversion_factor_u.to(ureg.grams / ureg[unit_str])
+        return nice_grams(conversion_factor_u * ureg[unit_str])
+
+    def get_grams_in_cup(self):
+        return self.get_grams('cup')
+
+    def get_grams_in_tbsp(self):
+        return self.get_grams('tbsp')
+
+    def get_grams_in_tsp(self):
+        return self.get_grams('tsp')
+
 class Ingredient(models.Model):
     amount = models.FloatField()
     amountMax = models.FloatField(null=True, blank=True)

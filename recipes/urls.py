@@ -1,11 +1,12 @@
 from django.conf.urls import url, patterns
 from models import Recipe
-from .views import RecipeListView, RecipeDetailView
+from .views import RecipeListView, RecipeDetailView, FoodConversionListView
 
 
 urlpatterns = patterns('recipes.views',
     url(r'^$', RecipeListView.as_view(), name="recipe-home"),
     url(r'^list$', RecipeListView.as_view(), name="recipe-list"),
+    url(r'^food-conversion-list$', FoodConversionListView.as_view(), name="food-conversion-list"),
 
     # tag pages
 #    url(r'^tag/(?P<tag>[^/]+)/$',

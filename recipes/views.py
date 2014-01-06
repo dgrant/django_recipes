@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.mail import send_mail
-from models import Recipe, Direction, Ingredient
+from models import Recipe, Food
 
 from django.views.generic import ListView, CreateView, DetailView
 
@@ -21,3 +21,11 @@ class RecipeListView(ListView):
 
 class RecipeDetailView(DetailView):
     model = Recipe
+
+class FoodConversionListView(ListView):
+    model = Food
+
+    def get_queryset(self):
+        qs = Food.objects.filter(conversion_factor__isnull=False)
+        return qs
+

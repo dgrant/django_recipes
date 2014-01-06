@@ -287,6 +287,25 @@ class FoodTest(TestCase):
         f = mommy.make('Food')
         self.assertEquals(unicode(f), f.name_sorted)
 
+    def test_get_grams_same_unit(self):
+        cups = mommy.make('Unit', name='cups')
+        f = mommy.make('Food', conversion_src_unit=cups, conversion_factor=125.)
+        cup_grams = f.get_grams_in_cup()
+        self.assertEquals(cup_grams, '125 g')
+
+    def test_get_grams_different_unit1(self):
+        cups = mommy.make('Unit', name='cups')
+        f = mommy.make('Food', conversion_src_unit=cups, conversion_factor=125.)
+        tbsp_grams = f.get_grams_in_tbsp()
+        self.assertEquals(tbsp_grams, '8 g')
+
+    def test_get_grams_different_unit2(self):
+        cups = mommy.make('Unit', name='cups')
+        f = mommy.make('Food', conversion_src_unit=cups, conversion_factor=125.)
+        tsp_grams = f.get_grams_in_tsp()
+        self.assertEquals(tsp_grams, '3 g')
+
+
 class DirectionTest(TestCase):
     def test_unicode_title_too_long(self):
         d = mommy.make('Direction', text='abcdefghijklmnopqrstuvwxyzabcdefghijklmno')

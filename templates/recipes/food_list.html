@@ -1,0 +1,28 @@
+{% extends "recipes/base.html" %}
+
+{% block content %}
+    <div class="table-responsive">
+	    <table class="table table-hover table-striped">
+		    <thead>
+			    <tr>
+				    <td><strong>Food name</strong></td>
+				    <td><strong>1 cup in grams</strong></td>
+				    <td><strong>1 Tbsp in grams</strong></td>
+				    <td><strong>1 tsp in grams</strong></td>
+			    </tr>
+		    </thead>
+
+		    <tbody>
+		    {% for food in object_list %}
+			    <tr>
+				    <td>{{ food.name_sorted }}</td>
+				    <td>{{ food.get_grams_in_cup }}</td>
+				    <td>{{ food.get_grams_in_tbsp }}</td>
+				    <td>{{ food.get_grams_in_tsp }}</td>
+			    </tr>
+		    {% endfor %}
+		    </tbody>
+	    </table>
+    </div>
+
+{% endblock %}
