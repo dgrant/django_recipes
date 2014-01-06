@@ -11,6 +11,7 @@
 	  <div class="col-md-12 text-center">
 		<h2>{{ object.title }}</h2>
 		<p class="recipe-summary">{{ object.summary }}</p>
+		<p>{{ object.description }}</p>
 	  </div>
 	</div>
 
@@ -34,11 +35,16 @@
 
 	<hr/>
 
+    {% if object.instructions %}
     <p><i>Extra Instructions:</i><br />
  	   {{ object.instructions }}
     </p>
+    {% endif %}
 
+    {% if object.prep_time %}
 	<p><i>Prep time: {{ object.prep_time }}</i></p>
+    {% endif %}
+
     {% if object.sources %}
 
     <p><i>Sources:</i>

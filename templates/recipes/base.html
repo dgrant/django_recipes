@@ -57,7 +57,8 @@
 </nav>
 
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-1">
+	  <!--
     <h2>Categories</h2>
 			<ul>
 				{% for category in categories_list %}
@@ -78,16 +79,19 @@
 				<li><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></li>
 				{% endfor %}
 			</ul>
+			-->
   </div>
-  <div class="col-md-9">
+  <div class="col-md-10">
     {% block content %}{% endblock %}
   </div>
+  <div class="col-md-1"/>
+
 </div>
 
 <div class="row">
   <div class="col-md-12">
 	  <p class="text-center">Thanks for visiting my site.<br />
-         Source code is licensed under the GPLv2 and available at <a href="http://code.google.com/p/django-recipes">Google Code</a></p>
+         Source code is licensed under the GPLv2 and available at <a href="https://github.com/dgrant/django_recipes">https://github.com/dgrant/django_recipes</a></p>
   </div>
 </div>
 		
