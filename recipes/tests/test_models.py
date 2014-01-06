@@ -1,5 +1,5 @@
 from django.test import TestCase
-from recipes.models import Unit, to_nearest_frac, to_frac_round_down
+from recipes.models import Unit, to_nearest_frac, to_frac_round_down, to_nearest_tsp
 
 from django.core.urlresolvers import reverse
 
@@ -9,6 +9,27 @@ from mock import Mock, patch
 class RecipeTest(TestCase):
     def test(self):
         cat = mommy.make('Recipe', title="title")
+
+test_cases_nearest_tsp = (
+                ((0.125), (0,1,8)),
+                ((0.25), (0,1,4)),
+                ((0.5), (0,1,2)),
+                ((1), 1),
+                ((1.1), (1,1,8)),
+                ((2.2), (2,1,4)),
+                ((3.3), (3,1,4)),
+                ((4.4), (4,1,2)),
+                ((5.5), (5,1,2)),
+                ((6.6), (6,1,2)),
+                ((7.7), (7,1,2)),
+                ((8.8), 9),
+                ((9.9), 10),
+              )
+
+class Utils(TestCase):
+    def test_to_nearest_tsp(self):
+            for x, expected_result in test_cases_nearest_tsp:
+                self.assertEquals(expected_result, to_nearest_tsp(x))
 
 class IngredientTest(TestCase):
     def setUp(self):
@@ -166,6 +187,11 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "2 cups sugar")
 
+    def test_formatted_amount_tsp(self):
+        ingredient = mommy.make('Ingredient', amount=0.3333333333333333333, food=self.sugar, unit=self.tsp)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1/4 tsp sugar")
+
     def test_formatted_amount_prep_method(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
         self.assertEquals(ingredient.formatted_amount(),
@@ -186,7 +212,7 @@ class IngredientTest(TestCase):
         i = mommy.make('Ingredient', amount=1.1, amountMax=2.1, food=self.sugar, unit=self.cup, prep_method=self.sifted, instruction='fried')
         self.assertEquals(unicode(i), i.formatted_amount())
 
-test_cases_nearest = {4: (
+test_cases_nearest = {tuple(range(1,5)): (
                 ((0.1), 0),
                 ((0.2), (0,1,4)),
                 ((0.3), (0,1,3)),

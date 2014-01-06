@@ -7,7 +7,7 @@ import math
 from pint import UnitRegistry
 ureg = UnitRegistry()
 
-def to_nearest_frac(x, maxdenom):
+def to_nearest_frac(x, denoms):
     """
     Convert x to a common fraction.
 
@@ -24,7 +24,7 @@ def to_nearest_frac(x, maxdenom):
     bestfrac = 0,1
     mindiff = x
 
-    for denom in range(1, maxdenom+1):
+    for denom in denoms:
         # for each denominator, there are two numerators to consider:
         # the one below x and the one above x
         for num in (int(x*denom), int(x*denom+1)):
@@ -99,8 +99,26 @@ def nice_grams_range(x, y):
     else:
         raise Exception("Should never get here!")
 
+def to_nearest_tsp(x):
+    intpart = int(x)
+    x -= intpart
+    assert x <= 1
+    num_dens = ((0, 1), (1,8), (1,4), (1,2), (1,1))
+    bestDiff = 2
+    for num, den in num_dens:
+        diff = abs(float(num)/float(den) - x)
+        if diff < bestDiff:
+            best = num, den
+            bestDiff = diff
+    if best[0] == 0:
+        return intpart
+    elif bestDiff >= 1-x:
+        return intpart+1
+    else:
+        return intpart, best[0], best[1]
+
 def nice_cups(x):
-    ''' x is a Pint quantity in cups '''
+    ''' x is a Pint object (quantity) in cups '''
     tsp = x.to(ureg.teaspoon)
     tsp = round(tsp.magnitude, 4) * ureg.teaspoon
     units = ((ureg.quarts, ('quart', 'quarts')), (ureg.cups, ('cup', 'cups')), (ureg.tablespoons, ('Tbsp', 'Tbsp')), (ureg.teaspoons, 'tsp'))
@@ -123,7 +141,7 @@ def nice_cups(x):
                         ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             elif unit == ureg.teaspoons:
-                result = to_nearest_frac(how_many_unit.magnitude, maxdenom=8)
+                result = to_nearest_tsp(how_many_unit.magnitude)
                 if type(result) == tuple:
                     how_many_int, num, den = result
                     int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
@@ -310,6 +328,7 @@ class Ingredient(models.Model):
 
     def formatted_amount(self):
         unit_str = ''
+        amountStr = ''
         amountMax_str = ''
         if self.unit != None and self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.si:
             # grams, kilograms
