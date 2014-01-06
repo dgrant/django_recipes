@@ -26,6 +26,6 @@ class FoodConversionListView(ListView):
     model = Food
 
     def get_queryset(self):
-        qs = Food.objects.filter(conversion_factor__isnull=False)
+        qs = Food.objects.with_conversions()
         return qs
 

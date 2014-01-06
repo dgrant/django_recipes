@@ -302,6 +302,10 @@ class Unit(models.Model):
     class Meta:
         ordering = ["name"]
 
+class FoodManager(models.Manager):
+    def with_conversions(self):
+        return self.prefetch_related('conversion_src_unit').filter(conversion_factor__isnull=False)
+
 class Food(models.Model):
     name = models.CharField(max_length=150)
     name_sorted = models.CharField(max_length=150, default='')
@@ -310,25 +314,39 @@ class Food(models.Model):
     conversion_factor = models.FloatField(null=True, blank=True)
     name_plural = models.CharField(max_length=150, null=True, blank=True)
 
+    objects = FoodManager()
+
     def __unicode__(self):
         return self.name_sorted
 
     class Meta:
         ordering = ["name_sorted",]
 
-    def get_grams(self, unit_str):
+    def get_grams(self, amount_u):
         conversion_factor_u = self.conversion_factor * (ureg.grams / ureg[self.conversion_src_unit.name])
-        conversion_factor_u = conversion_factor_u.to(ureg.grams / ureg[unit_str])
-        return nice_grams(conversion_factor_u * ureg[unit_str])
+        conversion_factor_u = conversion_factor_u.to(ureg.grams / amount_u)
+        return nice_grams(conversion_factor_u * amount_u)
 
     def get_grams_in_cup(self):
-        return self.get_grams('cup')
+        return self.get_grams(ureg.cup)
 
     def get_grams_in_tbsp(self):
-        return self.get_grams('tbsp')
+        return self.get_grams(ureg.tbsp)
 
     def get_grams_in_tsp(self):
-        return self.get_grams('tsp')
+        return self.get_grams(ureg.tsp)
+
+    def get_grams_in_100mL(self):
+        return self.get_grams(100 * ureg.ml)
+
+    def get_grams_for_unit(self):
+        return nice_grams(self.conversion_factor * ureg.grams)
+
+    def has_unitless_conversion(self):
+        return self.conversion_src_unit == None and self.conversion_factor != None
+
+    def has_imperial_conversion(self):
+        return self.conversion_src_unit != None and self.conversion_src_unit.name in ('millilitre', 'cup', 'tablespoon', 'teaspoon') and self.conversion_factor != None
 
 class Ingredient(models.Model):
     amount = models.FloatField()

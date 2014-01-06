@@ -6,9 +6,11 @@
 		    <thead>
 			    <tr>
 				    <td><strong>Food name</strong></td>
-				    <td><strong>1 cup in grams</strong></td>
-				    <td><strong>1 Tbsp in grams</strong></td>
-				    <td><strong>1 tsp in grams</strong></td>
+				    <td><strong>1 unit in grams</strong></td>
+				    <td><strong>g per cup</strong></td>
+				    <td><strong>g per 100 mL</strong></td>
+				    <td><strong>g per Tbsp</strong></td>
+				    <td><strong>g per tsp</strong></td>
 			    </tr>
 		    </thead>
 
@@ -16,9 +18,19 @@
 		    {% for food in object_list %}
 			    <tr>
 				    <td>{{ food.name_sorted }}</td>
-				    <td>{{ food.get_grams_in_cup }}</td>
-				    <td>{{ food.get_grams_in_tbsp }}</td>
-				    <td>{{ food.get_grams_in_tsp }}</td>
+				    {% if food.has_unitless_conversion %}
+				        <td>{{ food.get_grams_for_unit }}</td>
+			            {% else %}
+				    	<td></td>
+				    {% endif %}
+				    {% if food.has_imperial_conversion %}
+					    <td>{{ food.get_grams_in_cup }}</td>
+					    <td>{{ food.get_grams_in_100mL }}</td>
+					    <td>{{ food.get_grams_in_tbsp }}</td>
+					    <td>{{ food.get_grams_in_tsp }}</td>
+				    {% else %}
+				    <td></td><td></td><td></td><td></td>
+				    {% endif %}
 			    </tr>
 		    {% endfor %}
 		    </tbody>
