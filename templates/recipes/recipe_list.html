@@ -1,7 +1,7 @@
 {% extends "recipes/base.html" %}
 
 {% block content %}
-    <h2>Recipes ({{ paginator.count }} in total)</h2>
+    <h2>Recipes</h2>
     <ul>
         {% for recipe in object_list %}
 	<li><a href="{% url 'recipe-detail' recipe.slug %}">{{ recipe.title }}</a>: {{ recipe.summary }}</li>

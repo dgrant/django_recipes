@@ -60,8 +60,7 @@
     {% endif %}
 
     {% if object.photo_set %}
-        <h3>Photos:</h3>
-            <ul>
+   	 <ul>
             {% for photo in object.photo_set.all %}
                 <li><a href="/media/{{ photo.image }}"><img width="300" src="/media/{{ photo.image }}"></img></a></li>
             {% endfor %}
