@@ -129,6 +129,7 @@ def nice_cups(x):
         how_many_int = int(how_many_unit.magnitude)
         if how_many_int != 0 or unit == ureg.teaspoons or unit == ureg.cups:
             if unit == ureg.cups:
+                # Cups need to be formatted as a mixed fraction, using a maximum denominator of 4.
                 result = to_frac_round_down(how_many_unit.magnitude, maxdenom=4)
                 if type(result) == tuple:
                     how_many_int, num, den, rem = result
@@ -141,6 +142,7 @@ def nice_cups(x):
                         ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             elif unit == ureg.teaspoons:
+                # Teaspoons need some special care, they need to be formated as 1/8, 1/4, 1/2 but nothing else.
                 result = to_nearest_tsp(how_many_unit.magnitude)
                 if type(result) == tuple:
                     how_many_int, num, den = result
@@ -153,6 +155,7 @@ def nice_cups(x):
                         ret += '{0} {1}, '.format(how_many_int, unit_strs)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             else:
+                # Tablespoons and quarts and everything else bigger than that: don't do any fractions for these.
                 ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                 leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
         else:
