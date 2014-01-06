@@ -135,7 +135,8 @@ def nice_cups(x):
                     how_many_int, num, den, rem = result
                     int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
                     ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
-                    leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
+                    #leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
+                    leftover = rem * unit
                 else:
                     how_many_int = result
                     if how_many_int != 0:
