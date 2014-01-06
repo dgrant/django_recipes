@@ -88,16 +88,16 @@ def nice_grams(x):
         return nice_float(kg.magnitude, sig_figs=4) + " kg"
 
 def nice_grams_range(x, y):
+    assert x <= y
     x_kg = x.to(ureg.kg)
     y_kg = y.to(ureg.kg)
     if x_kg.magnitude < 1 and y_kg.magnitude < 1:
         return "{0} to {1} g".format(nice_float(x.magnitude), nice_float(y.magnitude))
     elif x_kg.magnitude < 1 and y_kg.magnitude >= 1:
         return "{0} g to {1} kg".format(nice_float(x.magnitude), nice_float(y_kg.magnitude, sig_figs=4))
-    elif x_kg.magnitude >= 1 and y_kg.magnitude >= 1:
-        return "{0} to {1} kg".format(nice_float(x_kg.magnitude, sig_figs=4), nice_float(y_kg.magnitude, sig_figs=4))
     else:
-        raise Exception("Should never get here!")
+        #x_kg.magnitude >= 1 and y_kg.magnitude >= 1:
+        return "{0} to {1} kg".format(nice_float(x_kg.magnitude, sig_figs=4), nice_float(y_kg.magnitude, sig_figs=4))
 
 def to_nearest_tsp(x):
     intpart = int(x)
@@ -197,8 +197,8 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
         ordering = ["order_index"]
 
-    def get_absolute_url(self):
-        return "/cookbook/categories/%s/" % self.slug
+#    def get_absolute_url(self):
+#        return "/cookbook/categories/%s/" % self.slug
 
 class FoodGroup(models.Model):
     name = models.CharField(max_length=150)
@@ -229,11 +229,11 @@ class Photo(models.Model):
     #This field used because can't make ImageField core right now (see http://code.djangoproject.com/ticket/2534)
     keep = models.BooleanField(default=True, editable=False)
 
-    def save(self):
+#    def save(self):
         # Don't save if there is no image (since core field is always set).
-        if not self.id and not self.image:
-            return
-        super(Photo, self).save()
+#        if not self.id and not self.image:
+#            return
+#        super(Photo, self).save()
 
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
