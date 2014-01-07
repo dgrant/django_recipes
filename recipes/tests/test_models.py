@@ -43,6 +43,7 @@ class IngredientTest(TestCase):
         self.floz = mommy.make('Unit', name='fluid_ounce', name_abbrev='floz', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
 
         self.egg = mommy.make('Food', name='egg', name_plural='eggs')
+        self.bun = mommy.make('Food', name='bun', name_plural='buns', conversion_factor=50)
         self.ketchup = mommy.make('Food', name='ketchup')
         self.water = mommy.make('Food', name='water', conversion_src_unit=self.l, conversion_factor=1000)
         self.flour = mommy.make('Food', name='flour', conversion_src_unit=self.cup, conversion_factor=125)
@@ -192,6 +193,11 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1/4 tsp sugar")
 
+    def test_formatted_amount_unitless_with_conversion(self):
+        ingredient = mommy.make('Ingredient', amount=1, food=self.bun)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "1 (50 g) bun")
+
     def test_formatted_amount_prep_method(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
         self.assertEquals(ingredient.formatted_amount(),
@@ -304,7 +310,6 @@ class FoodTest(TestCase):
         f = mommy.make('Food', conversion_src_unit=cups, conversion_factor=125.)
         tsp_grams = f.get_grams_in_tsp()
         self.assertEquals(tsp_grams, '3 g')
-
 
 class DirectionTest(TestCase):
     def test_unicode_title_too_long(self):

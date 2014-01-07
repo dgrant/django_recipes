@@ -391,6 +391,7 @@ class Ingredient(models.Model):
                 unit_str = ' {0}'.format(self.unit.name_abbrev)
 
         grams_str = ''
+        amount_g = None
         # This translates the following to grams, 1) any volumes that have conversions defined
         # 2) any imperial mass
         if self.unit != None and ( \
@@ -417,10 +418,18 @@ class Ingredient(models.Model):
                 if self.amountMax != None:
                     amountMax_g = amountMax_u.to(ureg.grams)
 
+        elif self.unit == None and self.food.conversion_factor != None and self.food.conversion_src_unit == None:
+            amount_g = ureg.grams * self.food.conversion_factor * self.amount
+            if self.amountMax != None:
+                amountMax_g = ureg.grams * self.food.conversion_factor * self.amountMax
+
+        if amount_g != None:
             if self.amountMax == None:
                 grams_str = ' ({0})'.format(nice_grams(amount_g))
             else:
                 grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
+
+
 
         if self.food.name_plural != None and self.food.name_plural != '' and (self.amount != 1 or self.amountMax != None):
             food_str = self.food.name_plural

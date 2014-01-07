@@ -62,6 +62,11 @@ class RecipeAdmin(admin.ModelAdmin):
     model = Recipe
     inlines = [DirectionInlineAdmin, IngredientInlineAdmin, PhotoInlineAdmin]
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'category':
+            kwargs["queryset"] = Category.objects.all().order_by('name')
+        return super(RecipeAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
 admin.site.register(Source, SourceAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(FoodGroup)
