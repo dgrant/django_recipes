@@ -201,12 +201,7 @@ class IngredientTest(TestCase):
     def test_formatted_amount_prep_method(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
         self.assertEquals(ingredient.formatted_amount(),
-                          "1 cup sifted sugar")
-
-    def test_formatted_amount_instruction(self):
-        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, instruction='fried')
-        self.assertEquals(ingredient.formatted_amount(),
-                          "1 cup sugar (fried)")
+                          "1 cup sugar, sifted")
 
     def test_formatted_amount_tar_shells(self):
         tartshells = mommy.make('Food', name='3" tart shells')
@@ -215,7 +210,7 @@ class IngredientTest(TestCase):
                           '12 3" tart shells')
 
     def test_unicode(self):
-        i = mommy.make('Ingredient', amount=1.1, amountMax=2.1, food=self.sugar, unit=self.cup, prep_method=self.sifted, instruction='fried')
+        i = mommy.make('Ingredient', amount=1.1, amountMax=2.1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
         self.assertEquals(unicode(i), i.formatted_amount())
 
 test_cases_nearest = {tuple(range(1,5)): (
