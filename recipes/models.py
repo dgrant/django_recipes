@@ -155,6 +155,9 @@ def nice_cups(x):
                     if how_many_int != 0:
                         ret += '{0} {1}, '.format(how_many_int, unit_strs)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
+            elif unit == ureg.quarts and how_many_int == 1:
+                # if we only have 1 quart, doing display and quarts... just use 4+ cups instead
+                leftover = how_many_unit
             else:
                 # Tablespoons and quarts and everything else bigger than that: don't do any fractions for these.
                 ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
