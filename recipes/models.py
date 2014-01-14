@@ -355,7 +355,6 @@ class Ingredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     food = models.ForeignKey(Food)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
-    instruction = models.CharField(max_length=50, blank=True, default='')
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
     direction = models.ForeignKey(Direction, blank=True, null=True, related_name='ingredients')
 
@@ -438,13 +437,9 @@ class Ingredient(models.Model):
 
         prep_method_str = ''
         if self.prep_method != None:
-            prep_method_str = ' ' + self.prep_method.name
+            prep_method_str = ', ' + self.prep_method.name
 
-        instruction_str = ''
-        if self.instruction != '':
-            instruction_str = ' (' + self.instruction + ')'
-
-        ret = '{0}{1}{2}{3}{4} {5}{6}'.format(amount_str, amountMax_str, unit_str, grams_str, prep_method_str, food_str, instruction_str)
+        ret = '{0}{1}{2}{3} {4}{5}'.format(amount_str, amountMax_str, unit_str, grams_str, food_str, prep_method_str,)
         return ret
 
     def __unicode__(self):

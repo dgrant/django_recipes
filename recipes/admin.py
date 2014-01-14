@@ -32,7 +32,7 @@ class UnitAdmin(admin.ModelAdmin):
 
 class IngredientAdmin(admin.ModelAdmin):
     model = Ingredient
-    list_display = ('food', 'unit', 'amount', 'instruction', 'prep_method',)
+    list_display = ('food', 'unit', 'amount', 'prep_method',)
 
 class IngredientInlineAdmin(admin.TabularInline):
     model = Ingredient
