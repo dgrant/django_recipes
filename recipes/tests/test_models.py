@@ -163,10 +163,20 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           "1 1/2 cup (188 g) flour")
 
-    def test_formatted_amount_cups_fractions_special_case(self):
+    def test_formatted_amount_cups_fractions_quarts1(self):
+        ingredient = mommy.make('Ingredient', amount=9, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "2 quarts, 1 cup sugar")
+
+    def test_formatted_amount_cups_fractions_quarts2(self):
         ingredient = mommy.make('Ingredient', amount=4.5, food=self.sugar, unit=self.cup)
         self.assertEquals(ingredient.formatted_amount(),
-                          "1 quart, 1/2 cup sugar")
+                          "4 1/2 cups sugar")
+
+    def test_formatted_amount_cups_fractions_quarts3(self):
+        ingredient = mommy.make('Ingredient', amount=7.5, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          "7 1/2 cups sugar")
 
     def test_formatted_amount_cups_fractions_special_case1(self):
         ingredient = mommy.make('Ingredient', amount=0.3334, food=self.flour, unit=self.cup)
