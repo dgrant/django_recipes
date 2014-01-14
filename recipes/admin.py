@@ -32,7 +32,7 @@ class UnitAdmin(admin.ModelAdmin):
 
 class IngredientAdmin(admin.ModelAdmin):
     model = Ingredient
-    list_display = ('food', 'unit', 'amount', 'instruction',)
+    list_display = ('food', 'unit', 'amount', 'instruction', 'prep_method',)
 
 class IngredientInlineAdmin(admin.TabularInline):
     model = Ingredient
@@ -53,7 +53,7 @@ class IngredientInlineAdmin(admin.TabularInline):
         return model.objects.get(pk=object_id)
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'summary', 'slug', 'prep_time',)
+    list_display = ('title', 'summary', 'slug', 'prep_time', )
     fields = ('title', 'slug', 'category', 'summary', 'description', 'sources', 'prep_time',)
     list_filter = ('title', 'sources',)
     search_fields = ('title', 'description', 'summary',)
