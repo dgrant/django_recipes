@@ -2,13 +2,17 @@
 
 This is a complete recipe system using Python + Django. A complete demonstration is live at [http://recipes.davidgrant.ca/cookbook/](http://recipes.davidgrant.ca/cookbook/).
 
-So far it includes:
+Features
+========
 
 * Most important models, such as Recipe, Food, Ingredient, Direction, Category, and a few more.
 * Very nice admin interface for creating recipes with inline ingredients and directions.
 * Front-end: only a recipe_list and recipe_detail so far, but the recipe_detail has an experimental method of displaying recipes that is based on this LaTeX style: http://www.ctan.org/tex-archive/macros/latex/contrib/cooking/ (apparently based on style in a famous German cookbook by Dr. Oetker (Gromzik, J.; Reich, C.; Sander, C. (ed.): Dr. Oetker Schulkochbuch – Das Original. Ceres, Bielefeld, 1996.)
+* Automatic conversion from imperial weights and volumes to grams
+* Automatic nice formatting of imperial volumes
 
-Competitors/related projects:
+Competitors/related projects
+============================
 
 * KRecipes - KDE-based desktop recipes software.
 * Ben Collins-Sussman's effrecipes - Simple, but it works. Not under active development.
@@ -16,7 +20,8 @@ Competitors/related projects:
 
 If you are aware of any other similar projects please let me know. I am especially interested in any other web-based and open-source cookbook projects.
 
-Getting started:
+Getting started
+===============
 
 Follow these steps to get the recipes site up and running.
 
