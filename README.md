@@ -27,8 +27,11 @@ Getting started
 Follow these steps to get the recipes site up and running.
 
 1. Fork or clone the project.
-1. Edit settings.py and set your DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, and DATABASE_PASSWORD.
+1. Run ./createVirtualEnv.sh to create a virtualenv environment in an env directory with the correct dependencies.
+1. Copy django_recipes/settings/local.py.example to local.py and alter settings as necessary.
+1. Run ". ./setlocal.sh"
 1. Run ./manage.py syncdb from the menu
 1. Run ./manage.py runserver
 1. Go to http://locahost:8000 in your browser
-1. The admin interface is at http://localhost:8000/admin and there is a somewhat useful view at http://localhost:8000/recipes/recipes
+1. The admin interface is at http://localhost:8000/admin
+1. You can run unit tests by running ./ci_test.sh
