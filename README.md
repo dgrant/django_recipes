@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/dgrant/django_recipes.png)](https://travis-ci.org/dgrant/django_recipes) [![Coverage Status](https://coveralls.io/repos/dgrant/django_recipes/badge.png)](https://coveralls.io/r/dgrant/django_recipes)
 
-I wanted to create a family cookbook, inspired by my mom who took my Nana's old recipes and put them into electronic form as a collection of Word documents. At first I thought about using LaTeX to separate the style from the content a bit, then I thought about using XML, then I settled on a database as being the most generic to store recipe data. I quickly decided on using Django to create this cookbook framework because Python is probably my strongest language and it makes creating custom websites really easy.
+This is a complete recipe system using Python + Django. A complete demonstration is live at [http://recipes.davidgrant.ca/cookbook/](http://recipes.davidgrant.ca/cookbook/).
 
 So far it includes:
 
