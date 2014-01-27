@@ -26,7 +26,7 @@ Getting started
 
 Follow these steps to get the recipes site up and running.
 
-1. Checkout the project from svn.
+1. Fork or clone the project.
 1. Edit settings.py and set your DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, and DATABASE_PASSWORD.
 1. Run ./manage.py syncdb from the menu
 1. Run ./manage.py runserver
