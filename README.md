@@ -9,7 +9,8 @@ Features
 * Very nice admin interface for creating recipes with inline ingredients and directions.
 * Front-end: only a recipe_list and recipe_detail so far, but the recipe_detail has an experimental method of displaying recipes that is based on this LaTeX style: http://www.ctan.org/tex-archive/macros/latex/contrib/cooking/ (apparently based on style in a famous German cookbook by Dr. Oetker (Gromzik, J.; Reich, C.; Sander, C. (ed.): Dr. Oetker Schulkochbuch – Das Original. Ceres, Bielefeld, 1996.)
 * Automatic conversion from imperial weights and volumes to grams
-* Automatic nice formatting of imperial volumes
+* Automatic nice formatting of imperial volumes.
+* Uses South database migration system.
 
 Competitors/related projects
 ============================
