@@ -164,9 +164,23 @@ def nice_cups(x):
                 leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
         else:
             leftover = how_many_unit
-    while ret[-1] == ',' or ret[-1] == ' ':
-        ret = ret[:-1]
+    if ret != '':
+        while ret[-1] == ',' or ret[-1] == ' ':
+            ret = ret[:-1]
+    else:
+        ret = 'pinch of'
     return ret
+
+def nice_cups_range(cups, maxCups):
+    start = nice_cups(cups)
+    start_units = start.split(' ')[-1]
+    end = nice_cups(maxCups)
+    end_units = end.split(' ')[-1]
+    min_len = min(len(start_units), len(end_units))
+    if start_units[:min_len-1] == end_units[:min_len-1]:
+        return ' '.join(start.split(' ')[:-1]) + ' to ' + end
+    else:
+        return start + ' to ' + end
 
 def nice_float(x, sig_figs=None):
     if sig_figs is None:
@@ -269,9 +283,8 @@ class Recipe(models.Model):
         for direction in self.directions.all():
             ingredients = []
             for ingredient in direction.ingredients.all():
-                ingredients.append(ingredient.formatted_amount())
+                ingredients.append(ingredient.formatted_amount(scale=self.scale))
             a.append((direction.text, ingredients))
-        print a
         return a
 
 class DirectionManager(models.Manager):
@@ -374,7 +387,11 @@ class Ingredient(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
 
-    def formatted_amount(self):
+    def formatted_amount(self, scale=None):
+        if scale != None:
+            self.amount = self.amount * scale
+            if self.amountMax != None:
+                self.amountMax = self.amountMax * scale
         unit_str = ''
         amountStr = ''
         amountMax_str = ''
@@ -391,7 +408,12 @@ class Ingredient(models.Model):
                         and ureg[self.unit.name] in [ureg.quarts, ureg.cups, ureg.tablespoons, ureg.teaspoons]:
             # tsp, tbsp, cups, quarts
             amount_cups = (self.amount * ureg[self.unit.name]).to(ureg.cups)
-            amount_str = nice_cups(amount_cups)
+            if self.amountMax != None:
+                amountMax_cups = (self.amountMax * ureg[self.unit.name]).to(ureg.cups)
+                amount_str = nice_cups_range(amount_cups, amountMax_cups)
+            else:
+                amount_str = nice_cups(amount_cups)
+
         else:
             # everything else
             amount_str = '{0}'.format(nice_float(self.amount, sig_figs=4))
