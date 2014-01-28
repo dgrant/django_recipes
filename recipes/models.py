@@ -264,6 +264,16 @@ class Recipe(models.Model):
         '''This is just used from the admin interface'''
         return ('recipe_detail_by_slug', [self.slug])
 
+    def get_text(self):
+        a = []
+        for direction in self.directions.all():
+            ingredients = []
+            for ingredient in direction.ingredients.all():
+                ingredients.append(ingredient.formatted_amount())
+            a.append((direction.text, ingredients))
+        print a
+        return a
+
 class DirectionManager(models.Manager):
 
     def all(self):
