@@ -15,25 +15,25 @@
 	  </div>
 	</div>
 
-	<!-- Ingredient/direction style #1 -->
-       	{% for direction in object.directions.all %}
+       	{% for direction, ingredients in object.get_text %}
   	<div class="row" >
 				<div class="col-md-5 col-md-offset-1" style="border-top: 1px solid #888;">
 					<ul class="list-unstyled text-right">
-						{% for ingredient in direction.ingredients.all %}
-						<li style="margin-top: 5px;"><em>{{ingredient.formatted_amount}}</em></li>
+						{% for ingredient in ingredients %}
+						<li style="margin-top: 5px;"><em>{{ingredient}}</em></li>
 						{% endfor %}
 					</ul>
 				</div>
 				<div class="col-md-5" style="border-top: 1px solid #888;">
 					<p style="margin-top: 5px;">
-					{{direction.text}}
+					{{direction}}
 					</p>
 				</div>
 		</div>	<!-- row -->
 	{% endfor %}
 
 	<hr/>
+
 
     {% if object.instructions %}
     <p><i>Extra Instructions:</i><br />
