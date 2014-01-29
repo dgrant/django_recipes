@@ -387,11 +387,20 @@ class Ingredient(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
 
-    def formatted_amount(self, scale=None):
-        if scale != None:
-            self.amount = self.amount * scale
-            if self.amountMax != None:
-                self.amountMax = self.amountMax * scale
+    def _formatted_food(self):
+        if self.food.name_plural != None and self.food.name_plural != '' and (self.amount != 1 or self.amountMax != None):
+            food_str = self.food.name_plural
+        else:
+            food_str = self.food.name
+        return food_str
+
+    def _formatted_prep(self):
+        prep_method_str = ''
+        if self.prep_method != None:
+            prep_method_str = ', ' + self.prep_method.name
+        return prep_method_str
+
+    def _formatted_amount(self):
         unit_str = ''
         amountStr = ''
         amountMax_str = ''
@@ -424,6 +433,9 @@ class Ingredient(models.Model):
             if self.unit != None:
                 unit_str = ' {0}'.format(self.unit.name_abbrev)
 
+        return amount_str + amountMax_str + unit_str
+
+    def _formatted_grams(self):
         grams_str = ''
         amount_g = None
         # This translates the following to grams, 1) any volumes that have conversions defined
@@ -463,18 +475,23 @@ class Ingredient(models.Model):
             else:
                 grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
 
+        return grams_str
 
+    def formatted_amount(self, scale=None):
+        if scale != None:
+            self.amount = self.amount * scale
+            if self.amountMax != None:
+                self.amountMax = self.amountMax * scale
 
-        if self.food.name_plural != None and self.food.name_plural != '' and (self.amount != 1 or self.amountMax != None):
-            food_str = self.food.name_plural
-        else:
-            food_str = self.food.name
+        amount_str = self._formatted_amount()
 
-        prep_method_str = ''
-        if self.prep_method != None:
-            prep_method_str = ', ' + self.prep_method.name
+        grams_str = self._formatted_grams()
 
-        ret = '{0}{1}{2}{3} {4}{5}'.format(amount_str, amountMax_str, unit_str, grams_str, food_str, prep_method_str,)
+        food_str = self._formatted_food()
+
+        prep_method_str = self._formatted_prep()
+
+        ret = '{0}{1} {2}{3}'.format(amount_str, grams_str, food_str, prep_method_str,)
         return ret
 
     def __unicode__(self):
