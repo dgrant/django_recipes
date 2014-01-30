@@ -7,9 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     #recipes part of the site
-    url(r'^cookbook/', include('recipes.urls')),
-    #redirect the root to go to the recipes site
-    url(r'^$', 'recipes.views.root'),
+    url(r'', include('recipes.urls')),
     #registration module
 #    url(r'^accounts/', include('registration.urls')),
     #admin site

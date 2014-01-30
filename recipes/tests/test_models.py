@@ -219,6 +219,26 @@ class IngredientTest(TestCase):
         self.assertEquals(ingredient.formatted_amount(),
                           '12 3" tart shells')
 
+    def test_formatted_amount_scale(self):
+        ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(scale=2),
+                          '2 cups sugar')
+
+    def test_formatted_amount_scale_max(self):
+        ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(scale=2),
+                          '2 to 4 cups sugar')
+
+    def test_formatted_amount_range_cups(self):
+        ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          '1 to 2 cups sugar')
+
+    def test_formatted_amount_range_mixed_imperial(self):
+        ingredient = mommy.make('Ingredient', amount=0.0625, amountMax=2, food=self.sugar, unit=self.cup)
+        self.assertEquals(ingredient.formatted_amount(),
+                          '1 Tbsp to 2 cups sugar')
+
     def test_unicode(self):
         i = mommy.make('Ingredient', amount=1.1, amountMax=2.1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
         self.assertEquals(unicode(i), i.formatted_amount())

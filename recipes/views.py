@@ -22,6 +22,14 @@ class RecipeListView(ListView):
 class RecipeDetailView(DetailView):
     model = Recipe
 
+    def get_object(self, queryset=None):
+        recipe = super(RecipeDetailView, self).get_object(queryset=queryset)
+        if 'scale' in self.request.GET:
+            recipe.scale = float(self.request.GET['scale'])
+        else:
+            recipe.scale = None
+        return recipe
+
 class FoodConversionListView(ListView):
     model = Food
 
