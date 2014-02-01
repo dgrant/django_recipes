@@ -252,6 +252,12 @@ class Photo(models.Model):
 #            return
 #        super(Photo, self).save()
 
+class ServingString(models.Model):
+    text = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.text
+
 class Recipe(models.Model):
     title = models.CharField(max_length=50)
     summary = models.CharField(max_length=500, blank=True)
@@ -262,6 +268,8 @@ class Recipe(models.Model):
     mtime = models.DateTimeField(auto_now=True)
     sources = models.ManyToManyField(Source, blank=True)
     category = models.ForeignKey(Category)
+    serving_string = models.ForeignKey(ServingString, null=True, blank=True)
+    serving_value = models.IntegerField(null=True, blank=True)
 
     def __unicode__(self):
         return self.title
@@ -271,6 +279,7 @@ class Recipe(models.Model):
 
     def save(self):
         self.mtime = datetime.datetime.now()
+        self.scale = 1
         super(Recipe, self).save()
 
     @models.permalink
@@ -286,6 +295,19 @@ class Recipe(models.Model):
                 ingredients.append(ingredient.formatted_amount(scale=self.scale))
             a.append((direction.text, ingredients))
         return a
+
+    def get_serving(self):
+        if self.serving_value != None != '' and self.serving_string != None and self.serving_string.text != '' and self.serving_string.text.find('%s') != -1:
+            if self.scale != None:
+                num_sig_figs = len(str(self.serving_value))
+                _serving_value_scaled = nice_float(self.serving_value * self.scale, num_sig_figs)
+            else:
+                _serving_value_scaled = self.serving_value
+            ret = self.serving_string.text % (_serving_value_scaled,)
+            return ret
+        else:
+            return None
+
 
 class DirectionManager(models.Manager):
 

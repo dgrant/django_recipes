@@ -3,19 +3,20 @@
 {% block content %}
 <!--
         <div id="recipe-links">
-          <a href="/admin/recipes/recipe/{{ object.id }}">edit</a>
+          <a href="/admin/recipes/recipe/{{ recipe.id }}">edit</a>
         </div>
 -->
 
 	<div class="row">
 	  <div class="col-md-12 text-center">
-		<h2>{{ object.title }}</h2>
-		<p class="recipe-summary">{{ object.summary }}</p>
-		<p>{{ object.description }}</p>
+		<h2>{{ recipe.title }}</h2>
+		<p class="recipe-summary">{{ recipe.summary }}</p>
+		<p>{{ recipe.description }}</p>
+		{% if recipe.get_serving %}<p>{{ recipe.get_serving }}</p>{% endif %}
 	  </div>
 	</div>
 
-       	{% for direction, ingredients in object.get_text %}
+       	{% for direction, ingredients in recipe.get_text %}
   	<div class="row" >
 				<div class="col-md-5 col-md-offset-1" style="border-top: 1px solid #888;">
 					<ul class="list-unstyled text-right">
@@ -35,33 +36,33 @@
 	<hr/>
 
 
-    {% if object.instructions %}
+    {% if recipe.instructions %}
     <p><i>Extra Instructions:</i><br />
- 	   {{ object.instructions }}
+ 	   {{ recipe.instructions }}
     </p>
     {% endif %}
 
-    {% if object.prep_time %}
-	<p><i>Prep time: {{ object.prep_time }}</i></p>
+    {% if recipe.prep_time %}
+	<p><i>Prep time: {{ recipe.prep_time }}</i></p>
     {% endif %}
 
-    {% if object.sources %}
+    {% if recipe.sources %}
 
     <p><i>Sources:</i>
             <ul>
-            {% for source in object.sources.all %}
+            {% for source in recipe.sources.all %}
                 <li>{{ source }}</li>
             {% endfor %}
             </ul>
     {% endif %}
 
-    {% if object.category %}
-    <p><i>Category:</i> <a href="/recipes/category/{{ object.category.id }}">{{ object.category }}</a></p>
+    {% if recipe.category %}
+    <p><i>Category:</i> <a href="/recipes/category/{{ recipe.category.id }}">{{ recipe.category }}</a></p>
     {% endif %}
 
-    {% if object.photo_set %}
+    {% if recipe.photo_set %}
    	 <ul>
-            {% for photo in object.photo_set.all %}
+            {% for photo in recipe.photo_set.all %}
                 <li><a href="/media/{{ photo.image }}"><img width="300" src="/media/{{ photo.image }}"></img></a></li>
             {% endfor %}
             </ul>

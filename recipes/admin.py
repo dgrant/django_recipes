@@ -54,7 +54,7 @@ class IngredientInlineAdmin(admin.TabularInline):
 
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('title', 'summary', 'slug', 'prep_time',)
-    fields = ('title', 'slug', 'category', 'summary', 'description', 'sources', 'prep_time',)
+    fields = ('title', 'slug', 'category', 'summary', 'description', 'serving_value', 'serving_string', 'sources', 'prep_time',)
     list_filter = ('title', 'sources',)
     search_fields = ('title', 'description', 'summary',)
     prepopulated_fields = {'slug': ('title',)}
@@ -67,6 +67,9 @@ class RecipeAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Category.objects.all().order_by('name')
         return super(RecipeAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+class ServingStringAdmin(admin.ModelAdmin):
+    model = ServingString
+
 admin.site.register(Source, SourceAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(FoodGroup)
@@ -76,3 +79,4 @@ admin.site.register(Photo)
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
+admin.site.register(ServingString, ServingStringAdmin)
