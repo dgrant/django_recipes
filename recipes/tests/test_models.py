@@ -308,6 +308,37 @@ class RecipeTest(TestCase):
         r = mommy.make('Recipe')
         self.assertEquals(unicode(r), r.title)
 
+    def test_get_serving_None(self):
+        r = mommy.make('Recipe')
+        self.assertEquals(r.get_serving(), None)
+
+    def test_get_serving(self):
+        serving_string = mommy.make('ServingString', text='serves %s')
+        r = mommy.make('Recipe', serving_value=2, serving_string=serving_string)
+        self.assertEquals(r.get_serving(), 'serves 2')
+
+    def test_get_serving_serving_value_None(self):
+        serving_string = mommy.make('ServingString', text='serves %s')
+        r = mommy.make('Recipe', serving_string=serving_string)
+        self.assertEquals(r.get_serving(), None)
+
+    def test_get_serving_serving_string_None(self):
+        r = mommy.make('Recipe', serving_value=2)
+        self.assertEquals(r.get_serving(), None)
+
+    def test_get_serving_serving_string_text_blank(self):
+        serving_string = mommy.make('ServingString', text='')
+        r = mommy.make('Recipe', serving_value=2, serving_string=serving_string)
+        self.assertEquals(r.get_serving(), None)
+
+    def test_get_serving_serving_string_text_blank(self):
+        serving_string = mommy.make('ServingString', text='blah blah')
+        r = mommy.make('Recipe', serving_value=2, serving_string=serving_string)
+        self.assertEquals(r.get_serving(), None)
+
+
+
+
 class UnitTest(TestCase):
     def test_unicode(self):
         u = mommy.make('Unit')
