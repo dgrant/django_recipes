@@ -21,7 +21,18 @@
 				<div class="col-md-5 col-md-offset-1" style="border-top: 1px solid #888;">
 					<ul class="list-unstyled text-right">
 						{% for ingredient in ingredients %}
-						<li style="margin-top: 5px;"><em>{{ingredient}}</em></li>
+						<span>
+							<li style="margin-top: 5px;"><em>
+								{{ingredient.0}}
+								{{ingredient.1}} 
+								{% if ingredient.4 %}
+								<span data-toggle="tooltip" style="border-bottom: dashed 1px;" title="{{ingredient.4}}">
+								{% else %}
+								<span>
+								{% endif %}
+									{{ingredient.2}}</span>{{ingredient.3}}
+							</em></li>
+						</span>
 						{% endfor %}
 					</ul>
 				</div>

@@ -26,8 +26,9 @@ class RecipeDetailView(DetailView):
         recipe = super(RecipeDetailView, self).get_object(queryset=queryset)
         if 'scale' in self.request.GET:
             recipe.scale = float(self.request.GET['scale'])
+            print "set scale to", recipe.scale
         else:
-            recipe.scale = None
+            recipe.scale = 1.0
         return recipe
 
 class FoodConversionListView(ListView):
