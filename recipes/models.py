@@ -214,9 +214,6 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
         ordering = ["order_index"]
 
-#    def get_absolute_url(self):
-#        return "/cookbook/categories/%s/" % self.slug
-
 class FoodGroup(models.Model):
     name = models.CharField(max_length=150)
 
@@ -281,11 +278,6 @@ class Recipe(models.Model):
         self.mtime = datetime.datetime.now()
         self.scale = 1.0
         super(Recipe, self).save()
-
-    @models.permalink
-    def get_absolute_url(self):
-        '''This is just used from the admin interface'''
-        return ('recipe_detail_by_slug', [self.slug])
 
     def get_text(self):
         a = []
