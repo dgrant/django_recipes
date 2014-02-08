@@ -510,14 +510,11 @@ class Ingredient(models.Model):
 
         if amount_g != None:
             if amountMax == None:
-                grams_str = ' ({0})'.format(nice_grams(amount_g))
+                grams_str = '({0})'.format(nice_grams(amount_g))
             else:
-                grams_str = ' ({0})'.format(nice_grams_range(amount_g, amountMax_g))
+                grams_str = '({0})'.format(nice_grams_range(amount_g, amountMax_g))
 
         return grams_str
-
-    def __unicode__(self):
-        return self.formatted_amount()
 
     class Meta:
         ordering = ["direction", "order_index", "id"]
