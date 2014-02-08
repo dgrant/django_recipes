@@ -1,0 +1,7 @@
+.bordered {
+  border-top: 2px solid #ccc;
+}
+
+.lastrow {
+  border-bottom: 2px solid #ccc;
+}

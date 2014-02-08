@@ -17,8 +17,14 @@
 	</div>
 
        	{% for direction, ingredients in recipe.get_text %}
-  	<div class="row" >
-				<div class="col-md-5 col-md-offset-1" style="border-top: 1px solid #888;">
+  	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			{% if forloop.last %}
+			<div class="row bordered lastrow">
+			{% else %}
+  			<div class="row bordered">
+			{% endif %}
+				<div class="col-md-6">
 					<ul class="list-unstyled text-right">
 						{% for ingredient in ingredients %}
 						<span>
@@ -36,12 +42,14 @@
 						{% endfor %}
 					</ul>
 				</div>
-				<div class="col-md-5" style="border-top: 1px solid #888;">
+				<div class="col-md-6">
 					<p style="margin-top: 5px;">
 					{{direction}}
 					</p>
 				</div>
-		</div>	<!-- row -->
+			</div>
+		</div>
+	</div>	<!-- row -->
 	{% endfor %}
 
 	<hr/>
