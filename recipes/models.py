@@ -294,13 +294,9 @@ class Recipe(models.Model):
 
     def get_serving(self):
         if self.serving_value != None != '' and self.serving_string != None and self.serving_string.text != '' and self.serving_string.text.find('%s') != -1:
-            if self.scale != None:
-                num_sig_figs = len(str(self.serving_value))
-                _serving_value_scaled = nice_float(self.serving_value * self.scale, num_sig_figs)
-            else:
-                _serving_value_scaled = self.serving_value
-            ret = self.serving_string.text % (_serving_value_scaled,)
-            return ret
+            num_sig_figs = len(str(self.serving_value))
+            serving_value_scaled = nice_float(self.serving_value * self.scale, num_sig_figs)
+            return self.serving_string.text % (serving_value_scaled,)
         else:
             return None
 

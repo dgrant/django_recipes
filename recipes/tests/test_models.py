@@ -58,7 +58,17 @@ class IngredientTest(TestCase):
         self.assertEqual(ingredient._formatted_amount(1),
                           "1 to 2")
 
-    def test_formatted_food_plural(self):
+    def test_formatted_food_plural_just1(self):
+        ingredient = mommy.make('Ingredient', amount=1, food=self.egg)
+        self.assertEqual(ingredient._formatted_food(),
+                          "egg")
+
+    def test_formatted_food_plural_2(self):
+        ingredient = mommy.make('Ingredient', amount=2, food=self.egg)
+        self.assertEqual(ingredient._formatted_food(),
+                          "eggs")
+
+    def test_formatted_food_plural_range1to2(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.egg)
         self.assertEqual(ingredient._formatted_food(),
                           "eggs")
@@ -284,6 +294,11 @@ class IngredientTest(TestCase):
         self.assertEqual(ingredient._formatted_grams(1.),
                           "(50 g)")
 
+    def test_formatted_grams_range_unitless_with_conversion(self):
+        ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.bun)
+        self.assertEqual(ingredient._formatted_grams(1.),
+                          "(50 to 100 g)")
+
     def test_prep_method_None(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup)
         self.assertEqual(ingredient._formatted_prep(),
@@ -464,6 +479,18 @@ class FoodTest(TestCase):
         f = mommy.make('Food', conversion_src_unit=cups, conversion_factor=125.)
         tsp_grams = f.get_grams_in_tsp()
         self.assertEqual(tsp_grams, '3 g')
+
+    def test_get_grams_different_unit3(self):
+        cups = mommy.make('Unit', name='cups')
+        f = mommy.make('Food', conversion_src_unit=cups, conversion_factor=125.)
+        mL_grams = f.get_grams_in_100mL()
+        self.assertEqual(mL_grams, '53 g')
+
+    def test_get_grams_for_unit(self):
+        f = mommy.make('Food', conversion_factor=125.)
+        grams = f.get_grams_for_unit()
+        self.assertEqual(grams, '125 g')
+
 
 class DirectionTest(TestCase):
     def test_unicode_title_too_long(self):
