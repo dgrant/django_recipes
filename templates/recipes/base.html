@@ -8,23 +8,20 @@
 	<script type="text/javascript"></script>
 	<title>{% block title %}{% endblock %}</title>
 
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+<!--	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">-->
+	<!--	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">-->
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-
-	<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
 	<link rel="stylesheet" href="http://bootswatch.com/readable/bootstrap.min.css">
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-	<script type="text/javascript">
-
-	    $(document).ready(function() {
-		$(function () { $("[data-toggle='tooltip']").tooltip(); });
-	    }); 
-	</script>
 	<link rel="stylesheet" href="{% static "test.css" %}">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
+
 
 	<div class="container">
 
@@ -49,6 +46,7 @@
 	<li><a href="{% url 'recipe-list' %}">Recipes</a></li>
 	<li><a href="{% url 'food-conversion-list' %}">Weight Conversions</a></li>
     </ul>
+    <!--
     <ul class="nav navbar-nav navbar-right">
 	{% if user.is_authenticated %}
 	  <li><a href="/admin/logout">Logout</a></li>
@@ -57,6 +55,7 @@
 	{% endif %}
 
     </ul>
+    -->
   </div><!-- /.navbar-collapse -->
 </nav>
 
@@ -101,6 +100,15 @@
 		
 
 </div>
+	<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+
+	    $(document).ready(function() {
+		$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	    }); 
+	</script>
+
 </body>
 
 

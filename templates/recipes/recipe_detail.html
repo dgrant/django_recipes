@@ -1,18 +1,12 @@
 {% extends "recipes/base.html" %}
 
 {% block content %}
-<!--
-        <div id="recipe-links">
-          <a href="/admin/recipes/recipe/{{ recipe.id }}">edit</a>
-        </div>
--->
-
 	<div class="row">
-	  <div class="col-md-12 text-center">
+	  <div class="col-md-10 col-md-offset-1 text-center">
 		<h2>{{ recipe.title }}</h2>
-		<p class="recipe-summary">{{ recipe.summary }}</p>
-		<p>{{ recipe.description }}</p>
+		<p>{{ recipe.summary }}</p>
 		{% if recipe.get_serving %}<p>{{ recipe.get_serving }}</p>{% endif %}
+		<p>{{ recipe.description }}</p>
 	  </div>
 	</div>
 

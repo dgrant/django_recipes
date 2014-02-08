@@ -1,3 +1,7 @@
+ul {
+  list-style-type: none;
+}
+
 .bordered {
   border-top: 2px solid #ccc;
 }
