@@ -12,14 +12,34 @@
 
        	{% for direction, ingredients in recipe.get_text %}
   	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
+		<div class="col-md-1 col-md-offset-1 col-xs-1 text-right">
+			<span class="badge">{{forloop.counter}}</span>
+		</div>
+		<div class="col-md-8 col-xs-11">
 			{% if forloop.last %}
 			<div class="row bordered lastrow">
 			{% else %}
   			<div class="row bordered">
 			{% endif %}
+			        {% if ingredients %}
 				<div class="col-md-6">
-					<ul class="list-unstyled text-right">
+					<ul class="hidden-xs hidden-sm list-unstyled text-right">
+						{% for ingredient in ingredients %}
+						<span>
+							<li style="margin-top: 5px;"><em>
+								{{ingredient.0}} {{ingredient.1}} 
+								{% if ingredient.4 %}
+								<span data-toggle="tooltip" style="border-bottom: dashed 1px;" title="{{ingredient.4}}">
+								{% else %}
+								<span>
+								{% endif %}
+									{{ingredient.2}}</span>{{ingredient.3}}
+							</em></li>
+						</span>
+						{% endfor %}
+					</ul>
+
+					<ul class="hidden-md hidden-lg list-unstyled">
 						{% for ingredient in ingredients %}
 						<span>
 							<li style="margin-top: 5px;"><em>
@@ -35,10 +55,22 @@
 						{% endfor %}
 					</ul>
 				</div>
+
 				<div class="col-md-6">
 					<p style="margin-top: 5px;">
 					{{direction}}
 					</p>
+				{% else %}
+
+				<div class="col-md-12">
+					<p class="hidden-md hidden-lg" style="margin-top: 5px;">
+					{{direction}}
+					</p>
+					<p class="hidden-xs hidden-sm text-center" style="margin-top: 5px;">
+					{{direction}}
+					</p>
+
+				{% endif %}
 				</div>
 			</div>
 		</div>
@@ -69,7 +101,7 @@
     {% endif %}
 
     {% if recipe.category %}
-    <p><i>Category:</i> <a href="/recipes/category/{{ recipe.category.id }}">{{ recipe.category }}</a></p>
+    <p class="hidden-print"><i>Category:</i> <a href="/recipes/category/{{ recipe.category.id }}">{{ recipe.category }}</a></p>
     {% endif %}
 
     {% if recipe.photo_set %}
