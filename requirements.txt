@@ -18,3 +18,4 @@ django-model-utils==1.5.0
 pip-tools==0.3.4
 
 pint==0.4
+fabric==1.8.1
