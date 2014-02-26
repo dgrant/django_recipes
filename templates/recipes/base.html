@@ -98,6 +98,7 @@
 		
 
 </div>
+
 	<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
@@ -105,6 +106,21 @@
 	    $(document).ready(function() {
 		$(function () { $("[data-toggle='tooltip']").tooltip(); });
 	    }); 
+
+        $(document).ready(function() {
+            $("input:checkbox").click(function() {
+                elem = $(this).parent().next().find('.canstrike');
+                if ($(this).is(':checked')) {
+                    elem.css('text-decoration', 'line-through');
+                    elem.css('color', 'grey');
+                }
+                else {
+                    elem.removeAttr('style');
+                    elem.removeAttr('style');
+                }
+           });
+        });
+
 	</script>
 
 </body>

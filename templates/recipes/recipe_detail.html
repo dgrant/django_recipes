@@ -13,7 +13,8 @@
        	{% for direction, ingredients in recipe.get_text %}
   	<div class="row">
 		<div class="col-md-1 col-md-offset-1 col-xs-1 text-right">
-			<span class="badge">{{forloop.counter}}</span>
+			<!--<span class="badge">{{forloop.counter}}</span>-->
+            <input type="checkbox"/>
 		</div>
 		<div class="col-md-8 col-xs-11">
 			{% if forloop.last %}
@@ -22,7 +23,7 @@
   			<div class="row bordered">
 			{% endif %}
 			        {% if ingredients %}
-				<div class="col-md-6">
+				<div class="col-md-6 canstrike">
 					<ul class="hidden-xs hidden-sm list-unstyled text-right">
 						{% for ingredient in ingredients %}
 						<span>
@@ -56,13 +57,13 @@
 					</ul>
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-6 canstrike">
 					<p style="margin-top: 5px;">
 					{{direction}}
 					</p>
 				{% else %}
 
-				<div class="col-md-12">
+				<div class="col-md-12 canstrike">
 					<p class="hidden-md hidden-lg" style="margin-top: 5px;">
 					{{direction}}
 					</p>
