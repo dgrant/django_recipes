@@ -343,6 +343,14 @@ class IngredientTest(TestCase):
         ingredient = mommy.make('Ingredient', amount=0.125, unit=self.tsp)
         self.assertEqual(ingredient._formatted_amount(1.), '1/8 tsp')
 
+    def test_formatted_amount_null_amount(self):
+        ingredient = mommy.make('Ingredient', food=self.sugar)
+        self.assertEqual(ingredient._formatted_amount(1.), '')
+
+    def test_formatted_grams_null_amount(self):
+        ingredient = mommy.make('Ingredient', food=self.sugar)
+        self.assertEqual(ingredient._formatted_grams(1.), '')
+
 
 test_cases_nearest = {tuple(range(1,5)): (
                 ((0.1), 0),

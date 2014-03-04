@@ -390,7 +390,7 @@ class Food(models.Model):
         return self.conversion_src_unit != None and self.conversion_src_unit.name in ('millilitre', 'cup', 'tablespoon', 'teaspoon') and self.conversion_factor != None
 
 class Ingredient(models.Model):
-    amount = models.FloatField()
+    amount = models.FloatField(null=True, blank=True)
     amountMax = models.FloatField(null=True, blank=True)
     unit = models.ForeignKey(Unit, null=True, blank=True)
     recipe = models.ForeignKey(Recipe)
@@ -416,6 +416,9 @@ class Ingredient(models.Model):
         return prep_method_str
 
     def _formatted_amount(self, scale):
+        if self.amount == None:
+            return ''
+
         amount = self.amount * scale
         if self.amountMax != None:
             amountMax = self.amountMax * scale
@@ -457,6 +460,9 @@ class Ingredient(models.Model):
         return amount_str + amountMax_str + unit_str
 
     def _formatted_grams(self, scale):
+        if self.amount == None:
+            return ''
+
         amount = self.amount * scale
         if self.amountMax != None:
             amountMax = self.amountMax * scale
