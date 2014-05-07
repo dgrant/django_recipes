@@ -121,6 +121,14 @@ def nice_cups(x):
     ''' x is a Pint object (quantity) in cups '''
     tsp = x.to(ureg.teaspoon)
     tsp = round(tsp.magnitude, 4) * ureg.teaspoon
+
+    # Special cases
+    print "tsp=", tsp
+    if tsp.magnitude == 15:
+        return '5 Tbsp'
+    if tsp.magnitude == 18:
+        return '6 Tbsp'
+
     units = ((ureg.quarts, ('quart', 'quarts')), (ureg.cups, ('cup', 'cups')), (ureg.tablespoons, ('Tbsp', 'Tbsp')), (ureg.teaspoons, 'tsp'))
     leftover = tsp
     ret = ''
@@ -135,7 +143,6 @@ def nice_cups(x):
                     how_many_int, num, den, rem = result
                     int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
                     ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
-                    #leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
                     leftover = rem * unit
                 else:
                     how_many_int = result

@@ -35,6 +35,7 @@ class IngredientTest(TestCase):
         self.kg = mommy.make('Unit', name='kilogram', name_abbrev='kg', type=Unit.TYPE.mass, system=Unit.SYSTEM.si)
         self.lb = mommy.make('Unit', name='pound', name_abbrev='lb', type=Unit.TYPE.mass, system=Unit.SYSTEM.imperial)
         self.cup = mommy.make('Unit', name='cup', name_abbrev='cup', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
+        self.tbsp = mommy.make('Unit', name='tbsp', name_abbrev='tbsp', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
         self.tsp = mommy.make('Unit', name='tsp', name_abbrev='tsp', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
         self.floz = mommy.make('Unit', name='fluid_ounce', name_abbrev='floz', type=Unit.TYPE.volume, system=Unit.SYSTEM.imperial)
 
@@ -334,6 +335,16 @@ class IngredientTest(TestCase):
         ingredient = mommy.make('Ingredient', amount=0.0625, amountMax=2, food=self.sugar, unit=self.cup)
         self.assertEqual(ingredient._formatted_amount(1.),
                           '1 Tbsp to 2 cups')
+
+    def test_formatted_amount_5Tbsp(self):
+        ingredient = mommy.make('Ingredient', amount=5, food=self.sugar, unit=self.tbsp)
+        self.assertEqual(ingredient._formatted_amount(1.),
+                          '5 Tbsp')
+
+    def test_formatted_amount_6Tbsp(self):
+        ingredient = mommy.make('Ingredient', amount=6, food=self.sugar, unit=self.tbsp)
+        self.assertEqual(ingredient._formatted_amount(1.),
+                          '6 Tbsp')
 
     def test_formatted_amount_pinch(self):
         ingredient = mommy.make('Ingredient', amount=0.05, unit=self.tsp)
