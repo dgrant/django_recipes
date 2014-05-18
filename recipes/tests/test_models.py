@@ -341,11 +341,6 @@ class IngredientTest(TestCase):
         self.assertEqual(ingredient._formatted_amount(1.),
                           '5 Tbsp')
 
-    def test_formatted_amount_6Tbsp(self):
-        ingredient = mommy.make('Ingredient', amount=6, food=self.sugar, unit=self.tbsp)
-        self.assertEqual(ingredient._formatted_amount(1.),
-                          '6 Tbsp')
-
     def test_formatted_amount_pinch(self):
         ingredient = mommy.make('Ingredient', amount=0.05, unit=self.tsp)
         self.assertEqual(ingredient._formatted_amount(1.), 'pinch of')

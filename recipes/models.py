@@ -126,8 +126,6 @@ def nice_cups(x):
     print "tsp=", tsp
     if tsp.magnitude == 15:
         return '5 Tbsp'
-    if tsp.magnitude == 18:
-        return '6 Tbsp'
 
     units = ((ureg.quarts, ('quart', 'quarts')), (ureg.cups, ('cup', 'cups')), (ureg.tablespoons, ('Tbsp', 'Tbsp')), (ureg.teaspoons, 'tsp'))
     leftover = tsp
