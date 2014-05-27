@@ -59,19 +59,17 @@ def to_frac_round_down(x, maxdenom):
 
     bestfrac = 0,1
     mindiff = x
-
     for denom in range(1, maxdenom+1):
         # for each denominator, there are two numerators to consider:
         # the one below x and the one above x
-        for num in [int(x*denom)]:
-            num = int(x*denom)
-            diff = x - float(num)/denom
+        num = int(x*denom+0.001)
+        diff = x - float(num)/denom
 
-            # compare using '<' rather than '<=' to ensure that the
-            # fraction with the smallest denominator is preferred
-            if diff < mindiff:
-                bestfrac = num, denom
-                mindiff = diff
+        # compare using '<' rather than '<=' to ensure that the
+        # fraction with the smallest denominator is preferred
+        if diff < mindiff:
+            bestfrac = num, denom
+            mindiff = diff
 
     if bestfrac[0] == 0:
         return intpart
@@ -123,7 +121,6 @@ def nice_cups(x):
     tsp = round(tsp.magnitude, 4) * ureg.teaspoon
 
     # Special cases
-    print "tsp=", tsp
     if tsp.magnitude == 15:
         return '5 Tbsp'
 

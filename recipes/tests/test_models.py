@@ -357,6 +357,10 @@ class IngredientTest(TestCase):
         ingredient = mommy.make('Ingredient', food=self.sugar)
         self.assertEqual(ingredient._formatted_grams(1.), '')
 
+    def test_floats(self):
+        ingredient = mommy.make('Ingredient', food=self.sugar, amount=0.6666666666666666666, unit=self.cup)
+        self.assertEqual(ingredient._formatted_amount(2.), '1 1/3 cup')
+
 
 test_cases_nearest = {tuple(range(1,5)): (
                 ((0.1), 0),
