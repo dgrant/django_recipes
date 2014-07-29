@@ -13,7 +13,7 @@ def root(request):
 
 class RecipeListView(ListView):
     model = Recipe
-    paginate_by = 25
+    paginate_by = 100
 
     def get_queryset(self):
         qs = Recipe.objects.all()
