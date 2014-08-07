@@ -399,7 +399,7 @@ class Ingredient(models.Model):
     food = models.ForeignKey(Food)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
-    direction = models.ForeignKey(Direction, blank=True, null=True, related_name='ingredients')
+    direction = models.ForeignKey(Direction, related_name='ingredients')
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
