@@ -228,7 +228,7 @@ class IngredientTest(TestCase):
     def test_formatted_amount_cups_fractions(self):
         ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
         self.assertEqual(ingredient._formatted_amount(1),
-                          "1 1/2 cup")
+                          "1 <sup>1</sup>&frasl;<sub>2</sub> cup")
 
     def test_formatted_grams_cups_fractions(self):
         ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
@@ -243,17 +243,17 @@ class IngredientTest(TestCase):
     def test_formatted_amount_cups_fractions_quarts2(self):
         ingredient = mommy.make('Ingredient', amount=4.5, food=self.sugar, unit=self.cup)
         self.assertEqual(ingredient._formatted_amount(1),
-                          "4 1/2 cups")
+                          "4 <sup>1</sup>&frasl;<sub>2</sub> cups")
 
     def test_formatted_amount_cups_fractions_quarts3(self):
         ingredient = mommy.make('Ingredient', amount=7.5, food=self.sugar, unit=self.cup)
         self.assertEqual(ingredient._formatted_amount(1),
-                          "7 1/2 cups")
+                          "7 <sup>1</sup>&frasl;<sub>2</sub> cups")
 
     def test_formatted_amount_cups_fractions_special_case1(self):
         ingredient = mommy.make('Ingredient', amount=0.3334, food=self.flour, unit=self.cup)
         self.assertEqual(ingredient._formatted_amount(1),
-                          "1/3 cup")
+                          "<sup>1</sup>&frasl;<sub>3</sub> cup")
 
     def test_formatted_grams_cups_fractions_special_case1(self):
         ingredient = mommy.make('Ingredient', amount=0.3334, food=self.flour, unit=self.cup)
@@ -263,7 +263,7 @@ class IngredientTest(TestCase):
     def test_formatted_amount_cups_fractions_special_case2(self):
         ingredient = mommy.make('Ingredient', amount=0.33333333333, food=self.flour, unit=self.cup)
         self.assertEqual(ingredient._formatted_amount(1),
-                          "1/3 cup")
+                          "<sup>1</sup>&frasl;<sub>3</sub> cup")
 
     def test_formatted_grams_cups_fractions_special_case2(self):
         ingredient = mommy.make('Ingredient', amount=0.33333333333, food=self.flour, unit=self.cup)
@@ -273,7 +273,7 @@ class IngredientTest(TestCase):
     def test_formatted_amount_cups_fractions_special_case3(self):
         ingredient = mommy.make('Ingredient', amount=0.25, food=self.sugar, unit=self.tsp)
         self.assertEqual(ingredient._formatted_amount(1),
-                          "1/4 tsp")
+                          "<sup>1</sup>&frasl;<sub>4</sub> tsp")
 
     def test_formatted_amount_cups_plural(self):
         ingredient = mommy.make('Ingredient', amount=2, food=self.sugar, unit=self.cup)
@@ -283,7 +283,7 @@ class IngredientTest(TestCase):
     def test_formatted_amount_tsp(self):
         ingredient = mommy.make('Ingredient', amount=0.3333333333333333333, food=self.sugar, unit=self.tsp)
         self.assertEqual(ingredient._formatted_amount(1.),
-                          "1/4 tsp")
+                          "<sup>1</sup>&frasl;<sub>4</sub> tsp")
 
     def test_formatted_amount_unitless(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.bun)
@@ -347,7 +347,7 @@ class IngredientTest(TestCase):
 
     def test_formatted_amount_eight_tsp(self):
         ingredient = mommy.make('Ingredient', amount=0.125, unit=self.tsp)
-        self.assertEqual(ingredient._formatted_amount(1.), '1/8 tsp')
+        self.assertEqual(ingredient._formatted_amount(1.), '<sup>1</sup>&frasl;<sub>8</sub> tsp')
 
     def test_formatted_amount_null_amount(self):
         ingredient = mommy.make('Ingredient', food=self.sugar)
@@ -359,7 +359,7 @@ class IngredientTest(TestCase):
 
     def test_floats(self):
         ingredient = mommy.make('Ingredient', food=self.sugar, amount=0.6666666666666666666, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(2.), '1 1/3 cup')
+        self.assertEqual(ingredient._formatted_amount(2.), '1 <sup>1</sup>&frasl;<sub>3</sub> cup')
 
 
 test_cases_nearest = {tuple(range(1,5)): (

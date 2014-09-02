@@ -115,6 +115,16 @@ def to_nearest_tsp(x):
     else:
         return intpart, best[0], best[1]
 
+def format(int_part, unit_str, num=None, den=None):
+    ret = ''
+    if int_part != '':
+        ret += int_part + ' '
+    if num != None and den != None:
+        ret += '<sup>' + num + '</sup>' + '&frasl;' + '<sub>' + den + '</sub> '
+    ret += unit_str 
+    ret += ', '
+    return ret
+
 def nice_cups(x):
     ''' x is a Pint object (quantity) in cups '''
     tsp = x.to(ureg.teaspoon)
@@ -136,33 +146,33 @@ def nice_cups(x):
                 result = to_frac_round_down(how_many_unit.magnitude, maxdenom=4)
                 if type(result) == tuple:
                     how_many_int, num, den, rem = result
-                    int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
-                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
+                    int_str = '' if how_many_int == 0 else str(how_many_int)
+                    ret += format(int_str, unit_strs[0] if how_many_int <= 1 else unit_strs[1], str(num), str(den))
                     leftover = rem * unit
                 else:
                     how_many_int = result
                     if how_many_int != 0:
-                        ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
+                        ret += format(str(how_many_int), unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             elif unit == ureg.teaspoons:
                 # Teaspoons need some special care, they need to be formated as 1/8, 1/4, 1/2 but nothing else.
                 result = to_nearest_tsp(how_many_unit.magnitude)
                 if type(result) == tuple:
                     how_many_int, num, den = result
-                    int_str = '' if how_many_int == 0 else str(how_many_int) + ' '
-                    ret += '{0}{1}/{2} {3}, '.format(int_str, num, den, unit_strs)
+                    int_str = '' if how_many_int == 0 else str(how_many_int)
+                    ret += format(int_str, unit_strs, str(num), str(den))
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int - round(float(num) / float(den), 4)) * unit
                 else:
                     how_many_int = result
                     if how_many_int != 0:
-                        ret += '{0} {1}, '.format(how_many_int, unit_strs)
+                        ret += format(str(how_many_int), unit_strs)
                     leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
             elif unit == ureg.quarts and how_many_int == 1:
                 # if we only have 1 quart, doing display and quarts... just use 4+ cups instead
                 leftover = how_many_unit
             else:
                 # Tablespoons and quarts and everything else bigger than that: don't do any fractions for these.
-                ret += '{0} {1}, '.format(how_many_int, unit_strs[0] if how_many_int <= 1 else unit_strs[1])
+                ret += format(str(how_many_int), unit_strs[0] if how_many_int <= 1 else unit_strs[1])
                 leftover = (round(how_many_unit.magnitude, 4) - how_many_int) * unit
         else:
             leftover = how_many_unit
