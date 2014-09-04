@@ -13,7 +13,7 @@ def update():
 
 def schema():
     with cd(ROOT), shell_env(DJANGO_SETTINGS_MODULE='django_recipes.settings.production'):
-        run('env/bin/python ./manage.py migrate recipes')
+        run('env/bin/python ./manage.py migrate')
 
 def backupdb():
     with cd(ROOT):
