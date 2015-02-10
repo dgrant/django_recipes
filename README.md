@@ -27,6 +27,7 @@ Getting started
 Follow these steps to get the recipes site up and running.
 
 1. Fork or clone the project.
+1. run 'sudo aptitude install libmysqlclient-dev python-dev gettext'
 1. Run ./createVirtualEnv.sh to create a virtualenv environment in an env directory with the correct dependencies. This assumes you have pip and virtualenv.
 1. Copy django_recipes/settings/local.py.example to local.py and alter settings as necessary.
 1. Create database (not necessary if using sqlite)
