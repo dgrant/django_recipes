@@ -1,25 +1,36 @@
 {% extends "recipes/base.html" %}
 
 {% block content %}
+
     <ul>
         {% for recipe in object_list %}
 	<li><a href="{% url 'recipe-detail' recipe.slug %}">{{ recipe.title }}</a>: {{ recipe.summary }}</li>
         {% endfor %}
     </ul>
     {% if is_paginated %}
-        <p>Displaying recipes {{ page_obj.start_index }}-{{ page_obj.end_index}}</p>
 
-        <p>
-	{% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number}}">{% endif %}prev{% if page_obj.has_previous %}</a>{% endif %}
+    <div class="text-center">
+    <ul class="pagination pagination-sm">
+        <li{% if not page_obj.has_previous %} class="disabled"{% endif %}>
+          {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+          {% else %}
+            <a href="#">&laquo;</a>
+          {% endif %}
+        </li>
 
-    {% for num in paginator.page_range %}
-        {% ifnotequal page_obj.number num %}<a href="?page={{ num }}">{% endifnotequal %}{{ num }}{% ifnotequal page.number num %}</a>{% endifnotequal %}
-    {% endfor %}
+        {% for num in paginator.page_range %}
+           <li{% ifequal num page_obj.number %} class="active"{% endifequal %}><a href="?page={{ num }}">{{num}}</a></li>
+        {% endfor %}
 
-        {% if page_obj.has_next %}<a href="?page={{ next}}">{% endif %}
-                next
-        {% if page_obj.has_next %}</a>{% endif %}
-
-        </p>
+        <li{% if not page_obj.has_next %} class="disabled"{% endif %}>
+          {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+          {% else %}
+            <a href="#">&raquo;</a>
+          {% endif %}
+        </li>
+    </ul>
+    </div>
     {% endif %}
 {% endblock %}

@@ -28,7 +28,7 @@
 						{% for ingredient in ingredients %}
 						<span>
 							<li style="margin-top: 5px;"><em>
-								{{ingredient.0}} {{ingredient.1}} 
+								{{ingredient.0|safe}} {{ingredient.1}} 
 								{% if ingredient.4 %}
 								<span data-toggle="tooltip" style="border-bottom: dashed 1px;" title="{{ingredient.4}}">
 								{% else %}
@@ -44,7 +44,7 @@
 						{% for ingredient in ingredients %}
 						<span>
 							<li style="margin-top: 5px;"><em>
-								{{ingredient.0}} {{ingredient.1}} 
+								{{ingredient.0|safe}} {{ingredient.1}} 
 								{% if ingredient.4 %}
 								<span data-toggle="tooltip" style="border-bottom: dashed 1px;" title="{{ingredient.4}}">
 								{% else %}
