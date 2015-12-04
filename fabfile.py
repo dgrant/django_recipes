@@ -9,7 +9,7 @@ def restart():
 
 def update():
     with cd(ROOT):
-        run('git pull')
+        run('git pull --rebase')
 
 def schema():
     with cd(ROOT), shell_env(DJANGO_SETTINGS_MODULE='django_recipes.settings.production'):
