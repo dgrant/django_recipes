@@ -2,4 +2,8 @@
 *.pyc
 .coverage
 django_recipes/settings/local.py
+django_recipes/settings/production.py
 .idea/
+django_recipes.pid
+backups
+static
