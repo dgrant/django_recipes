@@ -51,27 +51,27 @@ class IngredientTest(TestCase):
 
     def test_formatted_amount_no_unit(self):
         ingredient = mommy.make('Ingredient', amount=1.0, food=self.egg)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "1")
 
     def test_formatted_amount_no_unit_range(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.egg)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1 to 2")
 
     def test_formatted_food_plural_just1(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.egg)
-        self.assertEqual(ingredient._formatted_food(),
+        self.assertEqual(ingredient.formatted_food(),
                           "egg")
 
     def test_formatted_food_plural_2(self):
         ingredient = mommy.make('Ingredient', amount=2, food=self.egg)
-        self.assertEqual(ingredient._formatted_food(),
+        self.assertEqual(ingredient.formatted_food(),
                           "eggs")
 
     def test_formatted_food_plural_range1to2(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.egg)
-        self.assertEqual(ingredient._formatted_food(),
+        self.assertEqual(ingredient.formatted_food(),
                           "eggs")
 
     def test_formatted_amount_mL(self):
@@ -86,280 +86,280 @@ class IngredientTest(TestCase):
 
     def test_formatted_amount_mL(self):
         ingredient = mommy.make('Ingredient', amount=101.0, food=self.water, unit=self.mL)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "101 mL")
 
     def test_formatted_grams_mL(self):
         ingredient = mommy.make('Ingredient', amount=101.0, food=self.water, unit=self.mL)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(101 g)")
 
     def test_formatted_amount_mL_range(self):
         ingredient = mommy.make('Ingredient', amount=101.0, amountMax=102, food=self.water, unit=self.mL)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "101 to 102 mL")
 
     def test_formatted_grams_mL_range(self):
         ingredient = mommy.make('Ingredient', amount=101.0, amountMax=102, food=self.water, unit=self.mL)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(101 to 102 g)")
 
 
     def test_formatted_amount_g(self):
         ingredient = mommy.make('Ingredient', amount=100, food=self.water, unit=self.g)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "100 g")
 
     def test_formatted_amount_g_to_kg_range_nice1(self):
         ingredient = mommy.make('Ingredient', amount=900, amountMax=1100, food=self.water, unit=self.g)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "900 g to 1.1 kg")
 
     def test_formatted_amount_g_to_kg_range_nice2(self):
         ingredient = mommy.make('Ingredient', amount=900, amountMax=950, food=self.water, unit=self.g)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "900 to 950 g")
 
     def test_formatted_amount_g_to_kg_range_nice3(self):
         ingredient = mommy.make('Ingredient', amount=1.1, amountMax=1.2, food=self.water, unit=self.kg)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1.1 to 1.2 kg")
 
     def test_formatted_grams_g_to_kg_range_nice3(self):
         ingredient = mommy.make('Ingredient', amount=1.1, amountMax=1.2, food=self.water, unit=self.kg)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "")
 
     def test_formatted_amount_g_to_kg_nice(self):
         ingredient = mommy.make('Ingredient', amount=3000, food=self.water, unit=self.g)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "3 kg")
 
     def test_formatted_amount_fluid_ounce(self):
         ingredient = mommy.make('Ingredient', amount=14, food=self.tomatoes, unit=self.floz)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "14 floz")
 
     def test_formatted_amount_lb_to_kg_nice(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1 lb")
 
     def test_formatted_grams_lb_to_kg_nice(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(454 g)")
 
     def test_formatted_amount_lb_to_kg_range_nice1(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1 to 2 lb")
 
 #    def test_formatted_amount_lb_plural(self):
 #        ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.lb)
-#        self.assertEqual(ingredient._formatted_amount(1),
+#        self.assertEqual(ingredient.formatted_amount(1),
 #                          "1 to 2 lbs")
 
     def test_formatted_grams_lb_to_kg_range_nice1(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(454 to 907 g)")
 
     def test_formatted_amount_lb_to_kg_range_nice2(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=3, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "1 to 3 lb")
 
     def test_formatted_grams_lb_to_kg_range_nice2(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=3, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(454 g to 1.361 kg)")
 
     def test_formatted_amount_lb_to_kg_range_nice3(self):
         ingredient = mommy.make('Ingredient', amount=3, amountMax=4, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "3 to 4 lb")
 
     def test_formatted_grams_lb_to_kg_range_nice3(self):
         ingredient = mommy.make('Ingredient', amount=3, amountMax=4, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(1.361 to 1.814 kg)")
 
     def test_formatted_amount_lb_to_kg_range_nice4(self):
         ingredient = mommy.make('Ingredient', amount=3.1, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "3.1 lb")
 
     def test_formatted_grams_lb_to_kg_range_nice4(self):
         ingredient = mommy.make('Ingredient', amount=3.1, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(1.406 kg)")
 
     def test_formatted_amount_lb_to_kg_range_nice5(self):
         ingredient = mommy.make('Ingredient', amount=3.1, amountMax=3.2, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "3.1 to 3.2 lb")
 
     def test_formatted_grams_lb_to_kg_range_nice5(self):
         ingredient = mommy.make('Ingredient', amount=3.1, amountMax=3.2, food=self.sugar, unit=self.lb)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(1.406 to 1.451 kg)")
 
     def test_formatted_amount_cups_tbsp_nice1(self):
         ingredient = mommy.make('Ingredient', amount=1.083333333334, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1 cup, 1 Tbsp, 1 tsp")
 
     def test_formatted_grams_cups_tbsp_nice1(self):
         ingredient = mommy.make('Ingredient', amount=1.083333333334, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(135 g)")
 
     def test_formatted_amount_cups_tbsp_nice2(self):
         ingredient = mommy.make('Ingredient', amount=1.083333333333, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1 cup, 1 Tbsp, 1 tsp")
 
     def test_formatted_grams_cups_tbsp_nice2(self):
         ingredient = mommy.make('Ingredient', amount=1.083333333333, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(135 g)")
 
     def test_formatted_amount_cups_fractions(self):
         ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "1 <sup>1</sup>&frasl;<sub>2</sub> cup")
 
     def test_formatted_grams_cups_fractions(self):
         ingredient = mommy.make('Ingredient', amount=1.5, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(188 g)")
 
     def test_formatted_amount_cups_fractions_quarts1(self):
         ingredient = mommy.make('Ingredient', amount=9, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "2 quarts, 1 cup")
 
     def test_formatted_amount_cups_fractions_quarts2(self):
         ingredient = mommy.make('Ingredient', amount=4.5, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "4 <sup>1</sup>&frasl;<sub>2</sub> cups")
 
     def test_formatted_amount_cups_fractions_quarts3(self):
         ingredient = mommy.make('Ingredient', amount=7.5, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "7 <sup>1</sup>&frasl;<sub>2</sub> cups")
 
     def test_formatted_amount_cups_fractions_special_case1(self):
         ingredient = mommy.make('Ingredient', amount=0.3334, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "<sup>1</sup>&frasl;<sub>3</sub> cup")
 
     def test_formatted_grams_cups_fractions_special_case1(self):
         ingredient = mommy.make('Ingredient', amount=0.3334, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(42 g)")
 
     def test_formatted_amount_cups_fractions_special_case2(self):
         ingredient = mommy.make('Ingredient', amount=0.33333333333, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "<sup>1</sup>&frasl;<sub>3</sub> cup")
 
     def test_formatted_grams_cups_fractions_special_case2(self):
         ingredient = mommy.make('Ingredient', amount=0.33333333333, food=self.flour, unit=self.cup)
-        self.assertEqual(ingredient._formatted_grams(1),
+        self.assertEqual(ingredient.formatted_grams(1),
                           "(42 g)")
 
     def test_formatted_amount_cups_fractions_special_case3(self):
         ingredient = mommy.make('Ingredient', amount=0.25, food=self.sugar, unit=self.tsp)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "<sup>1</sup>&frasl;<sub>4</sub> tsp")
 
     def test_formatted_amount_cups_plural(self):
         ingredient = mommy.make('Ingredient', amount=2, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1),
+        self.assertEqual(ingredient.formatted_amount(1),
                           "2 cups")
 
     def test_formatted_amount_tsp(self):
         ingredient = mommy.make('Ingredient', amount=0.3333333333333333333, food=self.sugar, unit=self.tsp)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "<sup>1</sup>&frasl;<sub>4</sub> tsp")
 
     def test_formatted_amount_unitless(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.bun)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           "1")
 
     def test_formatted_grams_unitless_with_conversion(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.bun)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(50 g)")
 
     def test_formatted_grams_range_unitless_with_conversion(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.bun)
-        self.assertEqual(ingredient._formatted_grams(1.),
+        self.assertEqual(ingredient.formatted_grams(1.),
                           "(50 to 100 g)")
 
     def test_prep_method_None(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_prep(),
+        self.assertEqual(ingredient.formatted_prep(),
                           "")
 
     def test_prep_method(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup, prep_method=self.sifted)
-        self.assertEqual(ingredient._formatted_prep(),
+        self.assertEqual(ingredient.formatted_prep(),
                           ", sifted")
 
     def test_formatted_amount_dont_show_decimal(self):
         tartshells = mommy.make('Food', name='3" tart shells')
         ingredient = mommy.make('Ingredient', amount=12.0, food=tartshells, unit=None)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           '12')
 
     def test_formatted_amount_scale(self):
         ingredient = mommy.make('Ingredient', amount=1, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(scale=2),
+        self.assertEqual(ingredient.formatted_amount(scale=2),
                           '2 cups')
 
     def test_formatted_amount_scale_max(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(scale=2),
+        self.assertEqual(ingredient.formatted_amount(scale=2),
                           '2 to 4 cups')
 
     def test_formatted_amount_range_cups(self):
         ingredient = mommy.make('Ingredient', amount=1, amountMax=2, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           '1 to 2 cups')
 
     def test_formatted_amount_range_mixed_imperial(self):
         ingredient = mommy.make('Ingredient', amount=0.0625, amountMax=2, food=self.sugar, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           '1 Tbsp to 2 cups')
 
     def test_formatted_amount_5Tbsp(self):
         ingredient = mommy.make('Ingredient', amount=5, food=self.sugar, unit=self.tbsp)
-        self.assertEqual(ingredient._formatted_amount(1.),
+        self.assertEqual(ingredient.formatted_amount(1.),
                           '5 Tbsp')
 
     def test_formatted_amount_pinch(self):
         ingredient = mommy.make('Ingredient', amount=0.05, unit=self.tsp)
-        self.assertEqual(ingredient._formatted_amount(1.), 'pinch of')
+        self.assertEqual(ingredient.formatted_amount(1.), 'pinch of')
 
     def test_formatted_amount_eight_tsp(self):
         ingredient = mommy.make('Ingredient', amount=0.125, unit=self.tsp)
-        self.assertEqual(ingredient._formatted_amount(1.), '<sup>1</sup>&frasl;<sub>8</sub> tsp')
+        self.assertEqual(ingredient.formatted_amount(1.), '<sup>1</sup>&frasl;<sub>8</sub> tsp')
 
     def test_formatted_amount_null_amount(self):
         ingredient = mommy.make('Ingredient', food=self.sugar)
-        self.assertEqual(ingredient._formatted_amount(1.), '')
+        self.assertEqual(ingredient.formatted_amount(1.), '')
 
     def test_formatted_grams_null_amount(self):
         ingredient = mommy.make('Ingredient', food=self.sugar)
-        self.assertEqual(ingredient._formatted_grams(1.), '')
+        self.assertEqual(ingredient.formatted_grams(1.), '')
 
     def test_floats(self):
         ingredient = mommy.make('Ingredient', food=self.sugar, amount=0.6666666666666666666, unit=self.cup)
-        self.assertEqual(ingredient._formatted_amount(2.), '1 <sup>1</sup>&frasl;<sub>3</sub> cup')
+        self.assertEqual(ingredient.formatted_amount(2.), '1 <sup>1</sup>&frasl;<sub>3</sub> cup')
 
 
 test_cases_nearest = {tuple(range(1,5)): (

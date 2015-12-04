@@ -338,10 +338,10 @@ class Recipe(models.Model):
         for direction in self.directions.all():
             ingredients = []
             for ingredient in direction.ingredients.all():
-                ingredients.append((ingredient._formatted_amount(self.scale),
-                                    ingredient._formatted_grams(self.scale),
-                                    ingredient._formatted_food(),
-                                    ingredient._formatted_prep(),
+                ingredients.append((ingredient.formatted_amount(self.scale),
+                                    ingredient.formatted_grams(self.scale),
+                                    ingredient.formatted_food(),
+                                    ingredient.formatted_prep(),
                                     ingredient.food.detail))
             a.append((direction.text, ingredients))
         return a
@@ -469,7 +469,7 @@ class Ingredient(models.Model):
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
 
-    def _formatted_food(self):
+    def formatted_food(self):
         if self.food.name_plural != None and self.food.name_plural != '' and (
                         self.amount != 1 or self.amountMax != None):
             food_str = self.food.name_plural
@@ -477,13 +477,13 @@ class Ingredient(models.Model):
             food_str = self.food.name
         return food_str
 
-    def _formatted_prep(self):
+    def formatted_prep(self):
         prep_method_str = ''
         if self.prep_method != None:
             prep_method_str = ', ' + self.prep_method.name
         return prep_method_str
 
-    def _formatted_amount(self, scale):
+    def formatted_amount(self, scale):
         if self.amount == None:
             return ''
 
@@ -527,7 +527,7 @@ class Ingredient(models.Model):
 
         return amount_str + amountMax_str + unit_str
 
-    def _formatted_grams(self, scale):
+    def formatted_grams(self, scale):
         if self.amount == None:
             return ''
 
