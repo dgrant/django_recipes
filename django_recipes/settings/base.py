@@ -46,6 +46,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+ADMINS = (('David', 'davidgrant@gmail.com',),)
+MANAGERS = ()
+
 ROOT_URLCONF = 'django_recipes.urls'
 
 WSGI_APPLICATION = 'django_recipes.wsgi.application'
@@ -81,3 +84,4 @@ STATIC_ROOT = root('static')
 STATIC_URL = '/static/'
 TEMPLATE_DIRS = [root('templates')]
 CONN_MAX_AGE = None
+
