@@ -431,7 +431,8 @@ class Food(models.Model):
     def get_grams(self, amount_u):
         conversion_factor_u = self.conversion_factor * (ureg.grams / ureg[self.conversion_src_unit.name])
         conversion_factor_u = conversion_factor_u.to(ureg.grams / amount_u)
-        return nice_grams(conversion_factor_u * amount_u)
+        ret = nice_grams(conversion_factor_u * amount_u)
+        return ret
 
     def get_grams_in_cup(self):
         return self.get_grams(ureg.cup)
@@ -506,7 +507,7 @@ class Ingredient(models.Model):
                 amount_str = '{0}'.format(nice_grams_range(amount_g, amountMax_g))
 
         elif self.unit != None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial \
-                and ureg[self.unit.name] in [ureg.quarts, ureg.cups, ureg.tablespoons, ureg.teaspoons]:
+                and ureg[self.unit.name].units in [ureg.quarts, ureg.cups, ureg.tablespoons, ureg.teaspoons]:
             # tsp, tbsp, cups, quarts
             amount_cups = (amount * ureg[self.unit.name]).to(ureg.cups)
             if amountMax != None:
