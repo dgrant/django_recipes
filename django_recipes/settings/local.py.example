@@ -2,6 +2,8 @@ from .base import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+#Get a key at e.g. http://randomkeygen.com
+SECRET_KEY = 'EnterSomeKindOfRandomlyGenratedSecretKeyHere'
 
 DATABASES = {
     'default': {
