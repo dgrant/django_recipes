@@ -14,7 +14,7 @@ Features
 
 Competitors/related projects
 ============================
-
+* [OpenEats](https://github.com/qgriffith/OpenEats) - Django based recipes website. 
 * KRecipes - KDE-based desktop recipes software.
 * Ben Collins-Sussman's effrecipes - Simple, but it works. Not under active development.
 * Recipes on Rails - Ruby on Rails recipes site. Not open source as far as I know. Embeds "Source: Recipes on Rails" on all photos and has google ads. Great site though. One thing it has that my site lacks is per-direction photos. This would be easy to do. I already have per-direction ingredients.
