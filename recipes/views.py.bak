@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.core.mail import send_mail
-from .models import Recipe, Food
+from models import Recipe, Food
 
 from django.views.generic import ListView, CreateView, DetailView
 
@@ -26,7 +26,7 @@ class RecipeDetailView(DetailView):
         recipe = super(RecipeDetailView, self).get_object(queryset=queryset)
         if 'scale' in self.request.GET:
             recipe.scale = float(self.request.GET['scale'])
-            print("set scale to", recipe.scale)
+            print "set scale to", recipe.scale
         else:
             recipe.scale = 1.0
         return recipe

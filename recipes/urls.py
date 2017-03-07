@@ -1,5 +1,5 @@
 from django.conf.urls import url, patterns
-from models import Recipe
+from .models import Recipe
 from .views import RecipeListView, RecipeDetailView, FoodConversionListView
 
 

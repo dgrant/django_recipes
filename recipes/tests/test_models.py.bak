@@ -391,13 +391,13 @@ test_cases_round_down = {4: (
 
 class TestFractions(TestCase):
     def test_to_nearest_frac(self):
-        for maxdenom, x_and_expected in test_cases_nearest.items():
+        for maxdenom, x_and_expected in test_cases_nearest.iteritems():
             for x, expected in x_and_expected:
                 result = to_nearest_frac(x, maxdenom)
                 self.assertEqual(result, expected)
 
     def test_to_frac_round_down(self):
-        for maxdenom, x_and_expected in test_cases_round_down.items():
+        for maxdenom, x_and_expected in test_cases_round_down.iteritems():
             for x, expected in x_and_expected:
                 result = to_frac_round_down(x, maxdenom)
                 self.assertEqual(result, expected)
@@ -405,27 +405,27 @@ class TestFractions(TestCase):
 class SourceTest(TestCase):
     def test_unicode(self):
         s = mommy.make('Source')
-        self.assertEqual(str(s), s.name)
+        self.assertEqual(unicode(s), s.name)
 
 class CategoryTest(TestCase):
     def test_unicode(self):
         c = mommy.make('Category')
-        self.assertEqual(str(c), c.name)
+        self.assertEqual(unicode(c), c.name)
 
 class FoodGroupTest(TestCase):
     def test_unicode(self):
         f = mommy.make('FoodGroup')
-        self.assertEqual(str(f), f.name)
+        self.assertEqual(unicode(f), f.name)
 
 class PrepMethodTest(TestCase):
     def test_unicode(self):
         p = mommy.make('PrepMethod')
-        self.assertEqual(str(p), p.name)
+        self.assertEqual(unicode(p), p.name)
 
 class RecipeTest(TestCase):
     def test_unicode(self):
         r = mommy.make('Recipe')
-        self.assertEqual(str(r), r.title)
+        self.assertEqual(unicode(r), r.title)
 
     def test_get_serving_None(self):
         r = mommy.make('Recipe')
@@ -467,18 +467,18 @@ class RecipeTest(TestCase):
         i4 = mommy.make('Ingredient', amount='1', food=f, recipe=r, direction=d2, prep_method=p)
 
         ret = r.get_text()
-        expected = [('dir 1', [('1', '(125 g)', 'food', '', 'detail'), ('1', '(125 g)', 'food', '', 'detail')]), ('dir 2', [('1', '(125 g)', 'food', '', 'detail'), ('1', '(125 g)', 'food', ', chopped', 'detail')])]
+        expected = [(u'dir 1', [('1', '(125 g)', u'food', '', u'detail'), ('1', '(125 g)', u'food', '', u'detail')]), (u'dir 2', [('1', '(125 g)', u'food', '', u'detail'), ('1', '(125 g)', u'food', u', chopped', u'detail')])]
         self.assertEqual(ret, expected)
 
 class UnitTest(TestCase):
     def test_unicode(self):
         u = mommy.make('Unit')
-        self.assertEqual(str(u), u.name)
+        self.assertEqual(unicode(u), u.name)
 
 class FoodTest(TestCase):
     def test_unicode(self):
         f = mommy.make('Food')
-        self.assertEqual(str(f), f.name_sorted)
+        self.assertEqual(unicode(f), f.name_sorted)
 
     def test_get_grams_same_unit(self):
         cups = mommy.make('Unit', name='cups')
@@ -513,12 +513,12 @@ class FoodTest(TestCase):
 class DirectionTest(TestCase):
     def test_unicode_title_too_long(self):
         d = mommy.make('Direction', text='abcdefghijklmnopqrstuvwxyzabcdefghijklmno')
-        self.assertEqual(str(d), 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn...')
+        self.assertEqual(unicode(d), 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn...')
 
     def test_unicode_just_right(self):
         d = mommy.make('Direction', text='abcdefghijklmnopqrstuvwxyzabcdefghijklmn')
-        self.assertEqual(str(d), 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn')
+        self.assertEqual(unicode(d), 'abcdefghijklmnopqrstuvwxyzabcdefghijklmn')
 
     def test_unicode_short(self):
         d = mommy.make('Direction', text='a')
-        self.assertEqual(str(d), 'a')
+        self.assertEqual(unicode(d), 'a')

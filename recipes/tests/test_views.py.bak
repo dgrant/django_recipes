@@ -14,10 +14,10 @@ class TestRecipeList(TestCase):
 
         url = reverse('recipe-list')
         resp = self.client.get(url)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEquals(resp.status_code, 200)
         self.assertIn('object_list', resp.context)
 
-        self.assertEqual(set([link.pk for link in resp.context['object_list']]),
+        self.assertEquals(set([link.pk for link in resp.context['object_list']]),
                           set([1, 2]))
 
 class TestFoodConversionList(TestCase):
@@ -31,8 +31,8 @@ class TestFoodConversionList(TestCase):
 
         url = reverse('food-conversion-list')
         resp = self.client.get(url)
-        self.assertEqual(resp.status_code, 200)
+        self.assertEquals(resp.status_code, 200)
         self.assertIn('object_list', resp.context)
 
-        self.assertEqual([link.pk for link in resp.context['object_list']],
+        self.assertEquals([link.pk for link in resp.context['object_list']],
                           [3,2])
