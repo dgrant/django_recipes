@@ -1,6 +1,11 @@
 from fabric.api import run, env, cd, shell_env, execute
 
-env.hosts = ['slice:55555']
+from fabric.network import ssh
+
+ssh.util.log_to_file("paramiko.log", 10)
+
+env.hosts = ['linode']
+env.use_ssh_config = True
 ROOT='/home/david/public_html/django/django_recipes/public'
 
 def restart():
