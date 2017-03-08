@@ -20,8 +20,6 @@ root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = DEBUG
-
 ALLOWED_HOSTS = []
 
 
@@ -50,6 +48,22 @@ ADMINS = (('David', 'davidgrant@gmail.com',),)
 MANAGERS = ()
 
 ROOT_URLCONF = 'django_recipes.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [root('templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = 'django_recipes.wsgi.application'
 
@@ -82,6 +96,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_ROOT = root('static')
 STATIC_URL = '/static/'
-TEMPLATE_DIRS = [root('templates')]
 CONN_MAX_AGE = None
 

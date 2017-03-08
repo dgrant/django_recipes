@@ -222,7 +222,7 @@ class Source(models.Model):
     name = models.CharField(max_length=150, verbose_name=_('Source|name'))
     url = models.URLField(max_length=500, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -239,7 +239,7 @@ class Category(models.Model):
     slug = models.SlugField(unique=True, help_text='Automatically generated from the title')
     order_index = models.PositiveIntegerField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -251,7 +251,7 @@ class Category(models.Model):
 class FoodGroup(models.Model):
     name = models.CharField(max_length=150, verbose_name=_('FoodGroup|name'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -263,7 +263,7 @@ class FoodGroup(models.Model):
 class PrepMethod(models.Model):
     name = models.CharField(max_length=60, blank=True, verbose_name=_('PrepMethod|name'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self):
@@ -299,7 +299,7 @@ class Photo(models.Model):
 class ServingString(models.Model):
     text = models.CharField(max_length=50, verbose_name=_('ServingString|text'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.text
 
     class Meta:
@@ -320,7 +320,7 @@ class Recipe(models.Model):
     serving_string = models.ForeignKey(ServingString, null=True, blank=True)
     serving_value = models.IntegerField(null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     class Meta:
@@ -374,7 +374,7 @@ class Direction(models.Model):
 
     objects = DirectionManager()
 
-    def __unicode__(self):
+    def __str__(self):
         ret = self.text[:40]
         if len(self.text) > 40:
             ret += "..."
@@ -395,7 +395,7 @@ class Unit(models.Model):
     SYSTEM = Choices((0, 'si', 'SI'), (1, 'imperial', 'Imperial'))
     system = models.IntegerField(choices=SYSTEM, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -420,7 +420,7 @@ class Food(models.Model):
 
     objects = FoodManager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name_sorted
 
     class Meta:

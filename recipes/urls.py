@@ -1,9 +1,9 @@
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 from .models import Recipe
 from .views import RecipeListView, RecipeDetailView, FoodConversionListView
 
 
-urlpatterns = patterns('recipes.views',
+urlpatterns = [
     url(r'^$', RecipeListView.as_view(), name="recipe-home"),
     url(r'^list$', RecipeListView.as_view(), name="recipe-list"),
     url(r'^food-conversion-list$', FoodConversionListView.as_view(), name="food-conversion-list"),
@@ -26,4 +26,4 @@ urlpatterns = patterns('recipes.views',
 #    url(r'^add/$', 'recipe_add', name="recipe_add"),
 #    (r'^add/thanks/$', direct_to_template, {'template': 'recipes/recipe_add_thanks.html'} ),
 
-)
+]
