@@ -39,5 +39,5 @@ def deploy():
 def env():
     with cd(ROOT):
         run('pipenv install')
-        run("sed -e 's/home=.*/home=$(pipenv --venv)/g' -i.bak ../../django_recipes.ini")
+        run('sed -e "s/home=.*/home=$(pipenv --venv)/g" -i.bak ../../django_recipes.ini')
         run("cat ../../django_recipes.ini")
