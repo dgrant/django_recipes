@@ -4,7 +4,7 @@ python:
   - "3.4"
 install:
   - pip install pipenv
-  - pipenv install --dev
+  - pipenv install --dev --ignore-pipfile
 script:
   - pipenv run coverage run ./manage.py test --settings=django_recipes.settings.test
 after_success:
