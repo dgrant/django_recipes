@@ -3,6 +3,7 @@ python:
   - "2.7"
   - "3.4"
 install:
+  - pip install pipenv
   - pipenv install --dev
 script:
   - pipenv run coverage run ./manage.py test --settings=django_recipes.settings.test
