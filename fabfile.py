@@ -18,7 +18,7 @@ def update():
 
 def schema():
     with cd(ROOT), shell_env(DJANGO_SETTINGS_MODULE='django_recipes.settings.production'):
-        run('env/bin/python ./manage.py migrate')
+        run('pipenv run ./manage.py migrate')
 
 def backupdb():
     with cd(ROOT):
@@ -26,7 +26,7 @@ def backupdb():
 
 def static():
     with cd(ROOT):
-        run('env/bin/python ./manage.py collectstatic --settings=django_recipes.settings.production --noinput --link --clear')
+        run('pipenv run ./manage.py collectstatic --settings=django_recipes.settings.production --noinput --link --clear')
 
 def deploy():
     execute(update)
@@ -38,4 +38,5 @@ def deploy():
 
 def env():
     with cd(ROOT):
-        run('./createVirtualEnv.sh')
+        run('pipenv install')
+        run("sed -e 's/home=.*/home=$(pipenv --venv/g' -i.bak ../../django_recipes.ini")
