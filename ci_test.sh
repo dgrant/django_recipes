@@ -1,2 +1,2 @@
 #!/bin/sh
-./manage.py test --settings=django_recipes.settings.test
+pipenv run ./manage.py test --settings=django_recipes.settings.test
