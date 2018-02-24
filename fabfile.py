@@ -40,5 +40,6 @@ def env():
     with cd(ROOT):
         run('pipenv install')
         pipenv_env_dir = run('pipenv --venv')
+        pipenv_env_dir = pipenv_env_dir.replace('/', '\\/')
         run("sed -e 's/home=.*/home={0}/g' -i.bak ../../django_recipes.ini".format(pipenv_env_dir))
         run("cat ../../django_recipes.ini")
