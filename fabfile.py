@@ -1,6 +1,9 @@
-from fabric.api import run, env, cd, shell_env, execute
-
+from fabric.api import run, env, cd, shell_env, execute, sudo
 from fabric.network import ssh
+
+from functools import wraps
+
+
 
 ssh.util.log_to_file("paramiko.log", 10)
 
@@ -8,9 +11,11 @@ env.hosts = ['linode']
 env.use_ssh_config = True
 ROOT='/home/david/public_html/django/django_recipes/public'
 
+INI_FILE = '/etc/uwsgi/apps-available/django_recipes.ini'
+
 def restart():
     with cd(ROOT):
-        run('touch ../../django_recipes.ini')
+        sudo('touch ' + INI_FILE)
 
 def update():
     with cd(ROOT):
@@ -41,5 +46,5 @@ def env():
         run('pipenv install')
         pipenv_env_dir = run('pipenv --venv')
         pipenv_env_dir = pipenv_env_dir.replace('/', '\\/')
-        run("sed -e 's/home=.*/home={0}/g' -i.bak ../../django_recipes.ini".format(pipenv_env_dir))
-        run("cat ../../django_recipes.ini")
+        sudo("sed -e 's/home=.*/home={0}/g' -i.bak {1}".format(pipenv_env_dir, INI_FILE))
+        run("cat " + INI_FILE)
