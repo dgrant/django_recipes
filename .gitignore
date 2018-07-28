@@ -1,4 +1,4 @@
-/env
+/.venv
 *.pyc
 *.log
 .coverage
@@ -7,4 +7,4 @@ django_recipes/settings/production.py
 .idea/
 django_recipes.pid
 backups
-static
+/static

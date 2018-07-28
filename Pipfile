@@ -9,7 +9,7 @@ verify_ssl = true
 
 [packages]
 
-Django = "==1.10.8"
+Django = "==1.11.14"
 django-tagging = "==0.4.5"
 django-extensions = "==1.7.7"
 django-positions = "==0.5.4"
