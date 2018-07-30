@@ -15,7 +15,7 @@ INI_FILE = '/etc/uwsgi/apps-available/django_recipes.ini'
 
 def restart():
     with cd(ROOT):
-        sudo('touch ' + INI_FILE)
+        sudo('/etc/init.d/uwsgi restart')
 
 def update():
     with cd(ROOT):
