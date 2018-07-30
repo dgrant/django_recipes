@@ -21,9 +21,9 @@ class Migration(migrations.Migration):
             name='Category',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text=b'Maximum 120 characters', max_length=120, unique=True)),
+                ('name', models.CharField(help_text='Maximum 120 characters', max_length=120, unique=True)),
                 ('order_index', models.PositiveIntegerField(blank=True, null=True)),
-                ('slug', models.SlugField(help_text=b'Automatically generated from the title', unique=True)),
+                ('slug', models.SlugField(help_text='Automatically generated from the title', unique=True)),
             ],
             options={
                 'ordering': ['order_index'],
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=150)),
-                ('name_sorted', models.CharField(default=b'', max_length=150)),
+                ('name_sorted', models.CharField(default='', max_length=150)),
                 ('conversion_factor', models.FloatField(blank=True, null=True)),
                 ('name_plural', models.CharField(blank=True, max_length=150, null=True)),
                 ('detail', models.TextField(blank=True)),
@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
                 ('amount', models.FloatField(blank=True, null=True)),
                 ('amountMax', models.FloatField(blank=True, null=True)),
                 ('order_index', positions.fields.PositionField(blank=True, default=-1, null=True)),
-                ('direction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name=b'ingredients', to='recipes.Direction')),
+                ('direction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ingredients', to='recipes.Direction')),
                 ('food', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='recipes.Food')),
             ],
             options={
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('caption', models.CharField(max_length=200)),
-                ('image', models.ImageField(upload_to=b'images')),
+                ('image', models.ImageField(upload_to='images')),
                 ('keep', models.BooleanField(default=True, editable=False)),
             ],
         ),
@@ -193,7 +193,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='food',
             name='conversion_src_unit',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name=b'+', to='recipes.Unit'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='+', to='recipes.Unit'),
         ),
         migrations.AddField(
             model_name='food',
@@ -203,12 +203,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='direction',
             name='recipe',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name=b'directions', to='recipes.Recipe'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='directions', to='recipes.Recipe'),
         ),
         migrations.AlterField(
             model_name='ingredient',
             name='direction',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name=b'ingredients', to='recipes.Direction'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='ingredients', to='recipes.Direction'),
         ),
         migrations.AlterModelOptions(
             name='category',

@@ -278,7 +278,7 @@ class PrepMethod(models.Model):
 
 class Photo(models.Model):
     caption = models.CharField(max_length=200, verbose_name=_('Photo|caption'))
-    recipe = models.ForeignKey('Recipe')
+    recipe = models.ForeignKey('Recipe', null=True, blank=True, on_delete=models.SET_NULL)
     image = models.ImageField(upload_to='images')
     # This field used because can't make ImageField core right now (see http://code.djangoproject.com/ticket/2534)
     keep = models.BooleanField(default=True, editable=False)
@@ -316,8 +316,8 @@ class Recipe(models.Model):
     ctime = models.DateTimeField(auto_now_add=True)
     mtime = models.DateTimeField(auto_now=True)
     sources = models.ManyToManyField(Source, blank=True)
-    category = models.ForeignKey(Category)
-    serving_string = models.ForeignKey(ServingString, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    serving_string = models.ForeignKey(ServingString, null=True, blank=True, on_delete=models.SET_NULL)
     serving_value = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
@@ -369,7 +369,7 @@ class Direction(models.Model):
     recipe.
     """
     text = models.TextField(blank=True, verbose_name=_('Direction|text'))
-    recipe = models.ForeignKey(Recipe, related_name='directions')
+    recipe = models.ForeignKey(Recipe, related_name='directions', on_delete=models.CASCADE)
     order = PositionField(blank=True, null=True, unique_for_field='recipe')
 
     objects = DirectionManager()
@@ -412,8 +412,8 @@ class FoodManager(models.Manager):
 class Food(models.Model):
     name = models.CharField(max_length=150, verbose_name=_('Food|name'))
     name_sorted = models.CharField(max_length=150, default='', verbose_name=_('Food|name_sorted'))
-    group = models.ForeignKey(FoodGroup)
-    conversion_src_unit = models.ForeignKey(Unit, related_name='+', null=True, blank=True)
+    group = models.ForeignKey(FoodGroup, on_delete=models.PROTECT)
+    conversion_src_unit = models.ForeignKey(Unit, related_name='+', null=True, blank=True, on_delete=models.PROTECT)
     conversion_factor = models.FloatField(null=True, blank=True)
     name_plural = models.CharField(max_length=150, null=True, blank=True)
     detail = models.TextField(blank=True)
@@ -460,12 +460,12 @@ class Food(models.Model):
 class Ingredient(models.Model):
     amount = models.FloatField(null=True, blank=True, verbose_name=_('Ingredient|amount'))
     amountMax = models.FloatField(null=True, blank=True)
-    unit = models.ForeignKey(Unit, null=True, blank=True)
-    recipe = models.ForeignKey(Recipe)
-    food = models.ForeignKey(Food)
-    prep_method = models.ForeignKey(PrepMethod, null=True, blank=True)
+    unit = models.ForeignKey(Unit, null=True, blank=True, on_delete=models.PROTECT)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.PROTECT)
+    prep_method = models.ForeignKey(PrepMethod, null=True, blank=True, on_delete=models.PROTECT)
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
-    direction = models.ForeignKey(Direction, related_name='ingredients', null=True, blank=True)
+    direction = models.ForeignKey(Direction, related_name='ingredients', null=True, blank=True, on_delete=models.SET_NULL)
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
