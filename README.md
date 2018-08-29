@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/dgrant/django_recipes.png)](https://travis-ci.org/dgrant/django_recipes) [![Coverage Status](https://coveralls.io/repos/dgrant/django_recipes/badge.png)](https://coveralls.io/r/dgrant/django_recipes)
 
-This is a complete recipe system using Python + Django. A complete demonstration is live at [http://recipes.davidgrant.ca/cookbook/](http://recipes.davidgrant.ca/cookbook/).
+This is a complete recipe system using Python + Django. A complete demonstration is live at [http://recipes.davidgrant.ca](http://recipes.davidgrant.ca).
 
 Features
 ========
