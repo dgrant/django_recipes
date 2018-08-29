@@ -27,15 +27,17 @@ Getting started
 Follow these steps to get the recipes site up and running.
 
 1. Fork or clone the project.
-1. run 'sudo aptitude install libmysqlclient-dev python-dev gettext'
-1. Run ./createVirtualEnv.sh to create a virtualenv environment in an env directory with the correct dependencies. This assumes you have pip and virtualenv OR run ./createPyEnv.sh if you use pyenv (this assumes you have a Python 3.6.1 installed with pyenv)
-1. Copy django_recipes/settings/local.py.example to local.py and alter settings as necessary.
-1. Create database (not necessary if using sqlite)
-1. Run ". setlocal.sh"
-1. Run "source env/bin/activate"
-1. Run ./manage.py syncdb from the menu
-1. Run ./manage.py migrate
-1. Run ./manage.py runserver
+1. run `sudo aptitude install libmysqlclient-dev python-dev gettext`
+1. Install pipenv if you don't already have it
+1. Run `pipenv install --dev`
+1. Run `pipenv shell`
+1. Copy django_recipes/settings/local.py.example to django_recipes/settings/local.py and alter settings as necessary.
+1. Create database as per settings defined in django_recipes/settings/local.py (not necessary if using sqlite)
+1. Run `. setlocal.sh`
+1. Run `source env/bin/activate`
+1. Run `./manage.py syncdb` from the menu
+1. Run `./manage.py migrate`
+1. Run `./manage.py runserver`
 1. Go to http://locahost:8000 in your browser
 1. The admin interface is at http://localhost:8000/admin
 1. You can run unit tests by running ./ci_test.sh
