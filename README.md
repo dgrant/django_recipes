@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dgrant/django_recipes.png)](https://travis-ci.org/dgrant/django_recipes) [![Coverage Status](https://coveralls.io/repos/dgrant/django_recipes/badge.png)](https://coveralls.io/r/dgrant/django_recipes) [![Code Issues](https://www.quantifiedcode.com/api/v1/project/98ce2971372c449585a653c72ea9abd2/badge.svg)](https://www.quantifiedcode.com/app/project/98ce2971372c449585a653c72ea9abd2)
+[![Build Status](https://travis-ci.org/dgrant/django_recipes.png)](https://travis-ci.org/dgrant/django_recipes) [![Coverage Status](https://coveralls.io/repos/dgrant/django_recipes/badge.png)](https://coveralls.io/r/dgrant/django_recipes)
 
 This is a complete recipe system using Python + Django. A complete demonstration is live at [http://recipes.davidgrant.ca/cookbook/](http://recipes.davidgrant.ca/cookbook/).
 
@@ -41,3 +41,8 @@ Follow these steps to get the recipes site up and running.
 1. Go to http://locahost:8000 in your browser
 1. The admin interface is at http://localhost:8000/admin
 1. You can run unit tests by running ./ci_test.sh
+
+Initial Data
+============
+
+To help get started I've provided a dump of my recipes site's tables (see dump.sql)
