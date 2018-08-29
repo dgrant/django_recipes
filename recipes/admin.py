@@ -1,13 +1,17 @@
 from django.contrib import admin
-from django.forms.models import inlineformset_factory
-from .models import *
+
+from .models import Category, Direction, Food, FoodGroup, Ingredient, Photo, PrepMethod, Recipe, ServingString,\
+    Source, Unit
+
 
 class SourceAdmin(admin.ModelAdmin):
     list_display = ('name', 'url',)
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_index')
     prepopulated_fields = {'slug': ('name',)}
+
 
 class FoodAdmin(admin.ModelAdmin):
     list_display = ('name_sorted', 'name', 'group', 'conversion_src_unit', 'conversion_factor',)
@@ -19,20 +23,25 @@ class FoodAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Unit.objects.exclude(type=Unit.TYPE.mass)
         return super(FoodAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+
 class PhotoInlineAdmin(admin.StackedInline):
     model = Photo
     extra = 2
+
 
 class DirectionInlineAdmin(admin.TabularInline):
     model = Direction
     extra = 3
 
+
 class UnitAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_abbrev', 'plural_abbrev', 'system', 'type',)
+
 
 class IngredientAdmin(admin.ModelAdmin):
     model = Ingredient
     list_display = ('food', 'unit', 'amount', 'prep_method', 'direction',)
+
 
 class IngredientInlineAdmin(admin.TabularInline):
     model = Ingredient
@@ -52,9 +61,12 @@ class IngredientInlineAdmin(admin.TabularInline):
             return None
         return model.objects.get(pk=object_id)
 
+
 class RecipeAdmin(admin.ModelAdmin):
     list_display = ('title', 'summary', 'slug', 'prep_time',)
-    fields = ('title', 'slug', 'category', 'summary', 'description', 'serving_value', 'serving_string', 'sources', 'prep_time',)
+    fields = (
+        'title', 'slug', 'category', 'summary', 'description', 'serving_value', 'serving_string', 'sources',
+        'prep_time',)
     list_filter = ('title', 'sources',)
     search_fields = ('title', 'description', 'summary',)
     prepopulated_fields = {'slug': ('title',)}
@@ -67,8 +79,10 @@ class RecipeAdmin(admin.ModelAdmin):
             kwargs["queryset"] = Category.objects.all().order_by('name')
         return super(RecipeAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
+
 class ServingStringAdmin(admin.ModelAdmin):
     model = ServingString
+
 
 admin.site.register(Source, SourceAdmin)
 admin.site.register(Category, CategoryAdmin)

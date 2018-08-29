@@ -1,15 +1,12 @@
 from django.http import HttpResponseRedirect
-from django.db.models import Q
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.core.mail import send_mail
-from .models import Recipe, Food
+from django.views.generic import ListView, DetailView
 
-from django.views.generic import ListView, CreateView, DetailView
+from .models import Recipe, Food
 
 
 def root(request):
     return HttpResponseRedirect("/cookbook")
+
 
 class RecipeListView(ListView):
     model = Recipe
@@ -18,6 +15,7 @@ class RecipeListView(ListView):
     def get_queryset(self):
         qs = Recipe.objects.all()
         return qs
+
 
 class RecipeDetailView(DetailView):
     model = Recipe
@@ -31,10 +29,10 @@ class RecipeDetailView(DetailView):
             recipe.scale = 1.0
         return recipe
 
+
 class FoodConversionListView(ListView):
     model = Food
 
     def get_queryset(self):
         qs = Food.objects.with_conversions()
         return qs
-

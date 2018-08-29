@@ -1,11 +1,11 @@
 ul {
-  list-style-type: none;
+    list-style-type: none;
 }
 
 .bordered {
-  border-top: 2px solid #ccc;
+    border-top: 2px solid #ccc;
 }
 
 .lastrow {
-  border-bottom: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
 }

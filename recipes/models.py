@@ -1,11 +1,11 @@
-from django.db import models
 import datetime
-from positions.fields import PositionField
-from model_utils import Choices
 import math
-from django.utils.translation import ugettext_lazy as _
 
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+from model_utils import Choices
 from pint import UnitRegistry
+from positions.fields import PositionField
 
 ureg = UnitRegistry()
 
@@ -127,7 +127,7 @@ def format_unit(int_part, unit_str, num=None, den=None):
     ret = ''
     if int_part != '':
         ret += int_part + ' '
-    if num != None and den != None:
+    if num is not None and den is not None:
         ret += '<sup>' + num + '</sup>' + '&frasl;' + '<sub>' + den + '</sub> '
     ret += unit_str
     ret += ', '
@@ -347,8 +347,9 @@ class Recipe(models.Model):
         return a
 
     def get_serving(self):
-        if self.serving_value != None != '' and self.serving_string != None and self.serving_string.text != '' and self.serving_string.text.find(
-                '%s') != -1:
+        if self.serving_value is not None and self.serving_value != ''\
+                and self.serving_string is not None and self.serving_string.text != '' \
+                and self.serving_string.text.find('%s') != -1:
             num_sig_figs = len(str(self.serving_value))
             serving_value_scaled = nice_float(self.serving_value * self.scale, num_sig_figs)
             return self.serving_string.text % (serving_value_scaled,)
@@ -450,11 +451,11 @@ class Food(models.Model):
         return nice_grams(self.conversion_factor * ureg.grams)
 
     def has_unitless_conversion(self):
-        return self.conversion_src_unit == None and self.conversion_factor != None
+        return self.conversion_src_unit is None and self.conversion_factor is not None
 
     def has_imperial_conversion(self):
-        return self.conversion_src_unit != None and self.conversion_src_unit.name in (
-            'millilitre', 'cup', 'tablespoon', 'teaspoon') and self.conversion_factor != None
+        return self.conversion_src_unit is not None and self.conversion_src_unit.name in (
+            'millilitre', 'cup', 'tablespoon', 'teaspoon') and self.conversion_factor is not None
 
 
 class Ingredient(models.Model):
@@ -465,14 +466,15 @@ class Ingredient(models.Model):
     food = models.ForeignKey(Food, on_delete=models.PROTECT)
     prep_method = models.ForeignKey(PrepMethod, null=True, blank=True, on_delete=models.PROTECT)
     order_index = PositionField(blank=True, null=True, unique_for_field="direction")
-    direction = models.ForeignKey(Direction, related_name='ingredients', null=True, blank=True, on_delete=models.SET_NULL)
+    direction = models.ForeignKey(Direction, related_name='ingredients', null=True, blank=True,
+                                  on_delete=models.SET_NULL)
 
     def __init__(self, *args, **kwargs):
         super(Ingredient, self).__init__(*args, **kwargs)
 
     def formatted_food(self):
-        if self.food.name_plural != None and self.food.name_plural != '' and (
-                        self.amount != 1 or self.amountMax != None):
+        if self.food.name_plural is not None and self.food.name_plural != '' and (
+                self.amount != 1 or self.amountMax is not None):
             food_str = self.food.name_plural
         else:
             food_str = self.food.name
@@ -480,37 +482,36 @@ class Ingredient(models.Model):
 
     def formatted_prep(self):
         prep_method_str = ''
-        if self.prep_method != None:
+        if self.prep_method is not None:
             prep_method_str = ', ' + self.prep_method.name
         return prep_method_str
 
     def formatted_amount(self, scale):
-        if self.amount == None:
+        if self.amount is None:
             return ''
 
         amount = self.amount * scale
-        if self.amountMax != None:
+        if self.amountMax is not None:
             amountMax = self.amountMax * scale
         else:
             amountMax = None
 
         unit_str = ''
-        amountStr = ''
         amountMax_str = ''
-        if self.unit != None and self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.si:
+        if self.unit is not None and self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.si:
             # grams, kilograms
             amount_g = (amount * ureg[self.unit.name]).to(ureg.grams)
-            if amountMax == None:
+            if amountMax is None:
                 amount_str = '{0}'.format(nice_grams(amount_g))
             else:
                 amountMax_g = (amountMax * ureg[self.unit.name]).to(ureg.grams)
                 amount_str = '{0}'.format(nice_grams_range(amount_g, amountMax_g))
 
-        elif self.unit != None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial \
+        elif self.unit is not None and self.unit.type == Unit.TYPE.volume and self.unit.system == Unit.SYSTEM.imperial \
                 and ureg[self.unit.name].units in [ureg.quarts, ureg.cups, ureg.tablespoons, ureg.teaspoons]:
             # tsp, tbsp, cups, quarts
             amount_cups = (amount * ureg[self.unit.name]).to(ureg.cups)
-            if amountMax != None:
+            if amountMax is not None:
                 amountMax_cups = (amountMax * ureg[self.unit.name]).to(ureg.cups)
                 amount_str = nice_cups_range(amount_cups, amountMax_cups)
             else:
@@ -520,20 +521,20 @@ class Ingredient(models.Model):
             # everything else
             amount_str = '{0}'.format(nice_float(amount, sig_figs=4))
 
-            if amountMax != None:
+            if amountMax is not None:
                 amountMax_str = ' to {0}'.format(nice_float(amountMax, sig_figs=4))
 
-            if self.unit != None:
+            if self.unit is not None:
                 unit_str = ' {0}'.format(self.unit.name_abbrev)
 
         return amount_str + amountMax_str + unit_str
 
     def formatted_grams(self, scale):
-        if self.amount == None:
+        if self.amount is None:
             return ''
 
         amount = self.amount * scale
-        if self.amountMax != None:
+        if self.amountMax is not None:
             amountMax = self.amountMax * scale
         else:
             amountMax = None
@@ -542,39 +543,39 @@ class Ingredient(models.Model):
         amount_g = None
         # This translates the following to grams, 1) any volumes that have conversions defined
         # 2) any imperial mass
-        if self.unit != None and ( \
-                    (
-                                        self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit != None and self.food.conversion_factor != None) or \
-                        (self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.imperial)):
+        if self.unit is not None and ((self.unit.type == Unit.TYPE.volume and self.food.conversion_src_unit is not None
+                                       and self.food.conversion_factor is not None) or
+                                      (self.unit.type == Unit.TYPE.mass and self.unit.system == Unit.SYSTEM.imperial)):
             amount_u = amount * ureg[self.unit.name]
-            if amountMax != None:
+            if amountMax is not None:
                 amountMax_u = amountMax * ureg[self.unit.name]
 
-            if self.food.conversion_src_unit != None and self.food.conversion_factor != None and self.unit.type != Unit.TYPE.mass:
+            if self.food.conversion_src_unit is not None and self.food.conversion_factor is not None \
+                    and self.unit.type != Unit.TYPE.mass:
                 # First, get it into the src unit for the Food conversion, if necessary
                 if self.unit.pk != self.food.conversion_src_unit.pk:
                     src_unit = ureg[self.food.conversion_src_unit.name]
                     amount_u = amount_u.to(src_unit)
-                    if amountMax != None:
+                    if amountMax is not None:
                         amountMax_u = amountMax_u.to(src_unit)
                 # Then convert to grams
                 conversion_factor = (self.food.conversion_factor * ureg.grams) / (
-                    1.0 * ureg[self.food.conversion_src_unit.name])
+                        1.0 * ureg[self.food.conversion_src_unit.name])
                 amount_g = conversion_factor * amount_u
-                if amountMax != None:
+                if amountMax is not None:
                     amountMax_g = conversion_factor * amountMax_u
             else:
                 amount_g = amount_u.to(ureg.grams)
-                if amountMax != None:
+                if amountMax is not None:
                     amountMax_g = amountMax_u.to(ureg.grams)
 
-        elif self.unit == None and self.food.conversion_factor != None and self.food.conversion_src_unit == None:
+        elif self.unit is None and self.food.conversion_factor is not None and self.food.conversion_src_unit is None:
             amount_g = ureg.grams * self.food.conversion_factor * amount
-            if amountMax != None:
+            if amountMax is not None:
                 amountMax_g = ureg.grams * self.food.conversion_factor * amountMax
 
-        if amount_g != None:
-            if amountMax == None:
+        if amount_g is not None:
+            if amountMax is None:
                 grams_str = '({0})'.format(nice_grams(amount_g))
             else:
                 grams_str = '({0})'.format(nice_grams_range(amount_g, amountMax_g))
@@ -585,4 +586,3 @@ class Ingredient(models.Model):
         ordering = ["direction", "order_index", "id"]
         verbose_name = _('Ingredient')
         verbose_name_plural = _('Ingredients')
-
