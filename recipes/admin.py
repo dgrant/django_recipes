@@ -3,6 +3,8 @@ from django.contrib import admin
 from .models import Category, Direction, Food, FoodGroup, Ingredient, Photo, PrepMethod, Recipe, ServingString,\
     Source, Unit
 
+from .admin_mixins import CachedChoiceFieldOptionsMixin
+
 
 class SourceAdmin(admin.ModelAdmin):
     list_display = ('name', 'url',)
@@ -11,6 +13,7 @@ class SourceAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_index')
     prepopulated_fields = {'slug': ('name',)}
+    ordering = ('name',)
 
 
 class FoodAdmin(admin.ModelAdmin):
@@ -43,23 +46,27 @@ class IngredientAdmin(admin.ModelAdmin):
     list_display = ('food', 'unit', 'amount', 'prep_method', 'direction',)
 
 
-class IngredientInlineAdmin(admin.TabularInline):
+class IngredientInlineAdmin(CachedChoiceFieldOptionsMixin, admin.TabularInline):
     model = Ingredient
     extra = 6
+    cached_choice_fields = ['prep_method', 'unit', 'food', 'direction',]
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "direction":
-            recipe = self.get_object(request, Recipe)
-            kwargs["queryset"] = Direction.objects.filter(recipe=recipe)
-        return super(IngredientInlineAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    def get_filters(self, obj):
+        return (('direction', dict(recipe=obj),),)
 
-    def get_object(self, request, model):
-        object_id = request.META['PATH_INFO'].strip('/').split('/')[-1]
-        try:
-            object_id = int(object_id)
-        except ValueError:
-            return None
-        return model.objects.get(pk=object_id)
+    def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
+        """
+        Only allow choosing directions from the directions that are in this recipe
+        """
+        field = super(IngredientInlineAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+        if db_field.name == 'direction':
+            if request._obj_:
+                field.queryset = field.queryset.filter(recipe=request._obj_)  
+            else:
+                field.queryset = field.queryset.none()
+
+        return field
 
 
 class RecipeAdmin(admin.ModelAdmin):
@@ -74,10 +81,12 @@ class RecipeAdmin(admin.ModelAdmin):
     model = Recipe
     inlines = [DirectionInlineAdmin, IngredientInlineAdmin, PhotoInlineAdmin]
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'category':
-            kwargs["queryset"] = Category.objects.all().order_by('name')
-        return super(RecipeAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
+    def get_form(self, request, obj=None, **kwargs):
+        """
+		just save obj reference for future processing in Inline
+		"""
+        request._obj_ = obj
+        return super(RecipeAdmin, self).get_form(request, obj, **kwargs)
 
 
 class ServingStringAdmin(admin.ModelAdmin):
