@@ -1,6 +1,7 @@
 Later:
 	-Add to Grocery List
 	-Add to cookbook (favourites)
+        -Upgrade to support new fabric 2 and then add to Pipfile (currently just using locally installed fabric 1.x for python 2.x)
 
 For 0.2 release:
 	-Add Recipes Views Count to every recipe
