@@ -5,6 +5,16 @@
 	  <div class="col-md-10 col-md-offset-1 text-center">
 		<h2>{{ recipe.title }}</h2>
 		<p>{{ recipe.summary }}</p>
+        <p>
+        Scale:
+        <a href="?scale=1">clear</a> |
+        <a href="?scale=0.25">x0.25</a> |
+        <a href="?scale=0.5">x0.5</a> |
+        <a href="?scale=1.5">x1.5</a> |
+        <a href="?scale=2">x2</a> |
+        <a href="?scale=3">x3</a> |
+        <a href="?scale=4">x4</a>
+        </p>
 		{% if recipe.get_serving %}<p>{{ recipe.get_serving }}</p>{% endif %}
 		<p>{{ recipe.description }}</p>
 	  </div>
