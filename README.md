@@ -35,7 +35,6 @@ Follow these steps to get the recipes site up and running.
 1. Create database as per settings defined in django_recipes/settings/local.py (not necessary if using sqlite)
 1. Run `. setlocal.sh`
 1. Run `source env/bin/activate`
-1. Run `./manage.py syncdb` from the menu
 1. Run `./manage.py migrate`
 1. Run `./manage.py runserver`
 1. Go to http://locahost:8000 in your browser
